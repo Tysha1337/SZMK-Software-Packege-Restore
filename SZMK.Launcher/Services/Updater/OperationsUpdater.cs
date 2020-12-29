@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using SZMK.Launcher.Models;
 using SZMK.Launcher.Views;
@@ -26,28 +27,6 @@ namespace SZMK.Launcher.Services.Updater
                 logger = LogManager.GetCurrentClassLogger();
                 this.notify = notify;
                 GetVersionProduct();
-            }
-            catch (Exception Ex)
-            {
-                throw new Exception(Ex.Message, Ex);
-            }
-        }
-        public bool CheckedProcess()
-        {
-            try
-            {
-                notify.Notify(0, "Поиск процессов SZMK.LauncherUpdater");
-                notify.SetMaximum(1);
-                if (Process.GetProcessesByName("SZMK.LauncherUpdater").Length != 0)
-                {
-                    notify.Notify(1, "Найден дополнительный процесс SZMK.LauncherUpdater");
-                    return false;
-                }
-                else
-                {
-                    notify.Notify(1, "Не найден дополнительный процесс SZMK.LauncherUpdater");
-                    return true;
-                }
             }
             catch (Exception Ex)
             {
@@ -181,11 +160,11 @@ namespace SZMK.Launcher.Services.Updater
                             {
                                 string PathFile = reader.ReadString();
 
-                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Temp\" + Path.GetDirectoryName(PathFile));
+                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\TempUpdater\" + Path.GetDirectoryName(PathFile));
 
                                 long lenght = reader.ReadInt64();
 
-                                using (FileStream fileStream = File.Open(Directory.GetCurrentDirectory() + @"\Temp\" + PathFile, FileMode.Create))
+                                using (FileStream fileStream = File.Open(Directory.GetCurrentDirectory() + @"\TempUpdater\" + PathFile, FileMode.Create))
                                 {
                                     long totalBytes = 0;
                                     int readBytes = 0;
@@ -214,8 +193,96 @@ namespace SZMK.Launcher.Services.Updater
         {
             try
             {
-                notify.Notify(0, "Начало удаление старых файлов основной программы");
+
+                List<FileAndMove> files = GetFiles();
+
+                CheckOldFiles();
+
+                notify.Notify(0, "Начало удаление старых файлов Updater'a");
                 notify.SetMaximum(1);
+                foreach (var file in files.FindAll(p => p.Move.Contains("Remove")))
+                {
+                    File.Delete(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName);
+                    if (Directory.GetDirectories(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName)).Count() == 0 && Directory.GetFiles(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName)).Length == 0)
+                    {
+                        Directory.Delete(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName));
+                    }
+                }
+                notify.Notify(1, "Удаление старых файлов Updater'a успешно");
+
+                notify.Notify(0, "Обновление файлов Updater'a");
+                foreach (var file in files.FindAll(p => !p.Move.Contains("Remove")))
+                {
+                    if (!Directory.Exists(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName)))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName));
+                    }
+
+                    File.Copy(Directory.GetCurrentDirectory() + @"\TempUpdater\" + file.FileName, Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName, true);
+                }
+                notify.Notify(1, "Обновление файлов Updater'a успешно");
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        private void CheckOldFiles()
+        {
+            try
+            {
+                notify.Notify(0, "Начало проверки старых файлов Updater'a");
+                notify.SetMaximum(1);
+                while (true)
+                {
+                    List<FileAndMove> files = GetFiles();
+
+                    string failProcesses = "";
+
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        string CurretPath = Directory.GetCurrentDirectory() + @"\Updater\" + files[i].FileName;
+
+                        if (File.Exists(CurretPath))
+                        {
+                            List<Process> LockProcesses = GetLockProcesses(CurretPath);
+                            if (LockProcesses.Count > 0)
+                            {
+                                failProcesses = "Файл: " + CurretPath + " занят процессом(ами)";
+                                for (int j = 0; j < LockProcesses.Count; j++)
+                                {
+                                    failProcesses += Environment.NewLine + LockProcesses[j].ProcessName;
+                                }
+                                failProcesses += Environment.NewLine + "Завершите данные процессы и запустите заново программу";
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!String.IsNullOrEmpty(failProcesses))
+                    {
+                        if (MessageBox.Show(failProcesses, "Внимание", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) != DialogResult.Retry)
+                        {
+                            Application.Exit();
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                notify.Notify(1, "Проверка старых файлов Updater'a успешно");
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        private List<FileAndMove> GetFiles()
+        {
+            try
+            {
                 XDocument info = XDocument.Load(Directory.GetCurrentDirectory() + @"\InfoUpdater.conf");
 
                 List<FileAndMove> files = new List<FileAndMove>();
@@ -225,27 +292,7 @@ namespace SZMK.Launcher.Services.Updater
                     files.Add(new FileAndMove { FileName = file.Element("FileName").Value, Move = file.Element("Move").Value });
                 }
 
-                foreach (var file in files.FindAll(p => p.Move.Contains("Remove")))
-                {
-                    File.Delete(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName);
-                    if (Directory.GetDirectories(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName)).Count() == 0 && Directory.GetFiles(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName)).Length == 0)
-                    {
-                        Directory.Delete(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName));
-                    }
-                }
-                notify.Notify(1, "Удаление старых файлов основной программы успешно");
-
-                notify.Notify(0, "Обновление файлов основной программы");
-                foreach (var file in files.FindAll(p => !p.Move.Contains("Remove")))
-                {
-                    if (!Directory.Exists(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName)))
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName));
-                    }
-
-                    File.Copy(Directory.GetCurrentDirectory() + @"\Temp\" + file.FileName, Directory.GetCurrentDirectory() + @"\Updater\" + file.FileName, true);
-                }
-                notify.Notify(1, "Обновление файлов основной программы успешно");
+                return files;
             }
             catch (Exception Ex)
             {

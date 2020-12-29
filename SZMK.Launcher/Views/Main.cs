@@ -93,15 +93,6 @@ namespace SZMK.Launcher.Views
 
                 if (OperationsUpdater.CheckedUpdate())
                 {
-                    while (!OperationsUpdater.CheckedProcess())
-                    {
-                        if (MessageBox.Show("Для обновления необходимо закрыть остальные копии SZMK.LauncherUpdater, нажмите \"Повторить\" для повторной проверки или \"Отмена\" для выхода из обновления", "Внимание", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
-                        {
-                            logger.Info("Пользователь отменил обновление лаунчера");
-                            Environment.Exit(0);
-                        }
-                    }
-
                     OperationsUpdater.Update();
                 }
             }
@@ -122,15 +113,6 @@ namespace SZMK.Launcher.Views
 
                 if (OperationsLauncher.CheckedUpdate())
                 {
-                    while (OperationsLauncher.CheckedProcess())
-                    {
-                        if (MessageBox.Show("Для обновления необходимо закрыть остальные копии лаунчера программы, нажмите \"Повторить\" для повторной проверки или \"Отмена\" для выхода из обновления", "Внимание", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
-                        {
-                            logger.Info("Пользователь отменил обновление лаунчера");
-                            Environment.Exit(0);
-                        }
-                    }
-
                     OperationsLauncher.Update();
                 }
             }
@@ -149,15 +131,6 @@ namespace SZMK.Launcher.Views
 
                 if (OperationsProduct.CheckedUpdate())
                 {
-                    while (!OperationsProduct.CheckedProcess())
-                    {
-                        if (MessageBox.Show("Для обновления необходимо закрыть остальные копии основной программы, нажмите \"Повторить\" для повторной проверки или \"Отмена\" для выхода из обновления", "Внимание", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
-                        {
-                            logger.Info("Пользователь отменил обновление лаунчера");
-                            Environment.Exit(0);
-                        }
-                    }
-
                     OperationsProduct.Update();
                 }
             }

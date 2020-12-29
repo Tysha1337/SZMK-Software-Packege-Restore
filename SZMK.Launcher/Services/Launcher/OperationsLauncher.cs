@@ -66,9 +66,13 @@ namespace SZMK.Launcher.Services.Launcher
             {
                 notify.Notify(0, "Начато удаление старого обновления");
                 notify.SetMaximum(1);
-                if (Directory.Exists(Directory.GetCurrentDirectory() + @"\Temp"))
+                if (Directory.Exists(Directory.GetCurrentDirectory() + @"\TempProduct"))
                 {
-                    Directory.Delete(Directory.GetCurrentDirectory() + @"\Temp", true);
+                    Directory.Delete(Directory.GetCurrentDirectory() + @"\TempProduct", true);
+                }
+                if (Directory.Exists(Directory.GetCurrentDirectory() + @"\TempUpdater"))
+                {
+                    Directory.Delete(Directory.GetCurrentDirectory() + @"\TempUpdater", true);
                 }
                 if (File.Exists(Directory.GetCurrentDirectory() + @"\InfoProduct.conf"))
                 {
@@ -79,28 +83,6 @@ namespace SZMK.Launcher.Services.Launcher
                     File.Delete(Directory.GetCurrentDirectory() + @"\InfoUpdater.conf");
                 }
                 notify.Notify(1, "Удаление старого обновления завершено успешно");
-            }
-            catch (Exception Ex)
-            {
-                throw new Exception(Ex.Message, Ex);
-            }
-        }
-        public bool CheckedProcess()
-        {
-            try
-            {
-                notify.Notify(0, "Поиск процессов лаунчера");
-                notify.SetMaximum(1);
-                if (Process.GetProcessesByName("SZMK.Launcher").Length > 1)
-                {
-                    notify.Notify(1, "Найден дополнительный процесс лаунчера программы");
-                    return true;
-                }
-                else
-                {
-                    notify.Notify(1, "Не найден дополнительный процесс лаунчера программы");
-                    return false;
-                }
             }
             catch (Exception Ex)
             {

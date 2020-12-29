@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using SZMK.Launcher.Models;
 using SZMK.Launcher.Views;
@@ -27,28 +28,6 @@ namespace SZMK.Launcher.Services.Product
                 logger = LogManager.GetCurrentClassLogger();
                 this.notify = notify;
                 GetNameAndVersionProduct();
-            }
-            catch (Exception Ex)
-            {
-                throw new Exception(Ex.Message, Ex);
-            }
-        }
-        public bool CheckedProcess()
-        {
-            try
-            {
-                notify.Notify(0, "Поиск процессов лаунчера");
-                notify.SetMaximum(1);
-                if (Process.GetProcessesByName(NameProduct).Length != 0)
-                {
-                    notify.Notify(1, "Найден дополнительный процесс основной программы");
-                    return false;
-                }
-                else
-                {
-                    notify.Notify(1, "Не найден дополнительный процесс основной программы");
-                    return true;
-                }
             }
             catch (Exception Ex)
             {
@@ -183,11 +162,11 @@ namespace SZMK.Launcher.Services.Product
                             {
                                 string PathFile = reader.ReadString();
 
-                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Temp\" + Path.GetDirectoryName(PathFile));
+                                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\TempProduct\" + Path.GetDirectoryName(PathFile));
 
                                 long lenght = reader.ReadInt64();
 
-                                using (FileStream fileStream = File.Open(Directory.GetCurrentDirectory() + @"\Temp\" + PathFile, FileMode.Create))
+                                using (FileStream fileStream = File.Open(Directory.GetCurrentDirectory() + @"\TempProduct\" + PathFile, FileMode.Create))
                                 {
                                     long totalBytes = 0;
                                     int readBytes = 0;
@@ -216,18 +195,13 @@ namespace SZMK.Launcher.Services.Product
         {
             try
             {
+                List<FileAndMove> files = GetFiles();
+
+                CheckOldFiles();
+
                 notify.Notify(0, "Начало удаление старых файлов основной программы");
                 notify.SetMaximum(1);
-                XDocument info = XDocument.Load(Directory.GetCurrentDirectory() + @"\InfoProduct.conf");
-
-                List<FileAndMove> files = new List<FileAndMove>();
-
-                foreach (var file in info.Element("Program").Elements("File"))
-                {
-                    files.Add(new FileAndMove { FileName = file.Element("FileName").Value, Move = file.Element("Move").Value });
-                }
-
-                foreach (var file in files.FindAll(p => p.Move=="Remove"))
+                foreach (var file in files.FindAll(p => p.Move == "Remove"))
                 {
                     File.Delete(Directory.GetCurrentDirectory() + @"\Product\" + NameProduct + @"\" + file.FileName);
                     if (Directory.GetDirectories(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Product\" + NameProduct + @"\" + file.FileName)).Count() == 0 && Directory.GetFiles(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Product\" + NameProduct + @"\" + file.FileName)).Length == 0)
@@ -245,9 +219,81 @@ namespace SZMK.Launcher.Services.Product
                         Directory.CreateDirectory(Path.GetDirectoryName(Directory.GetCurrentDirectory() + @"\Product\" + NameProduct + @"\" + file.FileName));
                     }
 
-                    File.Copy(Directory.GetCurrentDirectory() + @"\Temp\" + file.FileName, Directory.GetCurrentDirectory() + @"\Product\" + NameProduct + @"\" + file.FileName, true);
+                    File.Copy(Directory.GetCurrentDirectory() + @"\TempProduct\" + file.FileName, Directory.GetCurrentDirectory() + @"\Product\" + NameProduct + @"\" + file.FileName, true);
                 }
                 notify.Notify(1, "Обновление файлов основной программы успешно");
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        private void CheckOldFiles()
+        {
+            try
+            {
+                notify.Notify(0, "Начало проверки старых файлов основной программы");
+                notify.SetMaximum(1);
+                while (true)
+                {
+                    List<FileAndMove> files = GetFiles();
+
+                    string failProcesses = "";
+
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        string CurretPath = Directory.GetCurrentDirectory() + @"\Product\" + NameProduct + @"\" + files[i].FileName;
+
+                        if (File.Exists(CurretPath))
+                        {
+                            List<Process> LockProcesses = GetLockProcesses(CurretPath);
+                            if (LockProcesses.Count > 0)
+                            {
+                                failProcesses = "Файл: " + CurretPath + " занят процессом(ами)";
+                                for (int j = 0; j < LockProcesses.Count; j++)
+                                {
+                                    failProcesses += Environment.NewLine + LockProcesses[j].ProcessName;
+                                }
+                                failProcesses += Environment.NewLine + "Завершите данные процессы и запустите заново программу";
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!String.IsNullOrEmpty(failProcesses))
+                    {
+                        if (MessageBox.Show(failProcesses, "Внимание", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) != DialogResult.Retry)
+                        {
+                            Application.Exit();
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                notify.Notify(1, "Проверка старых файлов основной программы успешно");
+            }
+            catch(Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        private List<FileAndMove> GetFiles()
+        {
+            try
+            {
+                XDocument info = XDocument.Load(Directory.GetCurrentDirectory() + @"\InfoProduct.conf");
+
+                List<FileAndMove> files = new List<FileAndMove>();
+
+                foreach (var file in info.Element("Program").Elements("File"))
+                {
+                    files.Add(new FileAndMove { FileName = file.Element("FileName").Value, Move = file.Element("Move").Value });
+                }
+
+                return files;
             }
             catch (Exception Ex)
             {

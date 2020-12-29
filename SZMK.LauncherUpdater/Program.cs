@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 using SZMK.LauncherUpdater.Models;
 
@@ -25,7 +26,7 @@ namespace SZMK.LauncherUpdater
 
                 Info("Проверка подключения к серверу обновления и выполняемых процессов");
 
-                if (GetParametersConnect() && CheckedProcess() && CheckConnect())
+                if (GetParametersConnect() && CheckConnect())
                 {
                     Info("Проверка процессов прошла успешно");
                     Info("Подключение к серверу обновления успешно");
@@ -60,21 +61,6 @@ namespace SZMK.LauncherUpdater
             {
                 Error(Ex);
                 Console.ReadKey();
-            }
-        }
-        private static bool CheckedProcess()
-        {
-            try
-            {
-                if (Process.GetProcessesByName("SZMK.Launcher").Length != 0)
-                {
-                    throw new Exception("Необходимо закрыть все копии SZMK.Launcher перед обновлением ПО");
-                }
-                return true;
-            }
-            catch (Exception Ex)
-            {
-                throw new Exception(Ex.Message, Ex);
             }
         }
         private static void DeleteLogs()
@@ -206,14 +192,9 @@ namespace SZMK.LauncherUpdater
         {
             try
             {
-                XDocument info = XDocument.Load(Directory.GetCurrentDirectory() + @"\InfoLauncher.conf");
+                List<FileAndMove> files = GetFiles();
 
-                List<FileAndMove> files = new List<FileAndMove>();
-
-                foreach (var file in info.Element("Program").Elements("File"))
-                {
-                    files.Add(new FileAndMove { FileName = file.Element("FileName").Value, Move = file.Element("Move").Value });
-                }
+                CheckOldFiles();
 
                 foreach (var file in files.FindAll(p => p.Move.Contains("Remove")))
                 {
@@ -233,6 +214,77 @@ namespace SZMK.LauncherUpdater
 
                     File.Copy(Directory.GetCurrentDirectory() + @"\Temp\" + file.FileName, $@"{Path.GetDirectoryName(Directory.GetCurrentDirectory())}\{file.FileName}", true);
                 }
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        private static void CheckOldFiles()
+        {
+            try
+            {
+                Info("Начало проверки старых файлов Updater'a");
+                while (true)
+                {
+                    List<FileAndMove> files = GetFiles();
+
+                    string failProcesses = "";
+
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        string CurretPath = $@"{Path.GetDirectoryName(Directory.GetCurrentDirectory())}\{files[i].FileName}";
+
+                        if (File.Exists(CurretPath))
+                        {
+                            List<Process> LockProcesses = GetLockProcesses(CurretPath);
+                            if (LockProcesses.Count > 0)
+                            {
+                                failProcesses = "Файл: " + CurretPath + " занят процессом(ами)";
+                                for (int j = 0; j < LockProcesses.Count; j++)
+                                {
+                                    failProcesses += Environment.NewLine + LockProcesses[j].ProcessName;
+                                }
+                                failProcesses += Environment.NewLine + "Завершите данные процессы и запустите заново программу";
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!String.IsNullOrEmpty(failProcesses))
+                    {
+                        if (MessageBox.Show(failProcesses, "Внимание", MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) != DialogResult.Retry)
+                        {
+                            Application.Exit();
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                Info("Проверка старых файлов Updater'a успешно");
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        private static List<FileAndMove> GetFiles()
+        {
+            try
+            {
+                XDocument info = XDocument.Load(Directory.GetCurrentDirectory() + @"\InfoLauncher.conf");
+
+                List<FileAndMove> files = new List<FileAndMove>();
+
+                foreach (var file in info.Element("Program").Elements("File"))
+                {
+                    files.Add(new FileAndMove { FileName = file.Element("FileName").Value, Move = file.Element("Move").Value });
+                }
+
+                return files;
             }
             catch (Exception Ex)
             {
