@@ -1553,15 +1553,12 @@ namespace SZMK.Desktop.Views.KB
                                     MessageBox.Show("Ошибка при добавлении данных о модели и типа добавления в базу данных DataMatrix: Номер-" + Session[i].Order.Number + " Лист-" + Session[i].Order.List, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 }
 
-                                for (int k = 0; k < Session[i].Order.CountMarks; k++)
+                                for (int j = 0; j < Session[i].Order.Details.Count; j++)
                                 {
-                                    for (int j = 0; j < Session[i].Order.Details.Count; j++)
-                                    {
-                                        Session[i].Order.Details[j].ID = SystemArgs.Request.GetAutoIDDetail() + 1;
+                                    Session[i].Order.Details[j].ID = SystemArgs.Request.GetAutoIDDetail() + 1;
 
-                                        SystemArgs.Request.InsertDetail(Session[i].Order.Details[j]);
-                                        SystemArgs.Request.InsertAddDetail(Session[i].Order, Session[i].Order.Details[j]);
-                                    }
+                                    SystemArgs.Request.InsertDetail(Session[i].Order.Details[j]);
+                                    SystemArgs.Request.InsertAddDetail(Session[i].Order, Session[i].Order.Details[j]);
                                 }
 
                                 if (!SystemArgs.Request.StatusExist(Session[i].Order.ID, TempStatus.ID))
@@ -1584,9 +1581,9 @@ namespace SZMK.Desktop.Views.KB
                             Session[i].Order.Canceled = false;
                             Session[i].Order.Finished = false;
                             Session[i].Order.ID = SystemArgs.Request.GetIDOrder(Session[i].Order.Number, Session[i].Order.List);
-                            Session[i].Order.Status = SystemArgs.Statuses.Where(p=>p.ID==1).First();
+                            Session[i].Order.Status = SystemArgs.Statuses.Where(p => p.ID == 1).First();
                             Session[i].Order.User = SystemArgs.User;
-                            if (!SystemArgs.Request.UpdateOrder(Session[i].Order)| !SystemArgs.Request.DownGradeStatus(Session[i].Order))
+                            if (!SystemArgs.Request.UpdateOrder(Session[i].Order) | !SystemArgs.Request.DownGradeStatus(Session[i].Order))
                             {
                                 throw new Exception("Ошибка обновления чертежа");
                             }
