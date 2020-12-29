@@ -15,6 +15,14 @@ namespace SZMK.Desktop.Services
     /*Класс для работы с Excel файлами в нем реализуется создание актов по итогу сканирования, а также отчетов*/
     public class Excel
     {
+        private readonly string TempPathActsKB = @"TempReports\ActsKB\";
+        private readonly string TempPathActsArhive = @"TempReports\ActsArhive\";
+        private readonly string TempPathOrderOfDate = @"TempReports\OrderOfDate\";
+        private readonly string TempPathOrderOfSelect = @"TempReports\OrderOfSelect\";
+        private readonly string TempPathPastTimeOfDate = @"TempReports\PastTimeOfDate\";
+        private readonly string TempPathSteel = @"TempReports\Steel\";
+        private readonly string TempPathCompleteStatuses = @"TempReports\CompleteStatuses\";
+
         public Boolean CreateAndExportActsKB(List<OrderScanSession> ScanSession)
         {
             SaveFileDialog SaveAct = new SaveFileDialog();
@@ -32,13 +40,10 @@ namespace SZMK.Desktop.Services
             {
                 try
                 {
-                    String UniqueFileName = "";
-                    String NoUniqueFileName = "";
+                    String UniqueFileName = TempPathActsKB + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")) + @"\Акт от " + date + " уникальных чертежей.xlsx";
+                    String NoUniqueFileName = TempPathActsKB + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")) + @"\Акт от " + date + " не уникальных чертежей.xlsx";
 
-                    UniqueFileName = SaveAct.FileName + @"\Акт от " + date + " уникальных чертежей.xlsx";
-                    NoUniqueFileName = SaveAct.FileName + @"\Акт от " + date + " не уникальных чертежей.xlsx";
-
-                    Directory.CreateDirectory(SaveAct.FileName.Replace(".xlsx", ""));
+                    Directory.CreateDirectory(TempPathActsKB + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")));
                     new ExcelPackage(fInfoSrcUnique).File.CopyTo(UniqueFileName);
                     new ExcelPackage(fInfoSrcNoUnique).File.CopyTo(NoUniqueFileName);
 
@@ -103,6 +108,8 @@ namespace SZMK.Desktop.Services
                         wsNoUnique.Cells[lastline + 2, 9].Value = SystemArgs.User.Surname + " " + SystemArgs.User.Name + " " + SystemArgs.User.MiddleName;
                         wsNoUnique.Cells[lastline + 3, 9].Value = "/______________/";
                         wbNoUnique.Save();
+
+                        MoveDirectory(TempPathActsKB + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")), SaveAct.FileName.Replace(".xlsx", ""));
                     }
                 }
                 catch (Exception e)
@@ -146,13 +153,10 @@ namespace SZMK.Desktop.Services
             {
                 try
                 {
-                    String UniqueFileName = "";
-                    String NoUniqueFileName = "";
+                    String UniqueFileName = TempPathActsArhive + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")) + @"\Акт от " + date + " найденных  чертежей.xlsx";
+                    String NoUniqueFileName = TempPathActsArhive + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")) + @"\Акт от " + date + " не найденных чертежей.xlsx";
 
-                    UniqueFileName = SaveAct.FileName + @"\Акт от " + date + " найденных чертежей.xlsx";
-                    NoUniqueFileName = SaveAct.FileName + @"\Акт от " + date + " не найденных чертежей.xlsx";
-
-                    Directory.CreateDirectory(SaveAct.FileName.Replace(".xlsx", ""));
+                    Directory.CreateDirectory(TempPathActsArhive + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")));
                     new ExcelPackage(fInfoSrcUnique).File.CopyTo(UniqueFileName);
                     new ExcelPackage(fInfoSrcNoUnique).File.CopyTo(NoUniqueFileName);
 
@@ -220,6 +224,8 @@ namespace SZMK.Desktop.Services
                         wsNoUnique.Cells[lastline + 2, 9].Value = SystemArgs.User.Surname + " " + SystemArgs.User.Name + " " + SystemArgs.User.MiddleName;
                         wsNoUnique.Cells[lastline + 3, 9].Value = "/______________/";
                         wbNoUnique.Save();
+
+                        MoveDirectory(TempPathActsArhive + Path.GetFileName(SaveAct.FileName.Replace(".xlsx", "")), SaveAct.FileName.Replace(".xlsx", ""));
                     }
                 }
                 catch (Exception e)
@@ -259,11 +265,12 @@ namespace SZMK.Desktop.Services
 
             if (SaveReport.ShowDialog() == DialogResult.OK)
             {
-                var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(SaveReport.FileName);
+                Directory.CreateDirectory(TempPathOrderOfDate);
+                var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(TempPathOrderOfDate + Path.GetFileName(SaveReport.FileName));
 
                 try
                 {
-                    ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(SaveReport.FileName));
+                    ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(TempPathOrderOfDate + Path.GetFileName(SaveReport.FileName)));
                     ExcelWorksheet WS = WB.Workbook.Worksheets[1];
                     var rowCntReport = WS.Dimension.End.Row;
 
@@ -328,6 +335,7 @@ namespace SZMK.Desktop.Services
                         WS.Cells["A2:P" + WS.Dimension.End.Row.ToString()].AutoFitColumns();
                         WS.Cells["A2:P" + WS.Dimension.End.Row.ToString()].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         WB.Save();
+                        MoveFile(TempPathOrderOfDate + Path.GetFileName(SaveReport.FileName), SaveReport.FileName);
                     }
                 }
                 catch (Exception e)
@@ -366,11 +374,12 @@ namespace SZMK.Desktop.Services
 
             if (SaveReport.ShowDialog() == DialogResult.OK)
             {
-                var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(SaveReport.FileName);
+                Directory.CreateDirectory(TempPathOrderOfSelect);
+                var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(TempPathOrderOfSelect + Path.GetFileName(SaveReport.FileName));
 
                 try
                 {
-                    ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(SaveReport.FileName));
+                    ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(TempPathOrderOfSelect + Path.GetFileName(SaveReport.FileName)));
                     ExcelWorksheet WS = WB.Workbook.Worksheets[1];
                     var rowCntReport = WS.Dimension.End.Row;
 
@@ -435,6 +444,7 @@ namespace SZMK.Desktop.Services
                         WS.Cells["A2:P" + WS.Dimension.End.Row.ToString()].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                         WB.Save();
+                        MoveFile(TempPathOrderOfSelect + Path.GetFileName(SaveReport.FileName), SaveReport.FileName);
                     }
                 }
                 catch (Exception e)
@@ -475,11 +485,12 @@ namespace SZMK.Desktop.Services
         {
 
             System.IO.FileInfo fInfoSrcUnique = new System.IO.FileInfo(SystemArgs.Path.TemplateReportPastTimeofDate);
-            var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(FileName);
+            Directory.CreateDirectory(TempPathPastTimeOfDate);
+            var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(TempPathPastTimeOfDate + Path.GetFileName(FileName));
 
             try
             {
-                ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(FileName));
+                ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(TempPathPastTimeOfDate + Path.GetFileName(FileName)));
                 ExcelWorksheet WS = WB.Workbook.Worksheets[1];
                 var rowCntReport = WS.Dimension.End.Row;
 
@@ -640,6 +651,8 @@ namespace SZMK.Desktop.Services
                         }
                     }
                     WB.Save();
+
+                    MoveFile(TempPathPastTimeOfDate + Path.GetFileName(FileName), FileName);
                 }
             }
             catch (Exception e)
@@ -652,11 +665,12 @@ namespace SZMK.Desktop.Services
         public bool ReportSteelOfDate(List<Order> Report, String FileName)
         {
             System.IO.FileInfo fInfoSrcUnique = new System.IO.FileInfo(SystemArgs.Path.TemplateReportSteel);
-            var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(FileName);
+            Directory.CreateDirectory(TempPathSteel);
+            var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(TempPathSteel + Path.GetFileName(FileName));
 
             try
             {
-                ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(FileName));
+                ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(TempPathSteel + Path.GetFileName(FileName)));
                 ExcelWorksheet WS = WB.Workbook.Worksheets[1];
                 var rowCntReport = WS.Dimension.End.Row;
 
@@ -676,7 +690,7 @@ namespace SZMK.Desktop.Services
                             rowCntReport = WS.Dimension.End.Row;
                             WS.Cells[rowCntReport + 1, 2].Value = GroupByOrder[i].Mark;
                             WS.Cells[rowCntReport + 1, 3].Value = GroupByOrder[i].Profile[j].Key;
-                            if(!String.IsNullOrEmpty(GroupByOrder[i].Profile[j].Select(p => p.GostName).FirstOrDefault()))
+                            if (!String.IsNullOrEmpty(GroupByOrder[i].Profile[j].Select(p => p.GostName).FirstOrDefault()))
                             {
                                 WS.Cells[rowCntReport + 1, 4].Value = GroupByOrder[i].Profile[j].Select(p => p.GostName).First();
                             }
@@ -684,7 +698,7 @@ namespace SZMK.Desktop.Services
                             {
                                 WS.Cells[rowCntReport + 1, 4].Value = "Гост не найден";
                             }
-                            WS.Cells[rowCntReport + 1, 5].Value = GroupByOrder[i].Profile[j].Sum(p => p.SubtotalWeight);
+                            WS.Cells[rowCntReport + 1, 5].Value = GroupByOrder[i].Profile[j].Sum(p => Convert.ToDouble(p.SubtotalWeight));
                         }
                     }
 
@@ -693,7 +707,7 @@ namespace SZMK.Desktop.Services
                     int last = WS.Dimension.End.Row;
 
                     WS.Cells[last + 1, 4].Value = "Итого";
-                    WS.Cells[last + 1, 5].Value = details.Sum(p => p.SubtotalWeight);
+                    WS.Cells[last + 1, 5].Value = details.Sum(p => Convert.ToDouble(p.SubtotalWeight));
 
                     last = WS.Dimension.End.Row;
 
@@ -708,6 +722,8 @@ namespace SZMK.Desktop.Services
                     WS.Cells["B2:E" + last].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                     WB.Save();
+
+                    MoveFile(TempPathSteel + Path.GetFileName(FileName), FileName);
                 }
             }
             catch (Exception e)
@@ -720,11 +736,12 @@ namespace SZMK.Desktop.Services
         public bool ReportCompleteStatuses(String FileName)
         {
             System.IO.FileInfo fInfoSrcUnique = new System.IO.FileInfo(SystemArgs.Path.TemplateReportCompleteStatuses);
-            var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(FileName);
+            Directory.CreateDirectory(TempPathCompleteStatuses);
+            var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(TempPathCompleteStatuses + Path.GetFileName(FileName));
 
             try
             {
-                ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(FileName));
+                ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(TempPathCompleteStatuses + Path.GetFileName(FileName)));
                 ExcelWorksheet WS = WB.Workbook.Worksheets[1];
                 var rowCntReport = WS.Dimension.End.Row;
 
@@ -753,6 +770,8 @@ namespace SZMK.Desktop.Services
                     WS.Cells["B3:G" + last].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                     WB.Save();
+
+                    MoveFile(TempPathCompleteStatuses + Path.GetFileName(FileName), FileName);
                 }
             }
             catch (Exception e)
@@ -766,9 +785,9 @@ namespace SZMK.Desktop.Services
         {
             bool NeedCheck = true;
 
-            for(int i = 0; i < statuses.Count; i++)
+            for (int i = 0; i < statuses.Count; i++)
             {
-                if (SystemArgs.Users.Find(p=>p.ID==statuses[i].IDUser).Surname=="Агафонов")
+                if (SystemArgs.Users.Find(p => p.ID == statuses[i].IDUser).Surname == "Агафонов")
                 {
                     NeedCheck = false;
                     break;
@@ -887,6 +906,17 @@ namespace SZMK.Desktop.Services
                 WS.Cells[3, 2].Value = Convert.ToDouble(WS.Cells[3, 2].Value) + weight;
                 WS.Cells[3, 3].Value = Convert.ToInt32(WS.Cells[3, 3].Value) + 1;
             }
+        }
+
+        private void MoveFile(string OldPath, string NewPath)
+        {
+            File.Copy(OldPath, NewPath);
+            Directory.Delete("TempReports", true);
+        }
+        private void MoveDirectory(string OldPath, string NewPath)
+        {
+            Directory.Move(OldPath, NewPath);
+            Directory.Delete("TempReports", true);
         }
     }
 }
