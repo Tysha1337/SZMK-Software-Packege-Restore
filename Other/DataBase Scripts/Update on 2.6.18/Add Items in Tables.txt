@@ -1,0 +1,6 @@
+	INSERT INTO public."TypeAdd"("ID","DateCreate","Discription")
+	VALUES ('1',NOW(),'Tekla Interaction');
+	INSERT INTO public."TypeAdd"("ID","DateCreate","Discription")
+	VALUES ('2',NOW(),'КБ');
+	INSERT INTO public."TypeAdd"("ID","DateCreate","Discription")
+	VALUES ('3',NOW(),'XML');
