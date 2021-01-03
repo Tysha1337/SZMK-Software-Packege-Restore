@@ -85,7 +85,7 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
 
                 _PaintingArea = PaintingArea;
 
-                _GostName = GostName.Replace(" ", "");
+                _GostName = GetGostName(GostName, Profile);
 
                 _FlangeThickness = FlangeThickness.Replace(" ", "");
                 _PlateThickness = PlateThickness.Replace(" ", "");
@@ -428,8 +428,8 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
                 switch (Index)
                 {
                     case 0:
-                        int var4 = Convert.ToInt32(Profile.Substring(2, Profile.IndexOf("x") - 2));
-                        int var5 = Convert.ToInt32(Profile.Substring(1 + Profile.IndexOf("x"), Profile.Length - Profile.IndexOf("x") - 1));
+                        int var4 = Convert.ToInt32(Profile.Substring(2, Profile.IndexOf("*") - 2));
+                        int var5 = Convert.ToInt32(Profile.Substring(1 + Profile.IndexOf("*"), Profile.Length - Profile.IndexOf("*") - 1));
 
                         if (var4 > var5)
                         {
@@ -465,6 +465,54 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
             catch
             {
                 return Profile;
+            }
+        }
+        private string GetGostName(string GostName, string Profile)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(GostName.Replace(" ", "")))
+                {
+                    return GostName;
+                }
+                else
+                {
+                    int Index = -1;
+
+                    string[] Arguments = new string[] { "PL", "ПВ", "Риф", "Чеч" };
+                    for (int i = 0; i < Arguments.Length; i++)
+                    {
+                        if (Profile.IndexOf(Arguments[i]) != -1)
+                        {
+                            Index = i;
+                            break;
+                        }
+                    }
+                    switch (Index)
+                    {
+                        case 0:
+                            if (_MarkSteel.IndexOf("P34") == -1)
+                            {
+                                return "ГОСТ 19903-74";
+                            }
+                            else
+                            {
+                                return "";
+                            }
+                        case 1:
+                            return "ТУ 36.26.11-5-89";
+                        case 2:
+                            return "ГОСТ 8568-77";
+                        case 3:
+                            return "ГОСТ 8568-77";
+                    }
+
+                    return GostName;
+                }
+            }
+            catch
+            {
+                return GostName;
             }
         }
     }

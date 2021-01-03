@@ -227,8 +227,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(326, 568);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(326, 564);
+            this.MinimumSize = new System.Drawing.Size(326, 568);
             this.Name = "AVT_Autorization_F";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Авторизация ";

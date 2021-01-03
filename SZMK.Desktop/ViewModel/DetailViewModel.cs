@@ -88,7 +88,7 @@ namespace SZMK.Desktop.ViewModel
                 }
                 else
                 {
-                    _GostName = MarkSteel.Replace(" ", "");
+                    _GostName = GostName.Replace(" ", "");
                 }
 
                 _FlangeThickness = FlangeThickness.Replace(" ", "");
