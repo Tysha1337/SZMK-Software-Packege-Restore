@@ -410,8 +410,8 @@ namespace SZMK.TeklaInteraction.Shared.Services
                     Connect.Open();
 
                     using (var Command = new NpgsqlCommand($"INSERT INTO public.\"Orders\"(" +
-                                                            "\"DateCreate\", \"Executor\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"Canceled\",\"ID_TypeAdd\",\"ID_Model\" )" +
-                                                            $"VALUES('{DateTime.Now}', '{Drawing.Executor}', '{Drawing.Order}', '{Drawing.List}', '{Drawing.Mark}', '{Drawing.SubTotalLenght}', '{Drawing.SubTotalWeight}', {false},'{Drawing.TypeAdd.Id}','{Drawing.Model.Id}');", Connect))
+                                                            "\"DateCreate\", \"Executor\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"Canceled\",\"ID_TypeAdd\",\"ID_Model\",\"ID_PathDetails\" )" +
+                                                            $"VALUES('{DateTime.Now}', '{Drawing.Executor}', '{Drawing.Order}', '{Drawing.List}', '{Drawing.Mark}', '{Drawing.SubTotalLenght}', '{Drawing.SubTotalWeight}', {false},'{Drawing.TypeAdd.Id}','{Drawing.Model.Id}','{Drawing.PathDetails.Id}');", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -746,6 +746,89 @@ namespace SZMK.TeklaInteraction.Shared.Services
             catch (Exception E)
             {
                 throw new Exception(E.ToString());
+            }
+        }
+        public PathDetails GetPathDetails(PathDetails pathDetails)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Path\" FROM public.\"PathDetails\" WHERE \"Path\"='{pathDetails.Path}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                pathDetails = new PathDetails { Id = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), Path = Reader.GetString(2) };
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return pathDetails;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.ToString());
+            }
+        }
+        public bool InsertPathDetails(PathDetails pathDetails)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"PathDetails\"(\"DateCreate\", \"Path\") VALUES('{DateTime.Now}', '{pathDetails.Path}'); ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public bool ExistPathDetails(PathDetails pathDetails)
+        {
+            Boolean flag = false;
+            try
+            {
+
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Path\" FROM public.\"PathDetails\" WHERE \"Path\"='{pathDetails.Path}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return flag;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }

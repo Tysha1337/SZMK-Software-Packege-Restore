@@ -18,6 +18,7 @@ namespace SZMK.TeklaInteraction.Shared.Models
         public long CountDetail { get; set; }
         public TypeAdd TypeAdd { get; set; }
         public Model Model { get; set; }
+        public PathDetails PathDetails { get; set; }
         public List<Detail> Details { get; set; }
         public override string ToString()
         {

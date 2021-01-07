@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using SZMK.TeklaInteraction.Shared.BindingModels;
 using SZMK.TeklaInteraction.Shared.Models;
 using SZMK.TeklaInteraction.Shared.Services;
+using SZMK.TeklaInteraction.Tekla2017.Views.Main;
 
 namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 {
@@ -13,6 +15,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly Request request = new Request();
         private readonly Config config = new Config();
+        private readonly CheckingDetails checkingDetails = new CheckingDetails();
         private User user;
         List<SessionAdded> session;
         public void ShowData(Model Model, User user)
@@ -46,68 +49,106 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
             {
                 logger.Info("Начата проверка чертежей");
 
-                session = new List<SessionAdded>();
+                logger.Info("Проверка деталей");
 
-                for (int i = 0; i < Model.Drawings.Count; i++)
+                if (CheckDetails(Model))
                 {
-                    if(Model.Drawings.FindAll(p=>p.List== Model.Drawings[i].List&& p.Order == Model.Drawings[i].Order).Count > 1)
+                    logger.Info("Проверка деталей успешна");
+
+                    session = new List<SessionAdded>();
+
+                    for (int i = 0; i < Model.Drawings.Count; i++)
                     {
-                        session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, лист {Model.Drawings[i].List} уже существует" });
-                        continue;
-                    }
-
-                    String ReplaceMark = Model.Drawings[i].Mark;
-
-                    String[] ExistingCharaterEnglish = new String[] { "A", "a", "B", "C", "c", "E", "e", "H", "K", "M", "O", "o", "P", "p", "T" };
-                    String[] ExistingCharaterRussia = new String[] { "А", "а", "В", "С", "с", "Е", "е", "Н", "К", "М", "О", "о", "Р", "р", "Т" };
-
-                    for (int j = 0; j < ExistingCharaterRussia.Length; j++)
-                    {
-                        ReplaceMark = ReplaceMark.Replace(ExistingCharaterRussia[j], ExistingCharaterEnglish[j]);
-                    }
-
-                    try
-                    {
-                        String[] Splitter = Model.Drawings[i].List.Split('и');
-
-                        while (Splitter[0][0] == '0')
+                        if (Model.Drawings.FindAll(p => p.List == Model.Drawings[i].List && p.Order == Model.Drawings[i].Order).Count > 1)
                         {
-                            Splitter[0] = Splitter[0].Remove(0, 1);
+                            session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, лист {Model.Drawings[i].List} уже существует" });
+                            continue;
                         }
 
-                        if (Splitter.Length != 1)
+                        String ReplaceMark = Model.Drawings[i].Mark;
+
+                        String[] ExistingCharaterEnglish = new String[] { "A", "a", "B", "C", "c", "E", "e", "H", "K", "M", "O", "o", "P", "p", "T" };
+                        String[] ExistingCharaterRussia = new String[] { "А", "а", "В", "С", "с", "Е", "е", "Н", "К", "М", "О", "о", "Р", "р", "Т" };
+
+                        for (int j = 0; j < ExistingCharaterRussia.Length; j++)
                         {
-                            Model.Drawings[i].List = Splitter[0] + "и" + Splitter[1];
+                            ReplaceMark = ReplaceMark.Replace(ExistingCharaterRussia[j], ExistingCharaterEnglish[j]);
                         }
-                        else
+
+                        try
                         {
-                            Model.Drawings[i].List = Splitter[0];
-                        }
-                    }
-                    catch
-                    {
-                        session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = "Поле \"Лист\" не заполнено" });
-                        continue;
-                    }
+                            String[] Splitter = Model.Drawings[i].List.Split('и');
 
-                    if (Model.Drawings[i].Executor == "")
-                    {
-                        session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = "Поле \"Фамилия\" не заполнено" });
-                        continue;
-                    }
-
-                    Model.Drawings[i].Model = Model;
-
-                    Int32 IndexException = request.CheckedDrawing(Model.Drawings[i]);
-
-                    switch (IndexException)
-                    {
-                        case -1:
-                            session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = "Ошибка добавления чертежа" });
-                            break;
-                        case 0:
-                            if (request.CheckedNumberAndMark(Model.Drawings[i].Order, ReplaceMark))
+                            while (Splitter[0][0] == '0')
                             {
+                                Splitter[0] = Splitter[0].Remove(0, 1);
+                            }
+
+                            if (Splitter.Length != 1)
+                            {
+                                Model.Drawings[i].List = Splitter[0] + "и" + Splitter[1];
+                            }
+                            else
+                            {
+                                Model.Drawings[i].List = Splitter[0];
+                            }
+                        }
+                        catch
+                        {
+                            session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = "Поле \"Лист\" не заполнено" });
+                            continue;
+                        }
+
+                        if (Model.Drawings[i].Executor == "")
+                        {
+                            session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = "Поле \"Фамилия\" не заполнено" });
+                            continue;
+                        }
+
+                        Model.Drawings[i].Model = Model;
+
+                        Int32 IndexException = request.CheckedDrawing(Model.Drawings[i]);
+
+                        switch (IndexException)
+                        {
+                            case -1:
+                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = "Ошибка добавления чертежа" });
+                                break;
+                            case 0:
+                                if (request.CheckedNumberAndMark(Model.Drawings[i].Order, ReplaceMark))
+                                {
+                                    if (ReplaceMark.IndexOf("(?)") == -1)
+                                    {
+                                        if (config.CheckMark)
+                                        {
+                                            if (CheckedLowerRegistery(ReplaceMark))
+                                            {
+                                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 2, Discription = "-" });
+                                            }
+                                            else
+                                            {
+                                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"Строчные буквы в префиксе марки «{ReplaceMark}» не допускаются" });
+                                            }
+                                        }
+                                        else
+                                        {
+                                            session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 2, Discription = "-" });
+                                        }
+                                    }
+                                    else
+                                    {
+                                        session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"Марка требует нумерации" });
+                                    }
+                                }
+                                else
+                                {
+                                    session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, марка {ReplaceMark} уже существует." });
+                                }
+                                break;
+                            case 1:
+                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, номер листа {Model.Drawings[i].List} уже существует." });
+                                break;
+                            case 2:
                                 if (ReplaceMark.IndexOf("(?)") == -1)
                                 {
                                     if (config.CheckMark)
@@ -130,65 +171,62 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                                 {
                                     session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"Марка требует нумерации" });
                                 }
-                            }
-                            else
-                            {
-                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, марка {ReplaceMark} уже существует." });
-                            }
-                            break;
-                        case 1:
-                            session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, номер листа {Model.Drawings[i].List} уже существует." });
-                            break;
-                        case 2:
-                            if (ReplaceMark.IndexOf("(?)") == -1)
-                            {
-                                if (config.CheckMark)
+                                break;
+                            case 3:
+                                Views.Main.Update Update = new Views.Main.Update();
+
+                                Update.NewOrder_TB.Text = Model.Drawings[i].ToString();
+                                Update.OldOrder_TB.Text = request.GetDataMatrix(Model.Drawings[i].Order, Model.Drawings[i].List);
+
+                                if (Update.ShowDialog() == DialogResult.OK)
                                 {
-                                    if (CheckedLowerRegistery(ReplaceMark))
-                                    {
-                                        session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 2, Discription = "-" });
-                                    }
-                                    else
-                                    {
-                                        session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"Строчные буквы в префиксе марки «{ReplaceMark}» не допускаются" });
-                                    }
+                                    session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 1, Discription = "-" });
                                 }
                                 else
                                 {
-                                    session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 2, Discription = "-" });
+                                    session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, номер листа {Model.Drawings[i].List} уже существует." });
                                 }
-                            }
-                            else
-                            {
-                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"Марка требует нумерации" });
-                            }
-                            break;
-                        case 3:
-                            Views.Main.Update Update = new Views.Main.Update();
 
-                            Update.NewOrder_TB.Text = Model.Drawings[i].ToString();
-                            Update.OldOrder_TB.Text = request.GetDataMatrix(Model.Drawings[i].Order, Model.Drawings[i].List);
-
-                            if (Update.ShowDialog() == DialogResult.OK)
-                            {
-                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 1, Discription = "-" });
-                            }
-                            else
-                            {
-                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, номер листа {Model.Drawings[i].List} уже существует." });
-                            }
-
-                            break;
+                                break;
+                        }
                     }
-                }
-                logger.Info("Проверка чертежей успешна");
+                    logger.Info("Проверка чертежей успешна");
 
-                AddData(session);
+                    AddData(session);
+                }
+                else
+                {
+                    logger.Info("Добавление отменено");
+                    MessageBox.Show("Добавление отменено", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception E)
             {
                 session.Clear();
                 throw new Exception(E.Message, E);
+            }
+        }
+        private bool CheckDetails(Model model)
+        {
+            List<OrderPathDetailsBindingModel> pathDetails = checkingDetails.Check(model);
+
+            ReportCheckDetails report = new ReportCheckDetails(pathDetails);
+
+            if (report.DialogResult == DialogResult.OK)
+            {
+                foreach (var path in pathDetails)
+                {
+                    foreach (var drawing in model.Drawings.Where(p => p.Order == path.Order))
+                    {
+                        drawing.PathDetails = new PathDetails { DateCreate = DateTime.Now, Path = path.Path };
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         private TreeNode GetTree(Model model)
@@ -307,6 +345,13 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                             }
 
                             Session[i].Drawing.Model = request.GetModel(Session[i].Drawing.Model);
+
+                            if (!request.ExistPathDetails(Session[i].Drawing.PathDetails))
+                            {
+                                request.InsertPathDetails(Session[i].Drawing.PathDetails);
+                            }
+
+                            Session[i].Drawing.PathDetails = request.GetPathDetails(Session[i].Drawing.PathDetails);
 
                             if (request.InsertDrawing(Session[i].Drawing))
                             {

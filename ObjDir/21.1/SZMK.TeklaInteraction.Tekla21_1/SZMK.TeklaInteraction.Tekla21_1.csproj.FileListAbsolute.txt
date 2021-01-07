@@ -48,3 +48,4 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\ObjDir\21.1\SZMK.TeklaIn
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\ObjDir\21.1\SZMK.TeklaInteraction.Tekla21_1\SZMK.TeklaInteraction.Tekla21_1.csproj.CopyComplete
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\ObjDir\21.1\SZMK.TeklaInteraction.Tekla21_1\SZMK.TeklaInteraction.Tekla21_1.exe
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\ObjDir\21.1\SZMK.TeklaInteraction.Tekla21_1\SZMK.TeklaInteraction.Tekla21_1.pdb
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\ObjDir\21.1\SZMK.TeklaInteraction.Tekla21_1\SZMK.TeklaInteraction.Tekla21_1.Views.Main.ReportCheckDetails.resources
