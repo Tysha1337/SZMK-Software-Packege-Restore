@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SZMK.Desktop.Models;
+using SZMK.Desktop.BindingModels;
 
 namespace SZMK.Desktop.Services
 {
@@ -72,18 +73,18 @@ namespace SZMK.Desktop.Services
 
         public void ChekedUnloading(String Number, String List, String Executor)
         {
-            Int64 IDOrder = SystemArgs.Request.GetIDOrder(Number, List);
-            string pathModel = SystemArgs.Request.GetOrder(List, Number).Model.Path;
+            Order order = SystemArgs.Request.GetOrder(List, Number);
+            Int64 IDOrder = order.ID;
             List<Detail> details = SystemArgs.Request.GetDetails(IDOrder);
-            string PathDetail = GetPathDetail(pathModel, Number);
+            string pathDetails = order.PathDetails.Path;
 
-            if (details.GroupBy(p => p.Position).Count() > 1 || details.FindAll(p => p.Count > 1).Count > 0)
+            if (details.GroupBy(p => p.Position).Count() > 1)
             {
                 for (int j = 0; j < details.Count; j++)
                 {
                     if (details[j] != null)
                     {
-                        if (CheckedDetail(pathModel, details[j].Position.ToString(), Number))
+                        if (CheckedDetail(pathDetails, details[j].Position.ToString()))
                         {
                             if (ExecutorMails.Where(p => p.Executor.Equals(Executor)).Count() != 0)
                             {
@@ -91,14 +92,14 @@ namespace SZMK.Desktop.Services
                                 {
                                     if (Executor.Equals(item.Executor))
                                     {
-                                        item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, PathDetail, true));
+                                        item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, true));
                                     }
                                 }
                             }
                             else
                             {
                                 ExecutorMails.Add(new ExecutorMail(Executor));
-                                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, details[j].Position, PathDetail, true));
+                                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, true));
                             }
                         }
                         else
@@ -109,37 +110,29 @@ namespace SZMK.Desktop.Services
                                 {
                                     if (Executor.Equals(item.Executor))
                                     {
-                                        item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, PathDetail, false));
+                                        item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, false));
                                     }
                                 }
                             }
                             else
                             {
                                 ExecutorMails.Add(new ExecutorMail(Executor));
-                                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, details[j].Position, PathDetail, false));
+                                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, false));
                             }
                         }
                     }
                 }
             }
         }
-        private bool CheckedDetail(string pathModel, string Position, string Number)
+        private bool CheckedDetail(string pathDetails, string Position)
         {
             try
             {
-                if (File.Exists(pathModel + @"\Чертежи\Детали DWG\" + "Дет." + Position + ".dwg"))
+                if (File.Exists(pathDetails + @"\" + "Дет." + Position + ".dwg"))
                 {
                     return true;
                 }
-                else if (File.Exists(pathModel + @"\Чертежи\" + Number + @"\Детали DWG\" + "Дет." + Position + ".dwg"))
-                {
-                    return true;
-                }
-                else if (Directory.Exists(pathModel + @"\Чертежи\" + Number + @"\Детали DWG") && Directory.GetFiles(pathModel + @"\Чертежи\" + Number + @"\Детали DWG", Position + " - Дет.*.dwg", SearchOption.TopDirectoryOnly).Length != 0)
-                {
-                    return true;
-                }
-                else if (Directory.Exists(pathModel + @"\Чертежи\Детали DWG") && Directory.GetFiles(pathModel + @"\Чертежи\Детали DWG", Position + " - Дет.*.dwg", SearchOption.TopDirectoryOnly).Length != 0)
+                else if (Directory.Exists(pathDetails) && Directory.GetFiles(pathDetails, Position + " - Дет.*.dwg", SearchOption.TopDirectoryOnly).Length != 0)
                 {
                     return true;
                 }
@@ -154,27 +147,36 @@ namespace SZMK.Desktop.Services
             }
         }
 
-        private string GetPathDetail(string pathModel, string Number)
+        public List<OrderPathDetailsBindingModel> CheckDetails(List<Order> Orders)
         {
-            try
+            List<OrderPathDetailsBindingModel> orderPathDetails = new List<OrderPathDetailsBindingModel>();
+
+            var GroupOrder = Orders.GroupBy(p => p.Number);
+
+            foreach (var order in GroupOrder)
             {
-                if (Directory.Exists(pathModel + @"\Чертежи\Детали DWG"))
+                try
                 {
-                    return pathModel + @"\Чертежи\Детали DWG";
+                    if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\Детали DWG"))
+                    {
+                        orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = Orders[0].Model.Path + @"\Чертежи\Детали DWG", Finded = true });
+                    }
+                    else if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали DWG"))
+                    {
+                        orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали DWG", Finded = true });
+                    }
+                    else
+                    {
+                        orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = "Не найдена папка деталировки", Finded = false });
+                    }
                 }
-                else if (Directory.Exists(pathModel + @"\Чертежи\" + Number + @"\Детали DWG"))
+                catch
                 {
-                    return pathModel + @"\Чертежи\" + Number + @"\Детали DWG";
-                }
-                else
-                {
-                    return "Не найдена папка деталировки";
+                    orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = "Ошибка прав доступа к папке с деталировкой", Finded = false });
                 }
             }
-            catch
-            {
-                return "Ошибка прав доступа к папке деталировки";
-            }
+
+            return orderPathDetails;
         }
     }
 }

@@ -126,7 +126,6 @@ namespace SZMK.Desktop.Services.Scan
             {
 
             }
-
         }
 
         public bool Stop()

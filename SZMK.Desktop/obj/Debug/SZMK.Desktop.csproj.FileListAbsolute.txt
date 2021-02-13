@@ -801,7 +801,6 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\z
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\zxing.xml
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\zxing.presentation.pdb
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\zxing.presentation.xml
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.csprojAssemblyReference.cache
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.csproj.ResolveComReference.cache
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Admin.MainSettings.Settings_GeneralConstructor.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Admin.PositionSettings.Settings_KB.resources
@@ -892,3 +891,9 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\S
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.csproj.CopyComplete
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.exe
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.pdb
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\Interop.AcroPDFLib.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\AxInterop.AcroPDFLib.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\Interop.AcroPDFLib.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\AxInterop.AcroPDFLib.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_ReportCheckDetail.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.csprojAssemblyReference.cache

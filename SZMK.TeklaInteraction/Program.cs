@@ -26,6 +26,7 @@ namespace SZMK.TeklaInteraction
                         .RegisterService<Shared.Services.Interfaces.ILogin, Shared.Services.Login>()
                         .RegisterService<Services.Interfaces.IChecked2017, Services.Checked2017>()
                         .RegisterService<Services.Interfaces.IChecked2018, Services.Checked2018>()
+                        .RegisterService<Services.Interfaces.IChecked2018i, Services.Checked2018i>()
                         .RegisterService<Services.Interfaces.IChecked21_1, Services.Checked21_1>()
                         .RegisterView<Views.Interfaces.IChangePassword, Views.ChangePassword>()
                         .RegisterService<Services.Interfaces.IOperations, Services.Operations>()

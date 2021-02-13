@@ -13,23 +13,29 @@ namespace SZMK.TeklaInteraction.Tekla2017.Views.Main
 {
     public partial class ReportCheckDetails : Form
     {
-        private List<OrderPathDetailsBindingModel> pathDetails;
+        private BindingList<OrderPathDetailsBindingModel> pathDetails;
 
         public ReportCheckDetails(List<OrderPathDetailsBindingModel> pathDetails)
         {
-            this.pathDetails = pathDetails;
+            this.pathDetails = new BindingList<OrderPathDetailsBindingModel>(pathDetails);
 
             InitializeComponent();
         }
 
         private void ReportCheckDetails_Load(object sender, EventArgs e)
         {
+            Report_DGV.AutoGenerateColumns = false;
+            Report_DGV.DataSource = pathDetails;
+        }
+        private void DGV_refresh()
+        {
+            Report_DGV.DataSource = null;
             Report_DGV.DataSource = pathDetails;
         }
 
-        private void Report_DGV_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void Report_DGV_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 3 && e.RowIndex >= 0)
+            if (Report_DGV.Columns[e.ColumnIndex].Name == "Change" && e.RowIndex >= 0)
             {
                 FolderBrowserDialog Fbd = new FolderBrowserDialog()
                 {
@@ -45,11 +51,6 @@ namespace SZMK.TeklaInteraction.Tekla2017.Views.Main
                     DGV_refresh();
                 }
             }
-        }
-        private void DGV_refresh()
-        {
-            Report_DGV.DataSource = null;
-            Report_DGV.DataSource = pathDetails;
         }
     }
 }

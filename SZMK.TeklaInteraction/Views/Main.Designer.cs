@@ -88,8 +88,9 @@
             this.ResetAll_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Reset21_1_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Reset2018_TSM = new System.Windows.Forms.ToolStripMenuItem();
-            this.Close_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Reset2017_TSM = new System.Windows.Forms.ToolStripMenuItem();
+            this.Close_TSM = new System.Windows.Forms.ToolStripMenuItem();
+            this.Reset2018i_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Main_TC.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -841,6 +842,7 @@
             this.ResetAll_TSM,
             this.Reset21_1_TSM,
             this.Reset2018_TSM,
+            this.Reset2018i_TSM,
             this.Reset2017_TSM});
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
             this.resetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
@@ -849,23 +851,30 @@
             // ResetAll_TSM
             // 
             this.ResetAll_TSM.Name = "ResetAll_TSM";
-            this.ResetAll_TSM.Size = new System.Drawing.Size(229, 22);
+            this.ResetAll_TSM.Size = new System.Drawing.Size(232, 22);
             this.ResetAll_TSM.Text = "Всех";
             this.ResetAll_TSM.Click += new System.EventHandler(this.ResetAll_TSM_Click);
             // 
             // Reset21_1_TSM
             // 
             this.Reset21_1_TSM.Name = "Reset21_1_TSM";
-            this.Reset21_1_TSM.Size = new System.Drawing.Size(229, 22);
+            this.Reset21_1_TSM.Size = new System.Drawing.Size(232, 22);
             this.Reset21_1_TSM.Text = "Взаимодействия с Tekla 21.1";
             this.Reset21_1_TSM.Click += new System.EventHandler(this.Reset21_1_TSM_Click);
             // 
             // Reset2018_TSM
             // 
             this.Reset2018_TSM.Name = "Reset2018_TSM";
-            this.Reset2018_TSM.Size = new System.Drawing.Size(229, 22);
+            this.Reset2018_TSM.Size = new System.Drawing.Size(232, 22);
             this.Reset2018_TSM.Text = "Взаимодействия с Tekla 2018";
             this.Reset2018_TSM.Click += new System.EventHandler(this.Reset2018_TSM_Click);
+            // 
+            // Reset2017_TSM
+            // 
+            this.Reset2017_TSM.Name = "Reset2017_TSM";
+            this.Reset2017_TSM.Size = new System.Drawing.Size(232, 22);
+            this.Reset2017_TSM.Text = "Взаимодействия с Tekla 2017";
+            this.Reset2017_TSM.Click += new System.EventHandler(this.Reset2017_TSM_Click);
             // 
             // Close_TSM
             // 
@@ -874,12 +883,12 @@
             this.Close_TSM.Text = "Закрыть";
             this.Close_TSM.Click += new System.EventHandler(this.Close_TSM_Click);
             // 
-            // Reset2017_TSM
+            // Reset2018i_TSM
             // 
-            this.Reset2017_TSM.Name = "Reset2017_TSM";
-            this.Reset2017_TSM.Size = new System.Drawing.Size(229, 22);
-            this.Reset2017_TSM.Text = "Взаимодействия с Tekla 2017";
-            this.Reset2017_TSM.Click += new System.EventHandler(this.Reset2017_TSM_Click);
+            this.Reset2018i_TSM.Name = "Reset2018i_TSM";
+            this.Reset2018i_TSM.Size = new System.Drawing.Size(232, 22);
+            this.Reset2018i_TSM.Text = "Взаимодействия с Tekla 2018i";
+            this.Reset2018i_TSM.Click += new System.EventHandler(this.Reset2018i_TSM_Click);
             // 
             // Main
             // 
@@ -983,5 +992,6 @@
         private System.Windows.Forms.ToolStripMenuItem Reset21_1_TSM;
         private System.Windows.Forms.ToolStripMenuItem Reset2018_TSM;
         private System.Windows.Forms.ToolStripMenuItem Reset2017_TSM;
+        private System.Windows.Forms.ToolStripMenuItem Reset2018i_TSM;
     }
 }

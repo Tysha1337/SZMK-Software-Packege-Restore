@@ -34,16 +34,16 @@ namespace SZMK.TeklaInteraction.Services
         {
             try
             {
-                count = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).Count();
+                count = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).Count();
                 id = 0;
                 if (count != 0)
                 {
-                    id = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).First().Id;
+                    id = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).First().Id;
                     Reset();
                 }
                 while (flag)
                 {
-                    if (Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).Count() != count)
+                    if (Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).Count() != count)
                     {
                         if (count == 0)
                         {
@@ -51,16 +51,16 @@ namespace SZMK.TeklaInteraction.Services
                             Reset();
                             Thread.Sleep(5000);
                         }
-                        else if (Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).Count() > 0)
+                        else if (Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).Count() > 0)
                         {
-                            if (Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).First().Id != id)
+                            if (Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).First().Id != id)
                             {
                                 Reset();
                                 Thread.Sleep(5000);
                             }
                             else
                             {
-                                if (count > Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).Count())
+                                if (count > Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).Count())
                                 {
                                     Load?.Invoke("Одна из копий Tekla 2018 закрыта");
                                 }
@@ -68,8 +68,8 @@ namespace SZMK.TeklaInteraction.Services
                                 {
                                     Load?.Invoke("Tekla 2018 запущена повторно");
                                 }
-                                count = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).Count();
-                                id = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).First().Id;
+                                count = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).Count();
+                                id = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).First().Id;
                             }
                         }
                         else
@@ -118,11 +118,11 @@ namespace SZMK.TeklaInteraction.Services
                     Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2018")[i].Kill();
                 }
 
-                count = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).Count();
+                count = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).Count();
 
                 if (count > 0)
                 {
-                    id = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1).First().Id;
+                    id = Process.GetProcessesByName("TeklaStructures").Where(p => p.MainModule.FileName.IndexOf("2018") != -1 && p.MainModule.FileName.IndexOf("2018i") == -1).First().Id;
 
                 }
                 else

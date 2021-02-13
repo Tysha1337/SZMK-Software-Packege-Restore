@@ -315,7 +315,7 @@ namespace SZMK.Desktop.Views.KB
                     if (Dialog.ShowDialog() == DialogResult.OK)
                     {
                         List<DateTime> StatusDate = SystemArgs.StatusOfOrders.Where(p => p.IDOrder == Temp.ID && p.IDStatus == Temp.Status.ID).Select(p => p.DateCreate).ToList();
-                        Order NewOrder = new Order(Temp.ID, Temp.DateCreate, Dialog.Number_TB.Text, Dialog.Executor_TB.Text, Temp.ExecutorWork, Dialog.List_TB.Text, Dialog.Mark_TB.Text, Convert.ToDouble(Dialog.Lenght_TB.Text), Convert.ToDouble(Dialog.Weight_TB.Text), Temp.Status, StatusDate[0], Temp.TypeAdd, Temp.Model, Temp.User, Temp.BlankOrder, Temp.Canceled, Temp.Finished);
+                        Order NewOrder = new Order(Temp.ID, Temp.DateCreate, Dialog.Number_TB.Text, Dialog.Executor_TB.Text, Temp.ExecutorWork, Dialog.List_TB.Text, Dialog.Mark_TB.Text, Convert.ToDouble(Dialog.Lenght_TB.Text), Convert.ToDouble(Dialog.Weight_TB.Text), Temp.Status, StatusDate[0], Temp.TypeAdd, Temp.Model, Temp.PathDetails, Temp.User, Temp.BlankOrder, Temp.Canceled, Temp.Finished);
 
                         if (SystemArgs.Request.UpdateOrder(NewOrder))
                         {
@@ -650,7 +650,7 @@ namespace SZMK.Desktop.Views.KB
                             List<Order> Order = SystemArgs.Orders.Where(p => p.ID == item.IDOrder).ToList();
                             if (Order.Count > 0)
                             {
-                                Temp.Add(new Order(Order[0].ID, Order[0].DateCreate, Order[0].Number, Order[0].Executor, Order[0].ExecutorWork, Order[0].List, Order[0].Mark, Order[0].Lenght, Order[0].Weight, Order[0].Status, Order[0].StatusDate, Order[0].TypeAdd, Order[0].Model, Order[0].User, Order[0].BlankOrder, Order[0].Canceled, Order[0].Finished));
+                                Temp.Add(new Order(Order[0].ID, Order[0].DateCreate, Order[0].Number, Order[0].Executor, Order[0].ExecutorWork, Order[0].List, Order[0].Mark, Order[0].Lenght, Order[0].Weight, Order[0].Status, Order[0].StatusDate, Order[0].TypeAdd, Order[0].Model, Order[0].PathDetails, Order[0].User, Order[0].BlankOrder, Order[0].Canceled, Order[0].Finished));
                             }
                         }
                         SystemArgs.Orders = Temp;
@@ -1488,9 +1488,20 @@ namespace SZMK.Desktop.Views.KB
 
                         await Task.Run(() => parseXML.CheckedData());
 
-                        await Task.Run(() => AddXMLData(parseXML.OrderScanSession, Notify));
+                        Notify.Hide();
 
-                        RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
+                        if (parseXML.CheckDetails())
+                        {
+                            Notify.Show();
+
+                            await Task.Run(() => AddXMLData(parseXML.OrderScanSession, Notify));
+
+                            RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Добавление отменено", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                 }
             }
@@ -1546,11 +1557,18 @@ namespace SZMK.Desktop.Views.KB
 
                             Session[i].Order.Model = SystemArgs.Request.GetModel(Session[i].Order.Model);
 
+                            if (!SystemArgs.Request.PathDetailsExist(Session[i].Order.PathDetails))
+                            {
+                                SystemArgs.Request.InsertPathDetails(Session[i].Order.PathDetails);
+                            }
+
+                            Session[i].Order.PathDetails = SystemArgs.Request.GetPathDetails(Session[i].Order.PathDetails);
+
                             if (SystemArgs.Request.InsertOrder(Session[i].Order))
                             {
-                                if (!(SystemArgs.Request.SetModelOrder(Session[i].Order) && SystemArgs.Request.SetTypeAddOrder(Session[i].Order)))
+                                if (!(SystemArgs.Request.SetModelOrder(Session[i].Order) && SystemArgs.Request.SetTypeAddOrder(Session[i].Order) && SystemArgs.Request.SetPathDetailsOrder(Session[i].Order)))
                                 {
-                                    MessageBox.Show("Ошибка при добавлении данных о модели и типа добавления в базу данных DataMatrix: Номер-" + Session[i].Order.Number + " Лист-" + Session[i].Order.List, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    MessageBox.Show("Ошибка при добавлении данных о модели, типа добавления и пути деталей в базу данных DataMatrix: Номер-" + Session[i].Order.Number + " Лист-" + Session[i].Order.List, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 }
 
                                 for (int j = 0; j < Session[i].Order.Details.Count; j++)

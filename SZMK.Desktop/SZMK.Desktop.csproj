@@ -72,6 +72,7 @@
     </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
@@ -117,8 +118,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindingModels\OrderPathDetailsBindingModel.cs" />
     <Compile Include="BindingModels\OrdersGetting.cs" />
     <Compile Include="BindingModels\StringErrorBindingModels.cs" />
+    <Compile Include="Models\PathDetails.cs" />
     <Compile Include="Models\TypeAdd.cs" />
     <Compile Include="Services\DataGridView\PropertyComparer.cs" />
     <Compile Include="Services\DataGridView\SortableBindingList.cs" />
@@ -158,6 +161,12 @@
     </Compile>
     <Compile Include="Views\KB\KB_AddXML.Designer.cs">
       <DependentUpon>KB_AddXML.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KB\KB_ReportCheckDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\KB\KB_ReportCheckDetail.Designer.cs">
+      <DependentUpon>KB_ReportCheckDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\KB\KB_SelectedUser_F.cs">
       <SubType>Form</SubType>
@@ -685,6 +694,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\KB\KB_CodeSettingScanner_F.resx">
       <DependentUpon>KB_CodeSettingScanner_F.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\KB\KB_ReportCheckDetail.resx">
+      <DependentUpon>KB_ReportCheckDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\KB\KB_SelectedUser_F.resx">
       <DependentUpon>KB_SelectedUser_F.cs</DependentUpon>

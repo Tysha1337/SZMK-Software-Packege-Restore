@@ -25,36 +25,33 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
         {
             try
             {
-                System.Threading.Tasks.Task.Factory.StartNew(() =>
+                var server = new NamedPipeServerStream("Tekla2017");
+                StreamReader reader = new StreamReader(server);
+                while (true)
                 {
-                    var server = new NamedPipeServerStream("Tekla2017");
-                    StreamReader reader = new StreamReader(server);
-                    while (true)
+                    server.WaitForConnection();
+
+                    logger.Info("Клиент подключился");
+
+                    Loading Load = new Loading();
+                    Load.Show();
+
+                    Tekla tekla = new Tekla(Load);
+                    if (tekla.CheckConnect())
                     {
-                        server.WaitForConnection();
+                        logger.Info("Модель подключена");
 
-                        logger.Info("Клиент подключился");
-
-                        Loading Load = new Loading();
-                        Load.Show();
-
-                        Tekla tekla = new Tekla(Load);
-                        if (tekla.CheckConnect())
-                        {
-                            logger.Info("Модель подключена");
-
-                            tekla.GetData(user);
-                        }
-                        else
-                        {
-                            logger.Info("Модель не подключена");
-
-                            MessageBox.Show("Ошибка подключения модели", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-
-                        server.Disconnect();
+                        tekla.GetData(user);
                     }
-                });
+                    else
+                    {
+                        logger.Info("Модель не подключена");
+
+                        MessageBox.Show("Ошибка подключения модели", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    server.Disconnect();
+                }
             }
             catch (Exception E)
             {

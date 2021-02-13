@@ -1057,14 +1057,16 @@ namespace SZMK.Desktop.Services
             try
             {
                 SystemArgs.Models.Clear();
+                SystemArgs.PathDetails.Clear();
 
                 GetAllModels();
+                GetAllPathDetails();
 
                 using (var Connect = new NpgsqlConnection(_ConnectString))
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\",\"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"Canceled\",\"Finished\",\"ID_TypeAdd\",\"ID_Model\"" +
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\",\"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"Canceled\",\"Finished\",\"ID_TypeAdd\",\"ID_Model\",\"ID_PathDetails\"" +
                                                             $" FROM public.\"Orders\";", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
@@ -1085,7 +1087,14 @@ namespace SZMK.Desktop.Services
                                     TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(12)).FirstOrDefault();
                                 }
 
-                                SystemArgs.Orders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), null, DateTime.Now, TempTypeAdd, TempModel, null, new BlankOrder(), Reader.GetBoolean(9), Reader.GetBoolean(10)));
+                                PathDetails TempPathDetails = null;
+
+                                if (!Reader.IsDBNull(13))
+                                {
+                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
+                                }
+
+                                SystemArgs.Orders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, null, new BlankOrder(), Reader.GetBoolean(9), Reader.GetBoolean(10)));
                             }
                         }
                     }
@@ -1165,6 +1174,9 @@ namespace SZMK.Desktop.Services
 
                 GetAllModels();
 
+                SystemArgs.PathDetails.Clear();
+
+                GetAllPathDetails();
 
                 Order Temp = null;
 
@@ -1172,7 +1184,7 @@ namespace SZMK.Desktop.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\"" +
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\"" +
                                                             $" FROM public.\"Orders\" WHERE \"Number\"='{Number}' AND \"List\"='{List}';", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
@@ -1193,7 +1205,14 @@ namespace SZMK.Desktop.Services
                                     TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(12)).FirstOrDefault();
                                 }
 
-                                Temp = new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), null, DateTime.Now, TempTypeAdd, TempModel, null, new BlankOrder(), Reader.GetBoolean(9), Reader.GetBoolean(10));
+                                PathDetails TempPathDetails = null;
+
+                                if (!Reader.IsDBNull(13))
+                                {
+                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
+                                }
+
+                                Temp = new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, null, new BlankOrder(), Reader.GetBoolean(9), Reader.GetBoolean(10));
                             }
                         }
                     }
@@ -1860,5 +1879,218 @@ namespace SZMK.Desktop.Services
             }
         }
 
+        public bool GetAllPathDetails()
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\",\"Path\"" +
+                                        $" FROM public.\"PathDetails\";", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                SystemArgs.PathDetails.Add(new PathDetails { ID = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), Path = Reader.GetString(2) });
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return true;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.ToString());
+            }
+        }
+        public bool InsertPathDetails(PathDetails PathDetails)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"PathDetails\"(\"DateCreate\", \"Path\") VALUES('{PathDetails.DateCreate}', '{PathDetails.Path}'); ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public bool PathDetailsExist(PathDetails PathDetails)
+        {
+            Boolean flag = false;
+            try
+            {
+
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Path\" FROM public.\"PathDetails\" WHERE \"Path\"='{PathDetails.Path}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return flag;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public PathDetails GetPathDetails(PathDetails PathDetails)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Path\" FROM public.\"PathDetails\" WHERE \"Path\"='{PathDetails.Path}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                PathDetails = new PathDetails { ID = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), Path = Reader.GetString(2) };
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return PathDetails;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.ToString());
+            }
+        }
+        public bool SetPathDetailsOrder(Order Order)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"UPDATE public.\"Orders\" SET \"ID_PathDetails\" = '{Order.PathDetails.ID}' WHERE \"ID\" = '{Order.ID}'; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool SetPathDetailsAllOrder(Order Order)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"UPDATE public.\"Orders\" SET \"ID_PathDetails\" = '{Order.PathDetails.ID}' WHERE \"Number\" = '{Order.Number}'; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool CheckedNeedRemovePathDetails(PathDetails pathDetails)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT COUNT(\"ID\") FROM public.\"Orders\" WHERE \"ID_PathDetails\" = '{pathDetails.ID}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                if (Reader.GetInt64(0) == 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DeletePathDetails(PathDetails pathDetails)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"PathDetails\"" +
+                                                           $"WHERE \"ID\" = {pathDetails.ID}; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

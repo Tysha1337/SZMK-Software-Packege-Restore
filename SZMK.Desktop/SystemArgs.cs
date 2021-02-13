@@ -50,6 +50,7 @@ namespace SZMK.Desktop
         static public List<Models.BlankOrder> BlankOrders;//Общий список возможных бланков заказа
         static public List<Models.TypeAdd> TypesAdds;//Общий типов добавления
         static public List<Models.Model> Models;//Общий список моделей
+        static public List<Models.PathDetails> PathDetails; //Общий список путей до деталей
 
         public static void PrintLog(String Message)
         {

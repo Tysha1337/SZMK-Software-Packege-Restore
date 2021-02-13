@@ -105,6 +105,8 @@ namespace SZMK.TeklaInteraction.Services
                 {
                     Stopped21_1();
                     Stopped2018();
+                    Stopped2018i();
+                    Stopped2017();
 
                     Environment.Exit(0);
                 }
@@ -118,9 +120,9 @@ namespace SZMK.TeklaInteraction.Services
         {
             try
             {
-                for (int i = 0; i < Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2018").Length; i++)
+                for (int i = 0; i < Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla21_1").Length; i++)
                 {
-                    Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2018")[i].Kill();
+                    Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla21_1")[i].Kill();
                 }
             }
             catch (Exception e)
@@ -132,9 +134,37 @@ namespace SZMK.TeklaInteraction.Services
         {
             try
             {
-                for (int i = 0; i < Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla21_1").Length; i++)
+                for (int i = 0; i < Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2018").Length; i++)
                 {
-                    Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla21_1")[i].Kill();
+                    Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2018")[i].Kill();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+        public void Stopped2018i()
+        {
+            try
+            {
+                for (int i = 0; i < Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2018i").Length; i++)
+                {
+                    Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2018i")[i].Kill();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+        public void Stopped2017()
+        {
+            try
+            {
+                for (int i = 0; i < Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2017").Length; i++)
+                {
+                    Process.GetProcessesByName("SZMK.TeklaInteraction.Tekla2017")[i].Kill();
                 }
             }
             catch (Exception e)

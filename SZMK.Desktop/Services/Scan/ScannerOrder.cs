@@ -71,20 +71,28 @@ namespace SZMK.Desktop.Services.Scan
         }
         protected void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (!connect)
+            try
             {
-                return;
-            }
-            string code = port.ReadExisting();
+                if (!connect)
+                {
+                    return;
+                }
+                string code = port.ReadExisting();
 
-            while (code.IndexOf("\u001d") != -1)
-            {
-                code = code.Replace("\u001d", "и");
-            }
+                while (code.IndexOf("\u001d") != -1)
+                {
+                    code = code.Replace("\u001d", "и");
+                }
 
-            if (SetResult(FormingOrder(code), _Orders, false))
+                if (SetResult(FormingOrder(code), _Orders, false))
+                {
+                    LoadResult?.Invoke(_Orders);
+                }
+            }
+            catch(Exception Ex)
             {
-                LoadResult?.Invoke(_Orders);
+                SystemArgs.PrintLog(Ex.ToString());
+                MessageBox.Show(Ex.Message);
             }
 
         }

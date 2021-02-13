@@ -20,6 +20,7 @@ namespace SZMK.TeklaInteraction.Views
         public event Action Reset21_1;
         public event Action Reset2018;
         public event Action Reset2017;
+        public event Action Reset2018i;
 
         public string Email { get { return Email_TB.Text; } set { Email_TB.Text = value; } }
         public string Login { get { return Login_TB.Text; } set { Login_TB.Text = value; } }
@@ -208,6 +209,11 @@ namespace SZMK.TeklaInteraction.Views
         private void Reset2017_TSM_Click(object sender, EventArgs e)
         {
             Reset2017?.Invoke();
+        }
+
+        private void Reset2018i_TSM_Click(object sender, EventArgs e)
+        {
+            Reset2018i?.Invoke();
         }
     }
 }

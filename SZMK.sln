@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SZMK.TeklaInteraction.Tekla
 		{0B59DF42-22B4-4561-BA89-8F6F4EFDC052} = {0B59DF42-22B4-4561-BA89-8F6F4EFDC052}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SZMK.TeklaInteraction.Tekla2018i", "SZMK.TeklaInteraction.Tekla2018i\SZMK.TeklaInteraction.Tekla2018i.csproj", "{F69E0663-FD3D-4DA2-8016-A07677B09225}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,14 @@ Global
 		{A2A27160-A31D-459D-B04F-4A418CB4BEFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2A27160-A31D-459D-B04F-4A418CB4BEFC}.Release|x64.ActiveCfg = Release|Any CPU
 		{A2A27160-A31D-459D-B04F-4A418CB4BEFC}.Release|x64.Build.0 = Release|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Debug|x64.Build.0 = Debug|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Release|x64.ActiveCfg = Release|Any CPU
+		{F69E0663-FD3D-4DA2-8016-A07677B09225}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

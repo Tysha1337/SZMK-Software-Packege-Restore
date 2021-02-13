@@ -1,0 +1,11 @@
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.csprojAssemblyReference.cache
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Properties.Resources.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Views.Auth.Main.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Views.Main.Main.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Views.Main.Report.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Views.Main.ReportCheckDetails.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Views.Main.ReportErrors.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Views.Main.Update.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.Views.Shared.Loading.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.csproj.GenerateResource.cache
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla2018i\obj\Debug\SZMK.TeklaInteraction.Tekla2018i.csproj.CoreCompileInputs.cache

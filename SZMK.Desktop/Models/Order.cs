@@ -27,13 +27,14 @@ namespace SZMK.Desktop.Models
         private String _BlankOrderView;
         private TypeAdd _TypeAdd;
         private Model _Model;
+        private PathDetails _PathDetails;
         private List<Detail> _Details;
         private User _User;
         private Boolean _Canceled;
         private Boolean _Finished;
 
 
-        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, Double Lenght, Double Weight, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, User User, BlankOrder BlankOrder, Boolean Canceled, Boolean Finished)
+        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, Double Lenght, Double Weight, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, PathDetails PathDetails, User User, BlankOrder BlankOrder, Boolean Canceled, Boolean Finished)
         {
             if (ID >= 0)
             {
@@ -128,6 +129,14 @@ namespace SZMK.Desktop.Models
             {
                 _Model = new Model { ID = 0, DateCreate = DateTime.Now, Path = "Путь не определен" };
             }
+            if (PathDetails != null)
+            {
+                _PathDetails = PathDetails;
+            }
+            else
+            {
+                _PathDetails = new PathDetails { ID = 0, DateCreate = DateTime.Now, Path = "Не найдена папка деталировки" };
+            }
 
             _Details = new List<Detail>();
 
@@ -211,8 +220,8 @@ namespace SZMK.Desktop.Models
                 {
                     _ExecutorWork = ExecutorWork;
                 }
-                else 
-                { 
+                else
+                {
                     Error = "Пустое значение Исполнителя работ";
                     throw new Exception();
                 }
@@ -295,7 +304,7 @@ namespace SZMK.Desktop.Models
             }
         }
 
-        public Order() : this(-1, DateTime.Now, "Нет номера заказа", "Нет исполнителя", "Нет исполнителя работ", "Нет листа", "Нет марки", -1, -1, null, DateTime.Now, null, null, null, null, false, false) { }
+        public Order() : this(-1, DateTime.Now, "Нет номера заказа", "Нет исполнителя", "Нет исполнителя работ", "Нет листа", "Нет марки", -1, -1, null, DateTime.Now, null, null, null, null, null, false, false) { }
 
         public Int64 ID
         {
@@ -486,6 +495,20 @@ namespace SZMK.Desktop.Models
                 if (value != null)
                 {
                     _Model = value;
+                }
+            }
+        }
+        public PathDetails PathDetails
+        {
+            get
+            {
+                return _PathDetails;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _PathDetails = value;
                 }
             }
         }

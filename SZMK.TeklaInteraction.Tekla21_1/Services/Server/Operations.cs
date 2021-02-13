@@ -47,6 +47,8 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
         {
             try
             {
+                session = new List<SessionAdded>();
+
                 logger.Info("Начата проверка чертежей");
 
                 logger.Info("Проверка деталей");
@@ -54,8 +56,6 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                 if (CheckDetails(Model))
                 {
                     logger.Info("Проверка деталей успешна");
-
-                    session = new List<SessionAdded>();
 
                     for (int i = 0; i < Model.Drawings.Count; i++)
                     {
@@ -197,8 +197,8 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                 }
                 else
                 {
-                    logger.Info("Добавление отменено");
-                    MessageBox.Show("Добавление отменено", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Error("Добавление отменено");
+                    MessageBox.Show("Добавление отменено", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception E)
@@ -213,7 +213,7 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
 
             ReportCheckDetails report = new ReportCheckDetails(pathDetails);
 
-            if (report.DialogResult == DialogResult.OK)
+            if (report.ShowDialog() == DialogResult.OK)
             {
                 foreach (var path in pathDetails)
                 {
@@ -356,15 +356,12 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
 
                             if (request.InsertDrawing(Session[i].Drawing))
                             {
-                                for (int countMark = 0; countMark < Session[i].Drawing.CountMark; countMark++)
+                                for (int j = 0; j < Session[i].Drawing.Details.Count; j++)
                                 {
-                                    for (int j = 0; j < Session[i].Drawing.Details.Count; j++)
-                                    {
-                                        Session[i].Drawing.Details[j].ID = request.GetAutoIDDetail() + 1;
-
-                                        request.InsertDetail(Session[i].Drawing.Details[j]);
-                                        request.InsertAddDetail(Session[i].Drawing, Session[i].Drawing.Details[j]);
-                                    }
+                                    Session[i].Drawing.Details[j].ID = request.GetAutoIDDetail() + 1;
+                                    Session[i].Drawing.Details[j].Count = Session[i].Drawing.Details[j].Count * Session[i].Drawing.CountMark;
+                                    request.InsertDetail(Session[i].Drawing.Details[j]);
+                                    request.InsertAddDetail(Session[i].Drawing, Session[i].Drawing.Details[j]);
                                 }
 
                                 if (!request.StatusExist(Session[i].Drawing, user))

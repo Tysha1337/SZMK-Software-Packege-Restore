@@ -78,17 +78,25 @@ namespace SZMK.Desktop.Services.Scan
         }
         protected void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (!connect)
-            { 
-                return; 
-            }
-            string code = port.ReadExisting();
-
-            if (SetResult(code, _Added, _Orders))
+            try
             {
-                Status?.Invoke(code.Replace("\u00a0", "").Replace(" ", ""));
+                if (!connect)
+                {
+                    return;
+                }
+                string code = port.ReadExisting();
 
-                LoadResult?.Invoke(_Orders);
+                if (SetResult(code, _Added, _Orders))
+                {
+                    Status?.Invoke(code.Replace("\u00a0", "").Replace(" ", ""));
+
+                    LoadResult?.Invoke(_Orders);
+                }
+            }
+            catch (Exception Ex)
+            {
+                SystemArgs.PrintLog(Ex.ToString());
+                MessageBox.Show(Ex.Message);
             }
         }
         public List<BlankOrderScanSession> GetScanSessions()

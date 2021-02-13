@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -8,6 +10,7 @@ using System.Xml.Linq;
 using SZMK.Desktop.BindingModels;
 using SZMK.Desktop.Models;
 using SZMK.Desktop.ViewModel;
+using SZMK.Desktop.Views.KB;
 using SZMK.Desktop.Views.Shared;
 using SZMK.Desktop.Views.Shared.Interfaces;
 
@@ -53,7 +56,23 @@ namespace SZMK.Desktop.Services.Scan
         {
             try
             {
-                return new Model { ID = 0, DateCreate = DateTime.Now, Path = path };
+                string ModelPath = path;
+
+                if (ModelPath.Substring(0, 2) != @"\\")
+                {
+                    using (var managementObject = new ManagementObject())
+                    {
+                        managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                        var driveType = (DriveType)(uint)managementObject["DriveType"];
+                        var networkPath = Convert.ToString(managementObject["ProviderName"]);
+
+                        ModelPath = networkPath + ModelPath.Remove(0, 2);
+                    }
+                }
+
+                ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                return new Model { ID = 0, DateCreate = DateTime.Now, Path = ModelPath };
             }
             catch (Exception Ex)
             {
@@ -331,20 +350,43 @@ namespace SZMK.Desktop.Services.Scan
         {
             try
             {
-                notify.SetMaximum(Orders.Count);
-                OrderScanSession = new List<OrderScanSession>();
-                for (int i = 0; i < Orders.Count; i++)
-                {
-                    notify.Notify(i, $"Проверка {i + 1} чертежа из {Orders.Count}");
+                    notify.SetMaximum(Orders.Count);
+                    OrderScanSession = new List<OrderScanSession>();
+                    for (int i = 0; i < Orders.Count; i++)
+                    {
+                        notify.Notify(i, $"Проверка {i + 1} чертежа из {Orders.Count}");
 
-                    SetResult(Orders[i], OrderScanSession, true);
-                }
+                        SetResult(Orders[i], OrderScanSession, true);
+                    }
             }
             catch (Exception Ex)
             {
                 notify.CloseAsync();
                 OrderScanSession.Clear();
                 throw new Exception(Ex.Message, Ex);
+            }
+        }
+        public bool CheckDetails()
+        {
+            List<OrderPathDetailsBindingModel> pathDetails = new UnLoadSpecific().CheckDetails(Orders);
+
+            KB_ReportCheckDetail report = new KB_ReportCheckDetail(pathDetails);
+
+            if (report.ShowDialog() == DialogResult.OK)
+            {
+                foreach (var path in pathDetails)
+                {
+                    foreach (var drawing in Orders.Where(p => p.Number == path.Order))
+                    {
+                        drawing.PathDetails = new PathDetails { DateCreate = DateTime.Now, Path = path.Path };
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
