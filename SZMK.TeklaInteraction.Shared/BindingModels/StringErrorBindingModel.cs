@@ -8,7 +8,16 @@ namespace SZMK.TeklaInteraction.Shared.BindingModels
 {
     public class StringErrorBindingModel
     {
-        public string Data { get; set; }
+        public string Order { get; set; }
+        public string List { get; set; }
         public string Error { get; set; }
+
+        public string InfoView
+        {
+            get
+            {
+                return $"В заказе {Order}, Лист {List}";
+            }
+        }
     }
 }

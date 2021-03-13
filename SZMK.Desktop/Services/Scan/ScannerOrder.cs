@@ -94,7 +94,6 @@ namespace SZMK.Desktop.Services.Scan
                 SystemArgs.PrintLog(Ex.ToString());
                 MessageBox.Show(Ex.Message);
             }
-
         }
         public List<OrderScanSession> GetScanSessions()
         {

@@ -61,6 +61,8 @@
             this.Time_Month_Report_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Time_SelectionDate_Report_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Steel_TSM = new System.Windows.Forms.ToolStripMenuItem();
+            this.ReportSteelStandart_TSB = new System.Windows.Forms.ToolStripMenuItem();
+            this.ReportSteelMark_TSB = new System.Windows.Forms.ToolStripMenuItem();
             this.CompleteStatusReport_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingConfig_TSM = new System.Windows.Forms.ToolStripMenuItem();
@@ -266,10 +268,26 @@
             // 
             // Steel_TSM
             // 
+            this.Steel_TSM.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ReportSteelStandart_TSB,
+            this.ReportSteelMark_TSB});
             this.Steel_TSM.Name = "Steel_TSM";
             this.Steel_TSM.Size = new System.Drawing.Size(201, 22);
             this.Steel_TSM.Text = "По выборке металла";
-            this.Steel_TSM.Click += new System.EventHandler(this.Steel_TSM_Click);
+            // 
+            // ReportSteelStandart_TSB
+            // 
+            this.ReportSteelStandart_TSB.Name = "ReportSteelStandart_TSB";
+            this.ReportSteelStandart_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelStandart_TSB.Text = "Стандартный";
+            this.ReportSteelStandart_TSB.Click += new System.EventHandler(this.ReportSteelStandart_TSB_Click);
+            // 
+            // ReportSteelMark_TSB
+            // 
+            this.ReportSteelMark_TSB.Name = "ReportSteelMark_TSB";
+            this.ReportSteelMark_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelMark_TSB.Text = "По маркам";
+            this.ReportSteelMark_TSB.Click += new System.EventHandler(this.ReportSteelMark_TSB_Click);
             // 
             // CompleteStatusReport_TSM
             // 
@@ -1288,7 +1306,6 @@
         private System.Windows.Forms.ToolStripMenuItem SettingColumn_TSM;
         private System.Windows.Forms.ToolStripMenuItem SettingConfig_TSM;
         private System.Windows.Forms.ToolStripMenuItem SettingMobileApplication_TSM;
-        private System.Windows.Forms.ToolStripMenuItem Steel_TSM;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataMatrix;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateCreate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
@@ -1308,5 +1325,8 @@
         private System.Windows.Forms.ToolStripMenuItem CompleteStatusReport_TSM;
         private System.Windows.Forms.ToolStripMenuItem MoveToWorkShop_TSM;
         public System.Windows.Forms.Button ViewSelected_B;
+        private System.Windows.Forms.ToolStripMenuItem Steel_TSM;
+        private System.Windows.Forms.ToolStripMenuItem ReportSteelStandart_TSB;
+        private System.Windows.Forms.ToolStripMenuItem ReportSteelMark_TSB;
     }
 }

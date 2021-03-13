@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SZMK.TeklaInteraction.Shared.ViewModels
 {
@@ -405,31 +406,20 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
             {
                 int Index = -1;
 
-                string[] Arguments = new string[] { "PL", "Утеплит", "Риф", "Сетка 50/50х2.5 В=1800", "ПВ", "ГОСТ 8509-93", "ГОСТ 8510-93", "PD", "Профиль(кв.)", "Профиль", "*" };
+                string[] Arguments = new string[] { "PL" };
                 for (int i = 0; i < Arguments.Length; i++)
                 {
-                    if (Arguments[i].IndexOf("ГОСТ") == -1)
+                    if (Profile.IndexOf(Arguments[i]) != -1)
                     {
-                        if (Profile.IndexOf(Arguments[i]) != -1)
-                        {
-                            Index = i;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (_GostName.IndexOf(Arguments[i]) != -1)
-                        {
-                            Index = i;
-                            break;
-                        }
+                        Index = i;
+                        break;
                     }
                 }
                 switch (Index)
                 {
                     case 0:
-                        int var4 = Convert.ToInt32(Profile.Substring(2, Profile.IndexOf("*") - 2));
-                        int var5 = Convert.ToInt32(Profile.Substring(1 + Profile.IndexOf("*"), Profile.Length - Profile.IndexOf("*") - 1));
+                        double var4 = Convert.ToDouble(Profile.Substring(2, Profile.IndexOf("*") - 2));
+                        double var5 = Convert.ToDouble(Profile.Substring(1 + Profile.IndexOf("*"), Profile.Length - Profile.IndexOf("*") - 1));
 
                         if (var4 > var5)
                         {
@@ -439,26 +429,6 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
                         {
                             return "-" + var4.ToString();
                         }
-                    case 1:
-                        return _MarkSteel;
-                    case 2:
-                        return _MarkSteel;
-                    case 3:
-                        return "Сетка 50/50х2.5 В=1800";
-                    case 4:
-                        return _MarkSteel;
-                    case 5:
-                        return $"L{_Width.ToString("F2").TrimEnd('0', ',')}x{_FlangeThickness}";
-                    case 6:
-                        return $"L{_Width.ToString("F2").TrimEnd('0', ',')}x{_Width.ToString("F2").TrimEnd('0', ',')}x{_FlangeThickness}";
-                    case 7:
-                        return $"Труба {_Diameter}x{_PlateThickness}";
-                    case 8:
-                        return $"Тр.кв.{_Height.ToString("F2").TrimEnd('0', ',')}x{_PlateThickness}";
-                    case 9:
-                        return $"Тр.пр.{_Height.ToString("F2").TrimEnd('0', ',')}x{_Height.ToString("F2").TrimEnd('0', ',')}x{_PlateThickness}";
-                    case 10:
-                        return Profile.Replace("*", "x");
                 }
                 return Profile;
             }

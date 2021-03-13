@@ -118,7 +118,7 @@
             // DataMatrix
             // 
             this.DataMatrix.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DataMatrix.DataPropertyName = "Data";
+            this.DataMatrix.DataPropertyName = "InfoView";
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.DataMatrix.DefaultCellStyle = dataGridViewCellStyle1;
             this.DataMatrix.FillWeight = 60F;
@@ -160,10 +160,10 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Close_B;
         public System.Windows.Forms.DataGridView Report_DGV;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataMatrix;
         private System.Windows.Forms.DataGridViewTextBoxColumn Discription;
+        public System.Windows.Forms.Label label1;
     }
 }

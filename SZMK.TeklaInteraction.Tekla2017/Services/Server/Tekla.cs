@@ -36,7 +36,9 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
         Shared.Models.Model Model;
         public List<Shared.Models.Drawing> Drawings;
-        public List<StringErrorBindingModel> Errors;
+        public List<StringErrorBindingModel> DrawingErrors;
+        public List<StringErrorBindingModel> DetailsErrors;
+        public List<StringErrorBindingModel> DetailsWarnings;
 
         public bool CheckConnect()
         {
@@ -62,7 +64,9 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
                 Drawings = new List<Shared.Models.Drawing>();
 
-                Errors = new List<StringErrorBindingModel>();
+                DrawingErrors = new List<StringErrorBindingModel>();
+                DetailsErrors = new List<StringErrorBindingModel>();
+                DetailsWarnings = new List<StringErrorBindingModel>();
 
                 while (SelectedDrawings.MoveNext())
                 {
@@ -71,16 +75,11 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
                         if (SelectedDrawings.Current is AssemblyDrawing)
                         {
-
-                            String Number = "";
-
                             Assembly assembly = model.SelectModelObject(((SelectedDrawings.Current as AssemblyDrawing)).AssemblyIdentifier) as Assembly;
 
                             if (!ChechedDate(assembly))
                             {
-                                assembly.GetReportProperty("CUSTOM.Zakaz", ref Number);
-                                Errors.Add(new StringErrorBindingModel { Data = $"Заказ: {Number}, Марка: {SelectedDrawings.Current.Mark}", Error = "Не заполнено поле \"Дата\"" });
-                                continue;
+                                throw new Exception("Не заполнено поле \"Дата\"");
                             }
 
                             GetDrawing(assembly, SelectedDrawings.Current as AssemblyDrawing);
@@ -94,7 +93,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                         assembly.GetReportProperty("CUSTOM.Zakaz", ref Number);
                         assembly.GetReportProperty("CUSTOM.Drw_SheetRev", ref List);
                         logger.Error(E.ToString());
-                        Errors.Add(new StringErrorBindingModel { Data = $"Заказ: {Number}, Лист: {List}", Error = E.Message });
+                        DrawingErrors.Add(new StringErrorBindingModel { Order = Number, List = List, Error = E.Message });
                     }
                 }
 
@@ -121,11 +120,39 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
                 notify.Close();
 
-                if (Errors.Count > 0)
+                if (DetailsWarnings.Count > 0)
+                {
+                    ReportWarnings Report = new ReportWarnings();
+                    Report.Report_DGV.AutoGenerateColumns = false;
+                    Report.Report_DGV.DataSource = DetailsWarnings;
+
+                    if (Report.ShowDialog() != DialogResult.OK)
+                    {
+                        for (int i = 0; i < DetailsWarnings.Count; i++)
+                        {
+                            Drawings.RemoveAll(p => p.Order == DetailsWarnings[i].Order && p.List == DetailsWarnings[i].List);
+                        }
+                    }
+                }
+
+                if (DetailsErrors.Count > 0)
                 {
                     ReportErrors Report = new ReportErrors();
+                    Report.Text = "Отчет об ошибках деталей";
+                    Report.label1.Text = "Отчет об ошибках деталей";
                     Report.Report_DGV.AutoGenerateColumns = false;
-                    Report.Report_DGV.DataSource = Errors;
+                    Report.Report_DGV.DataSource = DetailsErrors;
+
+                    Report.ShowDialog();
+                }
+
+                if (DrawingErrors.Count > 0)
+                {
+                    ReportErrors Report = new ReportErrors();
+                    Report.Text = "Отчет об ошибках чертежей";
+                    Report.label1.Text = "Отчет об ошибках чертежей";
+                    Report.Report_DGV.AutoGenerateColumns = false;
+                    Report.Report_DGV.DataSource = DrawingErrors;
 
                     Report.ShowDialog();
                 }
@@ -202,6 +229,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
         {
             try
             {
+                int _startnumber = 0;
                 string _position = "";
                 string _profile = "";
                 double _width = 0;
@@ -221,6 +249,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                 string _flangeThickness = "";
                 string _plateThickness = "";
 
+                modelObject.GetReportProperty("PART_START_NUMBER", ref _startnumber);
                 modelObject.GetReportProperty("PART_POS", ref _position);
                 modelObject.GetReportProperty("PROFILE", ref _profile);
                 modelObject.GetReportProperty("WIDTH", ref _width);
@@ -244,6 +273,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
                 return new Shared.Models.Detail
                 {
+                    StartNumber = _startnumber,
                     Position = detailViewModel.Position,
                     Count = CountDetail,
                     Profile = detailViewModel.Profile,
@@ -275,7 +305,6 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
         {
             try
             {
-                string _dataMatrix = "";
                 string _assembly = "";
                 string _order = "";
                 string _place = "";
@@ -296,7 +325,10 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
                 if (!CheckedOrder(_order))
                 {
-                    throw new Exception($"Номер заказа должен быть записан по шаблону 0000(00)");
+                    if (MessageBox.Show($"Номер заказа {_order} записан не по шаблону, подтвердить?", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        throw new Exception($"Номер заказа должен быть записан по шаблону 0000(00)");
+                    }
                 }
 
                 assembly.GetReportProperty("DRAWING.USERDEFINED.ru_mesto", ref _place);
@@ -352,7 +384,25 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
                 _countDetail = Details.Sum(p => p.Count);
 
-                Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list, Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details });
+                bool BadStartNumber = false;
+
+                for (int i = 0; i < Details.Count; i++)
+                {
+                    if (Details[i].StartNumber.ToString()[0] == '9')
+                    {
+                        BadStartNumber = true;
+                        DetailsErrors.Add(new StringErrorBindingModel { Order = _order.Replace(" ", ""), List = _list, Error = $"В детали с позицией {Details[i].Position} начальный номер равен {Details[i].StartNumber}" });
+                    }
+                    else if (Details[i].StartNumber != 1)
+                    {
+                        DetailsWarnings.Add(new StringErrorBindingModel { Order = _order.Replace(" ", ""), List = _list, Error = $"В детали с позицией {Details[i].Position} начальный номер равен {Details[i].StartNumber}" });
+                    }
+                }
+
+                if (!BadStartNumber)
+                {
+                    Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list, Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details });
+                }
 
                 return true;
             }

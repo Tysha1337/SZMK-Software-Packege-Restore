@@ -49,6 +49,7 @@ namespace SZMK.Desktop.Services.Setting
         private readonly String _TemplateActNoUniquePath;
         private readonly String _TemplateReportOrderOfDatePath;
         private readonly String _TemplateReportSteelPath;
+        private readonly String _TemplateReportMarkPath;
         private readonly String _TemplateReportCompleteStatusesPath;
 
         #endregion
@@ -100,6 +101,7 @@ namespace SZMK.Desktop.Services.Setting
             _TemplateReportOrderOfDatePath = $@"Program\Templates\ReportOrderOfDateTemplate.xlsx";//Путь до шаблона отчета по дате
             _TemplateReportPastTimeofDate = $@"Program\Templates\ReportPastTimeofDateTemplate.xlsx";//Путь до шаблона отчета по времени
             _TemplateReportSteelPath = $@"Program\Templates\ReportSteelTemplate.xlsx";//Путь до шаблона отчета выборки металла
+            _TemplateReportMarkPath = $@"Program\Templates\ReportMarkTemplate.xlsx";//Путь до шаблона отчета выборки металла
             _TemplateReportCompleteStatusesPath = $@"Program\Templates\ReportCompleteStatusesTemplate.xlsx";//Путь до шаблона отчета прохождения статусов
 
             #endregion
@@ -259,6 +261,13 @@ namespace SZMK.Desktop.Services.Setting
             get
             {
                 return _TemplateReportSteelPath;
+            }
+        }
+        public String TemplateReportMark
+        {
+            get
+            {
+                return _TemplateReportMarkPath;
             }
         }
         public String TemplateReportCompleteStatuses

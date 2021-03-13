@@ -1019,78 +1019,6 @@ namespace SZMK.Desktop.Views.Design_Engineer
             }
         }
 
-        private void Steel_TSM_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex >= 0)
-                {
-                    SaveFileDialog SaveReport = new SaveFileDialog();
-                    String date = DateTime.Now.ToString();
-                    date = date.Replace(".", "_");
-                    date = date.Replace(":", "_");
-                    SaveReport.FileName = "Отчет выборки металла от " + date;
-                    SaveReport.Filter = "Excel Files .xlsx|*.xlsx";
-                    List<Order> Report = new List<Order>();
-
-                    for (int i = 0; i < Order_DGV.SelectedRows.Count; i++)
-                    {
-                        Report.Add((Order)(View[Order_DGV.SelectedRows[i].Index]));
-                    }
-
-                    if (SaveReport.ShowDialog() == DialogResult.OK)
-                    {
-
-                        ALL_FormingReportForAllPosition_F FormingF = new ALL_FormingReportForAllPosition_F();
-                        FormingF.Show();
-                        Task<Boolean> task = ReportSteelAsync(Report, SaveReport.FileName);
-                        task.ContinueWith(t =>
-                        {
-                            if (t.Result)
-                            {
-                                FormingF.Invoke((MethodInvoker)delegate ()
-                                {
-                                    FormingF.Close();
-                                });
-                                if (MessageBox.Show("Отчет сформирован успешно." + Environment.NewLine + "Открыть его?", "Информация", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-                                {
-                                    if (File.Exists(SaveReport.FileName))
-                                    {
-                                        Process.Start(SaveReport.FileName);
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Отчет по пути не обнаружен." + Environment.NewLine + "Ошибка открытия отчета!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                FormingF.Invoke((MethodInvoker)delegate ()
-                                {
-                                    FormingF.Close();
-                                });
-                                MessageBox.Show("Ошибка фомирования отчета", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        });
-                    }
-                }
-                else
-                {
-                    throw new Exception("Необходимо выбрать чертежи");
-                }
-            }
-            catch (Exception E)
-            {
-                SystemArgs.PrintLog(E.ToString());
-                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private async Task<Boolean> ReportSteelAsync(List<Order> Report, String filename)
-        {
-            return await Task.Run(() => SystemArgs.Excel.ReportSteelOfDate(Report, filename));
-        }
-
         private void Order_DGV_SelectionChanged(object sender, EventArgs e)
         {
             if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex < View.Count())
@@ -1282,6 +1210,149 @@ namespace SZMK.Desktop.Views.Design_Engineer
                 SystemArgs.PrintLog(ex.ToString());
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void ReportSteelStandart_TSB_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex >= 0)
+                {
+                    SaveFileDialog SaveReport = new SaveFileDialog();
+                    String date = DateTime.Now.ToString();
+                    date = date.Replace(".", "_");
+                    date = date.Replace(":", "_");
+                    SaveReport.FileName = "Отчет выборки металла от " + date;
+                    SaveReport.Filter = "Excel Files .xlsx|*.xlsx";
+                    List<Order> Report = new List<Order>();
+
+                    for (int i = 0; i < Order_DGV.SelectedRows.Count; i++)
+                    {
+                        Report.Add((Order)(View[Order_DGV.SelectedRows[i].Index]));
+                    }
+
+                    if (SaveReport.ShowDialog() == DialogResult.OK)
+                    {
+
+                        ALL_FormingReportForAllPosition_F FormingF = new ALL_FormingReportForAllPosition_F();
+                        FormingF.Show();
+                        Task<Boolean> task = ReportSteelStandartAsync(Report, SaveReport.FileName);
+                        task.ContinueWith(t =>
+                        {
+                            if (t.Result)
+                            {
+                                FormingF.Invoke((MethodInvoker)delegate ()
+                                {
+                                    FormingF.Close();
+                                });
+                                if (MessageBox.Show("Отчет сформирован успешно." + Environment.NewLine + "Открыть его?", "Информация", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                                {
+                                    if (File.Exists(SaveReport.FileName))
+                                    {
+                                        Process.Start(SaveReport.FileName);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Отчет по пути не обнаружен." + Environment.NewLine + "Ошибка открытия отчета!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                FormingF.Invoke((MethodInvoker)delegate ()
+                                {
+                                    FormingF.Close();
+                                });
+                                MessageBox.Show("Ошибка фомирования отчета", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    throw new Exception("Необходимо выбрать чертежи");
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private async Task<Boolean> ReportSteelStandartAsync(List<Order> Report, String filename)
+        {
+            return await Task.Run(() => SystemArgs.Excel.ReportSteelOfDate(Report, filename));
+        }
+        private void ReportSteelMark_TSB_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex >= 0)
+                {
+                    SaveFileDialog SaveReport = new SaveFileDialog();
+                    String date = DateTime.Now.ToString();
+                    date = date.Replace(".", "_");
+                    date = date.Replace(":", "_");
+                    SaveReport.FileName = "Отчет выборки металла по маркам от " + date;
+                    SaveReport.Filter = "Excel Files .xlsx|*.xlsx";
+                    List<Order> Report = new List<Order>();
+
+                    for (int i = 0; i < Order_DGV.SelectedRows.Count; i++)
+                    {
+                        Report.Add((Order)(View[Order_DGV.SelectedRows[i].Index]));
+                    }
+
+                    if (SaveReport.ShowDialog() == DialogResult.OK)
+                    {
+
+                        ALL_FormingReportForAllPosition_F FormingF = new ALL_FormingReportForAllPosition_F();
+                        FormingF.Show();
+                        Task<Boolean> task = ReportSteelMarkAsync(Report, SaveReport.FileName);
+                        task.ContinueWith(t =>
+                        {
+                            if (t.Result)
+                            {
+                                FormingF.Invoke((MethodInvoker)delegate ()
+                                {
+                                    FormingF.Close();
+                                });
+                                if (MessageBox.Show("Отчет сформирован успешно." + Environment.NewLine + "Открыть его?", "Информация", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                                {
+                                    if (File.Exists(SaveReport.FileName))
+                                    {
+                                        Process.Start(SaveReport.FileName);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Отчет по пути не обнаружен." + Environment.NewLine + "Ошибка открытия отчета!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                FormingF.Invoke((MethodInvoker)delegate ()
+                                {
+                                    FormingF.Close();
+                                });
+                                MessageBox.Show("Ошибка фомирования отчета", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        });
+                    }
+                }
+                else
+                {
+                    throw new Exception("Необходимо выбрать чертежи");
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private async Task<Boolean> ReportSteelMarkAsync(List<Order> Report, String filename)
+        {
+            return await Task.Run(() => SystemArgs.Excel.ReportMarkSelected(Report, filename));
         }
     }
 }

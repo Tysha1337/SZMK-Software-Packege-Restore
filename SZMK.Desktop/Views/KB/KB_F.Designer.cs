@@ -61,6 +61,8 @@
             this.Time_Month_Report_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Time_SelectionDate_Report_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.Steel_TSM = new System.Windows.Forms.ToolStripMenuItem();
+            this.ReportSteelStandart_TSB = new System.Windows.Forms.ToolStripMenuItem();
+            this.ReportSteelMark_TSB = new System.Windows.Forms.ToolStripMenuItem();
             this.CompleteStatusReport_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingConfig_TSM = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,7 +119,6 @@
             this.label16 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.Order_DGV = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
             this.DataMatrix = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateCreate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -133,6 +134,7 @@
             this.Cancelled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StatusDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Finished = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -269,10 +271,26 @@
             // 
             // Steel_TSM
             // 
+            this.Steel_TSM.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ReportSteelStandart_TSB,
+            this.ReportSteelMark_TSB});
             this.Steel_TSM.Name = "Steel_TSM";
             this.Steel_TSM.Size = new System.Drawing.Size(201, 22);
             this.Steel_TSM.Text = "По выборке металла";
-            this.Steel_TSM.Click += new System.EventHandler(this.Steel_TSM_Click);
+            // 
+            // ReportSteelStandart_TSB
+            // 
+            this.ReportSteelStandart_TSB.Name = "ReportSteelStandart_TSB";
+            this.ReportSteelStandart_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelStandart_TSB.Text = "Стандартный";
+            this.ReportSteelStandart_TSB.Click += new System.EventHandler(this.ReportSteelStandart_TSB_Click);
+            // 
+            // ReportSteelMark_TSB
+            // 
+            this.ReportSteelMark_TSB.Name = "ReportSteelMark_TSB";
+            this.ReportSteelMark_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelMark_TSB.Text = "По маркам";
+            this.ReportSteelMark_TSB.Click += new System.EventHandler(this.ReportSteelMark_TSB_Click);
             // 
             // CompleteStatusReport_TSM
             // 
@@ -1030,20 +1048,6 @@
             this.Order_DGV.SelectionChanged += new System.EventHandler(this.Order_DGV_SelectionChanged);
             this.Order_DGV.Sorted += new System.EventHandler(this.Order_DGV_Sorted);
             // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(228)))), ((int)(((byte)(213)))));
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label1.Location = new System.Drawing.Point(5, 10);
-            this.label1.Margin = new System.Windows.Forms.Padding(5, 10, 3, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(882, 35);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Список чертежей";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // DataMatrix
             // 
             this.DataMatrix.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -1213,6 +1217,20 @@
             this.Finished.Name = "Finished";
             this.Finished.ReadOnly = true;
             // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(228)))), ((int)(((byte)(213)))));
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label1.Location = new System.Drawing.Point(5, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(5, 10, 3, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(882, 35);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Список чертежей";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // KB_F
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1333,5 +1351,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Cancelled;
         private System.Windows.Forms.DataGridViewTextBoxColumn StatusDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Finished;
+        private System.Windows.Forms.ToolStripMenuItem ReportSteelStandart_TSB;
+        private System.Windows.Forms.ToolStripMenuItem ReportSteelMark_TSB;
     }
 }

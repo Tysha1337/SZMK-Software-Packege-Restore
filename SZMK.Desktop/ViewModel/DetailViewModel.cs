@@ -367,31 +367,20 @@ namespace SZMK.Desktop.ViewModel
             {
                 int Index = -1;
 
-                string[] Arguments = new string[] { "PL", "Утеплит", "Риф", "Сетка 50/50х2.5 В=1800", "ПВ", "ГОСТ 8509-93", "ГОСТ 8510-93", "PD", "Профиль(кв.)", "Профиль", "*" };
+                string[] Arguments = new string[] { "PL" };
                 for (int i = 0; i < Arguments.Length; i++)
                 {
-                    if (Arguments[i].IndexOf("ГОСТ") == -1)
+                    if (Profile.IndexOf(Arguments[i]) != -1)
                     {
-                        if (Profile.IndexOf(Arguments[i]) != -1)
-                        {
-                            Index = i;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (_GostName.IndexOf(Arguments[i]) != -1)
-                        {
-                            Index = i;
-                            break;
-                        }
+                        Index = i;
+                        break;
                     }
                 }
                 switch (Index)
                 {
                     case 0:
-                        int var4 = Convert.ToInt32(Profile.Substring(2, Profile.IndexOf("x") - 2));
-                        int var5 = Convert.ToInt32(Profile.Substring(1 + Profile.IndexOf("x"), Profile.Length - Profile.IndexOf("x") - 1));
+                        double var4 = Convert.ToDouble(Profile.Substring(2, Profile.IndexOf("x") - 2));
+                        double var5 = Convert.ToDouble(Profile.Substring(1 + Profile.IndexOf("x"), Profile.Length - Profile.IndexOf("x") - 1));
 
                         if (var4 > var5)
                         {
@@ -401,26 +390,6 @@ namespace SZMK.Desktop.ViewModel
                         {
                             return "-" + var4.ToString();
                         }
-                    case 1:
-                        return _MarkSteel;
-                    case 2:
-                        return _MarkSteel;
-                    case 3:
-                        return "Сетка 50/50х2.5 В=1800";
-                    case 4:
-                        return _MarkSteel;
-                    case 5:
-                        return $"L{_Width.ToString("F2").TrimEnd('0', ',')}x{_FlangeThickness}";
-                    case 6:
-                        return $"L{_Width.ToString("F2").TrimEnd('0', ',')}x{_Width.ToString("F2").TrimEnd('0', ',')}x{_FlangeThickness}";
-                    case 7:
-                        return $"Труба {_Diameter}x{_PlateThickness}";
-                    case 8:
-                        return $"Тр.кв.{_Height}x{_PlateThickness}";
-                    case 9:
-                        return $"Тр.пр.{_Height}x{_Height}x{_PlateThickness}";
-                    case 10:
-                        return Profile.Replace("*", "x");
                 }
                 return Profile;
             }

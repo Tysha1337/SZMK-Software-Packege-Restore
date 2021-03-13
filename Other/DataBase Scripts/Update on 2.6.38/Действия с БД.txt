@@ -1,0 +1,28 @@
+CREATE TABLE public."PathDetails"
+(
+    "ID" bigint NOT NULL,
+    "DateCreate" timestamp without time zone NOT NULL,
+    "Path" character varying NOT NULL,
+    PRIMARY KEY ("ID")
+);
+
+ALTER TABLE public."PathDetails"
+    OWNER to postgres;
+
+ALTER TABLE public."Orders"
+    ADD COLUMN "ID_PathDetails" bigint;
+
+ALTER TABLE "Orders" ADD CONSTRAINT "Orders_fk2" FOREIGN KEY ("ID_PathDetails") REFERENCES "PathDetails"("ID") ON DELETE CASCADE;
+
+CREATE SEQUENCE public."PathDetails_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public."PathDetails_ID_seq"
+    OWNER TO postgres;
+
+ALTER TABLE public."PathDetails"
+    ALTER COLUMN "ID" SET DEFAULT nextval('"PathDetails_ID_seq"'::regclass);

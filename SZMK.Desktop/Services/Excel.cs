@@ -21,6 +21,7 @@ namespace SZMK.Desktop.Services
         private readonly string TempPathOrderOfSelect = @"TempReports\OrderOfSelect\";
         private readonly string TempPathPastTimeOfDate = @"TempReports\PastTimeOfDate\";
         private readonly string TempPathSteel = @"TempReports\Steel\";
+        private readonly string TempPathMark = @"TempReports\Mark\";
         private readonly string TempPathCompleteStatuses = @"TempReports\CompleteStatuses\";
 
         public Boolean CreateAndExportActsKB(List<OrderScanSession> ScanSession)
@@ -306,8 +307,8 @@ namespace SZMK.Desktop.Services
                             WS.Cells[i + rowCntReport + 1, 3].Value = Report[i].List;
                             WS.Cells[i + rowCntReport + 1, 4].Value = Report[i].Mark;
                             WS.Cells[i + rowCntReport + 1, 5].Value = Report[i].Executor;
-                            WS.Cells[i + rowCntReport + 1, 6].Value = Report[i].Lenght.ToString();
-                            WS.Cells[i + rowCntReport + 1, 7].Value = Report[i].Weight.ToString();
+                            WS.Cells[i + rowCntReport + 1, 6].Value = Report[i].Lenght;
+                            WS.Cells[i + rowCntReport + 1, 7].Value = Report[i].Weight;
                             WS.Cells[i + rowCntReport + 1, 8].Value = Report[i].Status.Name;
                             Int32 Count = 0;
                             for (int j = 0; j < OrderStatuses.Count; j++)
@@ -414,8 +415,8 @@ namespace SZMK.Desktop.Services
                             WS.Cells[i + rowCntReport + 1, 3].Value = Report[i].List;
                             WS.Cells[i + rowCntReport + 1, 4].Value = Report[i].Mark;
                             WS.Cells[i + rowCntReport + 1, 5].Value = Report[i].Executor;
-                            WS.Cells[i + rowCntReport + 1, 6].Value = Report[i].Lenght.ToString();
-                            WS.Cells[i + rowCntReport + 1, 7].Value = Report[i].Weight.ToString();
+                            WS.Cells[i + rowCntReport + 1, 6].Value = Report[i].Lenght;
+                            WS.Cells[i + rowCntReport + 1, 7].Value = Report[i].Weight;
                             WS.Cells[i + rowCntReport + 1, 8].Value = Report[i].Status.Name;
                             Int32 Count = 0;
                             for (int j = 0; j < OrderStatuses.Count; j++)
@@ -907,7 +908,78 @@ namespace SZMK.Desktop.Services
                 WS.Cells[3, 3].Value = Convert.ToInt32(WS.Cells[3, 3].Value) + 1;
             }
         }
+        public bool ReportMarkSelected(List<Order> Report, String FileName)
+        {
+            System.IO.FileInfo fInfoSrcUnique = new System.IO.FileInfo(SystemArgs.Path.TemplateReportMark);
+            Directory.CreateDirectory(TempPathMark);
+            var WBcopy = new ExcelPackage(fInfoSrcUnique).File.CopyTo(TempPathMark + Path.GetFileName(FileName));
 
+            try
+            {
+                ExcelPackage WB = new ExcelPackage(new System.IO.FileInfo(TempPathMark + Path.GetFileName(FileName)));
+                ExcelWorksheet WS = WB.Workbook.Worksheets[1];
+                var rowCntReport = WS.Dimension.End.Row;
+
+                if (FileName.IndexOf(@":\") != -1)
+                {
+                    List<Order> sortOrders = Report.OrderBy(p => p.Number).ThenBy(p => p.Mark).ToList();
+
+                    for(int i=0; i < sortOrders.Count; i++)
+                    {
+                        List<Detail> details = SystemArgs.Request.GetDetails(sortOrders[i].ID);
+
+                        var GroupByOrder = details.GroupBy(p => p.MarkSteel.Replace(" ", "")).Select(p => new { Mark = p.Key, Profile = p.GroupBy(l => l.Profile.Replace(" ", "")).OrderBy(k => k.Key).ToList() }).OrderBy(p => p.Mark).ToList();
+                        for (int g = 0; g < GroupByOrder.Count; g++)
+                        {
+                            for (int j = 0; j < GroupByOrder[g].Profile.Count; j++)
+                            {
+                                rowCntReport = WS.Dimension.End.Row;
+                                WS.Cells[rowCntReport + 1, 2].Value = sortOrders[i].Number;
+                                WS.Cells[rowCntReport + 1, 3].Value = sortOrders[i].Mark;
+                                WS.Cells[rowCntReport + 1, 4].Value = GroupByOrder[g].Mark;
+                                WS.Cells[rowCntReport + 1, 5].Value = GroupByOrder[g].Profile[j].Key;
+                                if (!String.IsNullOrEmpty(GroupByOrder[g].Profile[j].Select(p => p.GostName).FirstOrDefault()))
+                                {
+                                    WS.Cells[rowCntReport + 1, 6].Value = GroupByOrder[g].Profile[j].Select(p => p.GostName).First();
+                                }
+                                else
+                                {
+                                    WS.Cells[rowCntReport + 1, 6].Value = "Гост не найден";
+                                }
+                                WS.Cells[rowCntReport + 1, 7].Value = GroupByOrder[g].Profile[j].Sum(p => Convert.ToDouble(p.SubtotalWeight));
+                            }
+                        }
+                    }
+
+                    int last = WS.Dimension.End.Row;
+
+                    WS.Cells[last + 1, 6].Value = "Итого";
+                    WS.Cells[last + 1, 7].Formula = $"SUM(G3:G{last})";
+
+                    last = WS.Dimension.End.Row;
+
+                    WS.Cells["B2:G" + last].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    WS.Cells["B2:G" + last].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    WS.Cells["B2:G" + last].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    WS.Cells["B2:G" + last].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    WS.Cells["B2:G" + last].Style.Font.Name = "Times New Roman";
+                    WS.Cells["B2:G" + last].Style.Font.Size = 14;
+                    WS.Cells["B2:G" + last].AutoFitColumns();
+                    WS.Cells["B2:G" + last].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                    WB.Save();
+
+                    MoveFile(TempPathMark + Path.GetFileName(FileName), FileName);
+                }
+            }
+            catch (Exception e)
+            {
+                SystemArgs.PrintLog(e.ToString());
+                return false;
+            }
+            return true;
+        }
         private void MoveFile(string OldPath, string NewPath)
         {
             File.Copy(OldPath, NewPath);

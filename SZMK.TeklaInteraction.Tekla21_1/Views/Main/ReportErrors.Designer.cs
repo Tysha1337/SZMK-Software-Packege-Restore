@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportErrors));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -118,9 +118,9 @@
             // DataMatrix
             // 
             this.DataMatrix.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.DataMatrix.DataPropertyName = "Data";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.DataMatrix.DefaultCellStyle = dataGridViewCellStyle5;
+            this.DataMatrix.DataPropertyName = "InfoView";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.DataMatrix.DefaultCellStyle = dataGridViewCellStyle1;
             this.DataMatrix.FillWeight = 60F;
             this.DataMatrix.HeaderText = "Данные";
             this.DataMatrix.Name = "DataMatrix";
@@ -130,8 +130,8 @@
             // 
             this.Discription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Discription.DataPropertyName = "Error";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Discription.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Discription.DefaultCellStyle = dataGridViewCellStyle2;
             this.Discription.HeaderText = "Ошибка";
             this.Discription.Name = "Discription";
             this.Discription.ReadOnly = true;
@@ -160,9 +160,9 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button Close_B;
         public System.Windows.Forms.DataGridView Report_DGV;
+        public System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataMatrix;
         private System.Windows.Forms.DataGridViewTextBoxColumn Discription;
     }

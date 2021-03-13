@@ -49,3 +49,4 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction\bi
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction\bin\x64\Debug\Tekla2018i\SZMK.TeklaInteraction.Tekla2018i.exe.config
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction\bin\x64\Debug\Tekla2018i\SZMK.TeklaInteraction.Tekla2018i.exe
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction\bin\x64\Debug\Tekla2018i\SZMK.TeklaInteraction.Tekla2018i.pdb
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\ObjDir\2018\SZMK.TeklaInteraction.Tekla2018i\SZMK.TeklaInteraction.Tekla2018i.Views.Main.ReportWarnings.resources
