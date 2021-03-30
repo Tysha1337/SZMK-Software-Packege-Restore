@@ -31,6 +31,7 @@ namespace SZMK.Desktop
         static public Services.Template Template;//Проверка шаблонов
         static public Services.Excel Excel;//Формирование Актов при добавлении чертежей
         static public Services.UnLoadSpecific UnLoadSpecific;//Проверка выгрузки деталей
+        static public Services.PDFService PDFService; //Работа с пдф
 
         static public Services.Scan.ByteScout ByteScout; // Конфигурация программы распознавания
         static public Services.Scan.ServerMobileAppOrder ServerMobileAppOrder; //Сервер для получения данных с мобильного ПО чертежей
@@ -51,6 +52,7 @@ namespace SZMK.Desktop
         static public List<Models.TypeAdd> TypesAdds;//Общий типов добавления
         static public List<Models.Model> Models;//Общий список моделей
         static public List<Models.PathDetails> PathDetails; //Общий список путей до деталей
+        static public List<Models.PathArhive> PathArhives; //Общий список путей до архива
 
         public static void PrintLog(String Message)
         {

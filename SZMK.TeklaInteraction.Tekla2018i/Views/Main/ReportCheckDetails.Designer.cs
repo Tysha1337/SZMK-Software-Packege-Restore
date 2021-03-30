@@ -29,17 +29,18 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Views.Main
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.Report_DGV = new System.Windows.Forms.DataGridView();
+            this.Cancel_B = new System.Windows.Forms.Button();
+            this.OK_B = new System.Windows.Forms.Button();
             this.Order = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Finded = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Change = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Cancel_B = new System.Windows.Forms.Button();
-            this.OK_B = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Report_DGV)).BeginInit();
             this.SuspendLayout();
@@ -84,17 +85,18 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Views.Main
             this.Report_DGV.AllowUserToAddRows = false;
             this.Report_DGV.AllowUserToDeleteRows = false;
             this.Report_DGV.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Report_DGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Report_DGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.Report_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Report_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Order,
+            this.TypePath,
             this.Path,
             this.Finded,
             this.Change});
@@ -107,47 +109,6 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Views.Main
             this.Report_DGV.RowHeadersVisible = false;
             this.Report_DGV.Size = new System.Drawing.Size(763, 366);
             this.Report_DGV.TabIndex = 1;
-            // 
-            // Order
-            // 
-            this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Order.DataPropertyName = "Order";
-            this.Order.FillWeight = 15F;
-            this.Order.HeaderText = "Заказ";
-            this.Order.Name = "Order";
-            this.Order.ReadOnly = true;
-            this.Order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Path
-            // 
-            this.Path.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Path.DataPropertyName = "Path";
-            this.Path.FillWeight = 70F;
-            this.Path.HeaderText = "Путь";
-            this.Path.Name = "Path";
-            this.Path.ReadOnly = true;
-            this.Path.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Finded
-            // 
-            this.Finded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Finded.DataPropertyName = "Finded";
-            this.Finded.FillWeight = 10F;
-            this.Finded.HeaderText = "Найден";
-            this.Finded.Name = "Finded";
-            this.Finded.ReadOnly = true;
-            this.Finded.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // Change
-            // 
-            this.Change.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.NullValue = "Обзор";
-            this.Change.DefaultCellStyle = dataGridViewCellStyle6;
-            this.Change.FillWeight = 10F;
-            this.Change.HeaderText = "Изменить";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
             // 
             // Cancel_B
             // 
@@ -185,6 +146,56 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Views.Main
             this.OK_B.Text = "Подтвердить";
             this.OK_B.UseVisualStyleBackColor = false;
             // 
+            // Order
+            // 
+            this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Order.DataPropertyName = "Order";
+            this.Order.FillWeight = 10F;
+            this.Order.HeaderText = "Заказ";
+            this.Order.Name = "Order";
+            this.Order.ReadOnly = true;
+            this.Order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // TypePath
+            // 
+            this.TypePath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TypePath.FillWeight = 10F;
+            this.TypePath.HeaderText = "Тип";
+            this.TypePath.Name = "TypePath";
+            this.TypePath.ReadOnly = true;
+            this.TypePath.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Path
+            // 
+            this.Path.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Path.DataPropertyName = "Path";
+            this.Path.FillWeight = 60F;
+            this.Path.HeaderText = "Путь";
+            this.Path.Name = "Path";
+            this.Path.ReadOnly = true;
+            this.Path.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Finded
+            // 
+            this.Finded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Finded.DataPropertyName = "Finded";
+            this.Finded.FillWeight = 10F;
+            this.Finded.HeaderText = "Найден";
+            this.Finded.Name = "Finded";
+            this.Finded.ReadOnly = true;
+            this.Finded.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Change
+            // 
+            this.Change.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.NullValue = "Обзор";
+            this.Change.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Change.FillWeight = 10F;
+            this.Change.HeaderText = "Изменить";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
+            // 
             // ReportCheckDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -213,11 +224,12 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Views.Main
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView Report_DGV;
+        private System.Windows.Forms.Button Cancel_B;
+        private System.Windows.Forms.Button OK_B;
         private System.Windows.Forms.DataGridViewTextBoxColumn Order;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypePath;
         private System.Windows.Forms.DataGridViewTextBoxColumn Path;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Finded;
         private System.Windows.Forms.DataGridViewButtonColumn Change;
-        private System.Windows.Forms.Button Cancel_B;
-        private System.Windows.Forms.Button OK_B;
     }
 }

@@ -1,0 +1,15 @@
+ALTER TABLE public."Detail"
+    ADD COLUMN "Name" character varying;
+
+ALTER TABLE public."PathDetails"
+    RENAME "Path" TO "PathDWG";
+
+ALTER TABLE public."PathDetails"
+    ADD COLUMN "PathPDF" character varying NOT NULL DEFAULT 'Не найдена папка деталировки';
+
+ALTER TABLE public."PathDetails"
+    ADD COLUMN "PathDXF" character varying NOT NULL DEFAULT 'Не найдена папка деталировки';
+
+ALTER TABLE public."Orders"
+    ADD COLUMN "ID_PathArhive" bigint;
+ALTER TABLE "Orders" ADD CONSTRAINT "Orders_fk3" FOREIGN KEY ("ID_PathArhive") REFERENCES "PathArhive"("ID") ON DELETE CASCADE;

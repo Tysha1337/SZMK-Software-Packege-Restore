@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,31 +26,81 @@ namespace SZMK.TeklaInteraction.Tekla2018.Views.Main
 
         private void ReportCheckDetails_Load(object sender, EventArgs e)
         {
-            Report_DGV.AutoGenerateColumns = false;
-            Report_DGV.DataSource = pathDetails;
+            DGV_refresh();
         }
         private void DGV_refresh()
         {
-            Report_DGV.DataSource = null;
-            Report_DGV.DataSource = pathDetails;
+            Report_DGV.Rows.Clear();
+
+            for (int i = 0; i < pathDetails.Count; i++)
+            {
+                Report_DGV.Rows.Add(pathDetails[i].Order, "DWG", pathDetails[i].PathDWG, pathDetails[i].FindedDWG);
+                Report_DGV.Rows.Add(pathDetails[i].Order, "PDF", pathDetails[i].PathPDF, pathDetails[i].FindedPDF);
+                Report_DGV.Rows.Add(pathDetails[i].Order, "DXF", pathDetails[i].PathDXF, pathDetails[i].FindedDXF);
+            }
         }
         private void Report_DGV_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (Report_DGV.Columns[e.ColumnIndex].Name == "Change" && e.RowIndex >= 0)
+            try
             {
-                FolderBrowserDialog Fbd = new FolderBrowserDialog()
+                if (Report_DGV.Columns[e.ColumnIndex].Name == "Change" && e.RowIndex >= 0)
                 {
-                    ShowNewFolderButton = false,
-                    Description = "Выберите папку с деталями"
-                };
+                    FolderBrowserDialog Fbd = new FolderBrowserDialog()
+                    {
+                        ShowNewFolderButton = false,
+                        Description = "Выберите папку с деталями"
+                    };
 
-                if (Fbd.ShowDialog() == DialogResult.OK)
-                {
-                    pathDetails[e.RowIndex].Path = Fbd.SelectedPath;
-                    pathDetails[e.RowIndex].Finded = true;
+                    if (Fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        OrderPathDetailsBindingModel Paths = pathDetails.FirstOrDefault(p => p.Order == Report_DGV[0, e.RowIndex].Value.ToString());
 
-                    DGV_refresh();
+                        if (Paths != null)
+                        {
+                            string ModelPath = Fbd.SelectedPath;
+
+                            if (ModelPath.Substring(0, 2) != @"\\")
+                            {
+                                using (var managementObject = new ManagementObject())
+                                {
+                                    managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                                    var driveType = (DriveType)(uint)managementObject["DriveType"];
+                                    var networkPath = Convert.ToString(managementObject["ProviderName"]);
+
+                                    ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                }
+                            }
+
+                            ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                            switch (Report_DGV[1, e.RowIndex].Value)
+                            {
+                                case "DWG":
+                                    Paths.PathDWG = ModelPath;
+                                    Paths.FindedDWG = true;
+                                    break;
+                                case "PDF":
+                                    Paths.PathPDF = ModelPath;
+                                    Paths.FindedPDF = true;
+                                    break;
+                                case "DXF":
+                                    Paths.PathDXF = ModelPath;
+                                    Paths.FindedDXF = true;
+                                    break;
+                            }
+
+                            DGV_refresh();
+                        }
+                        else
+                        {
+                            throw new Exception("Ошибка изменения пути деталировки");
+                        }
+                    }
                 }
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show(Ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

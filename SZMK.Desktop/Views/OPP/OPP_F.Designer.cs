@@ -64,6 +64,9 @@
             this.ReportSteelStandart_TSB = new System.Windows.Forms.ToolStripMenuItem();
             this.ReportSteelMark_TSB = new System.Windows.Forms.ToolStripMenuItem();
             this.CompleteStatusReport_TSM = new System.Windows.Forms.ToolStripMenuItem();
+            this.чертежиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CheckDetails_TSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.PrintDrawings_To_PDF_TSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingConfig_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingColumn_TSM = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,6 +149,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.добавлениеToolStripMenuItem,
             this.Report_TSM,
+            this.чертежиToolStripMenuItem,
             this.настройкиToolStripMenuItem,
             this.помощьToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -278,14 +282,14 @@
             // ReportSteelStandart_TSB
             // 
             this.ReportSteelStandart_TSB.Name = "ReportSteelStandart_TSB";
-            this.ReportSteelStandart_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelStandart_TSB.Size = new System.Drawing.Size(147, 22);
             this.ReportSteelStandart_TSB.Text = "Стандартный";
             this.ReportSteelStandart_TSB.Click += new System.EventHandler(this.ReportSteelStandart_TSB_Click);
             // 
             // ReportSteelMark_TSB
             // 
             this.ReportSteelMark_TSB.Name = "ReportSteelMark_TSB";
-            this.ReportSteelMark_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelMark_TSB.Size = new System.Drawing.Size(147, 22);
             this.ReportSteelMark_TSB.Text = "По маркам";
             this.ReportSteelMark_TSB.Click += new System.EventHandler(this.ReportSteelMark_TSB_Click);
             // 
@@ -295,6 +299,29 @@
             this.CompleteStatusReport_TSM.Size = new System.Drawing.Size(201, 22);
             this.CompleteStatusReport_TSM.Text = "Прохождение статусов";
             this.CompleteStatusReport_TSM.Click += new System.EventHandler(this.CompleteStatusReport_TSM_Click);
+            // 
+            // чертежиToolStripMenuItem
+            // 
+            this.чертежиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CheckDetails_TSMI,
+            this.PrintDrawings_To_PDF_TSMI});
+            this.чертежиToolStripMenuItem.Name = "чертежиToolStripMenuItem";
+            this.чертежиToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.чертежиToolStripMenuItem.Text = "Чертежи";
+            // 
+            // CheckDetails_TSMI
+            // 
+            this.CheckDetails_TSMI.Name = "CheckDetails_TSMI";
+            this.CheckDetails_TSMI.Size = new System.Drawing.Size(202, 22);
+            this.CheckDetails_TSMI.Text = "Проверка деталировки";
+            this.CheckDetails_TSMI.Click += new System.EventHandler(this.CheckDetails_TSMI_Click);
+            // 
+            // PrintDrawings_To_PDF_TSMI
+            // 
+            this.PrintDrawings_To_PDF_TSMI.Name = "PrintDrawings_To_PDF_TSMI";
+            this.PrintDrawings_To_PDF_TSMI.Size = new System.Drawing.Size(202, 22);
+            this.PrintDrawings_To_PDF_TSMI.Text = "Печать чертежей в PDF";
+            this.PrintDrawings_To_PDF_TSMI.Click += new System.EventHandler(this.PrintDrawings_To_PDF_TSMI_Click);
             // 
             // настройкиToolStripMenuItem
             // 
@@ -1093,7 +1120,7 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(190, 35);
             this.label12.TabIndex = 26;
-            this.label12.Text = "Выделенно чертежей";
+            this.label12.Text = "Выделено чертежей";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CountOrder_TB
@@ -1328,5 +1355,8 @@
         private System.Windows.Forms.ToolStripMenuItem Steel_TSM;
         private System.Windows.Forms.ToolStripMenuItem ReportSteelStandart_TSB;
         private System.Windows.Forms.ToolStripMenuItem ReportSteelMark_TSB;
+        private System.Windows.Forms.ToolStripMenuItem чертежиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CheckDetails_TSMI;
+        private System.Windows.Forms.ToolStripMenuItem PrintDrawings_To_PDF_TSMI;
     }
 }

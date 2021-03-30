@@ -9,6 +9,7 @@ namespace SZMK.Desktop.Models
     public class Detail
     {
         public long ID { get; set; }
+        public string Name { get; set; }
         public string Position { get; set; }
         public long Count { get; set; }
         public string Profile { get; set; }

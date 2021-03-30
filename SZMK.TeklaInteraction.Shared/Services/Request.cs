@@ -461,8 +461,8 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"Detail\"(\"Position\",\"Count\",\"Profile\",\"Width\",\"Lenght\",\"Weight\",\"Height\",\"Diameter\",\"SubtotalWeight\",\"MarkSteel\",\"Discription\",\"Machining\", \"MethodOfPaintingRAL\", \"PaintingArea\",\"GostName\",\"FlangeThickness\",\"PlateThickness\") " +
-                        $"VALUES('{Detail.Position}','{Detail.Count}','{Detail.Profile}','{Detail.Width}','{Detail.Lenght}','{Detail.Weight}','{Detail.Height}','{Detail.Diameter}','{Detail.SubtotalWeight}','{Detail.MarkSteel}','{Detail.Discription}','{Detail.Machining}', '{Detail.MethodOfPaintingRAL}', '{Detail.PaintingArea}','{Detail.GostName}','{Detail.FlangeThickness}','{Detail.PlateThickness}'); ", Connect))
+                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"Detail\"(\"Position\",\"Count\",\"Profile\",\"Width\",\"Lenght\",\"Weight\",\"Height\",\"Diameter\",\"SubtotalWeight\",\"MarkSteel\",\"Discription\",\"Machining\", \"MethodOfPaintingRAL\", \"PaintingArea\",\"GostName\",\"FlangeThickness\",\"PlateThickness\",\"Name\") " +
+                        $"VALUES('{Detail.Position}','{Detail.Count}','{Detail.Profile}','{Detail.Width}','{Detail.Lenght}','{Detail.Weight}','{Detail.Height}','{Detail.Diameter}','{Detail.SubtotalWeight}','{Detail.MarkSteel}','{Detail.Discription}','{Detail.Machining}', '{Detail.MethodOfPaintingRAL}', '{Detail.PaintingArea}','{Detail.GostName}','{Detail.FlangeThickness}','{Detail.PlateThickness}','{Detail.Name}'); ", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -756,13 +756,13 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Path\" FROM public.\"PathDetails\" WHERE \"Path\"='{pathDetails.Path}';", Connect))
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"PathDWG\", \"PathPDF\", \"PathDXF\" FROM public.\"PathDetails\" WHERE \"PathDWG\"='{pathDetails.PathDWG}' AND \"PathPDF\"='{pathDetails.PathPDF}' AND \"PathDXF\"='{pathDetails.PathDXF}';", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
                         {
                             while (Reader.Read())
                             {
-                                pathDetails = new PathDetails { Id = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), Path = Reader.GetString(2) };
+                                pathDetails = new PathDetails { Id = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), PathDWG = Reader.GetString(2), PathPDF = Reader.GetString(3), PathDXF = Reader.GetString(4) };
                             }
                         }
                     }
@@ -785,7 +785,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"PathDetails\"(\"DateCreate\", \"Path\") VALUES('{DateTime.Now}', '{pathDetails.Path}'); ", Connect))
+                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"PathDetails\"(\"DateCreate\", \"PathDWG\", \"PathPDF\", \"PathDXF\") VALUES('{DateTime.Now}', '{pathDetails.PathDWG}', '{pathDetails.PathPDF}', '{pathDetails.PathDXF}'); ", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -810,7 +810,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Path\" FROM public.\"PathDetails\" WHERE \"Path\"='{pathDetails.Path}';", Connect))
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"PathDWG\", \"PathPDF\", \"PathDXF\" FROM public.\"PathDetails\" WHERE \"PathDWG\"='{pathDetails.PathDWG}' AND \"PathPDF\"='{pathDetails.PathPDF}' AND \"PathDXF\"='{pathDetails.PathDXF}';", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
                         {

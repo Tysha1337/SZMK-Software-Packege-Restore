@@ -219,7 +219,7 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                 {
                     foreach (var drawing in model.Drawings.Where(p => p.Order == path.Order))
                     {
-                        drawing.PathDetails = new PathDetails { DateCreate = DateTime.Now, Path = path.Path };
+                        drawing.PathDetails = new PathDetails { DateCreate = DateTime.Now, PathDWG = path.PathDWG, PathPDF = path.PathPDF, PathDXF = path.PathDXF };
                     }
                 }
 
@@ -279,6 +279,7 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                     detail.Nodes.Add("Мех. обр.: " + model.Drawings[i].Details[j].Machining);
                     detail.Nodes.Add("Способ покраски RAL: " + model.Drawings[i].Details[j].MethodOfPaintingRAL);
                     detail.Nodes.Add("Площадь покраски: " + model.Drawings[i].Details[j].PaintingArea);
+                    detail.Nodes.Add("Наименование выгрузки: " + model.Drawings[i].Details[j].Name);
 
                     details.Nodes.Add(detail);
                 }

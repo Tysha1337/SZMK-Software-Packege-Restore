@@ -37,6 +37,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Views.Main
             this.Cancel_B = new System.Windows.Forms.Button();
             this.OK_B = new System.Windows.Forms.Button();
             this.Order = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Finded = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Change = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -95,6 +96,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Views.Main
             this.Report_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Report_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Order,
+            this.TypePath,
             this.Path,
             this.Finded,
             this.Change});
@@ -149,17 +151,26 @@ namespace SZMK.TeklaInteraction.Tekla2017.Views.Main
             // 
             this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Order.DataPropertyName = "Order";
-            this.Order.FillWeight = 15F;
+            this.Order.FillWeight = 10F;
             this.Order.HeaderText = "Заказ";
             this.Order.Name = "Order";
             this.Order.ReadOnly = true;
             this.Order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // TypePath
+            // 
+            this.TypePath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TypePath.FillWeight = 10F;
+            this.TypePath.HeaderText = "Тип";
+            this.TypePath.Name = "TypePath";
+            this.TypePath.ReadOnly = true;
+            this.TypePath.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // Path
             // 
             this.Path.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Path.DataPropertyName = "Path";
-            this.Path.FillWeight = 70F;
+            this.Path.FillWeight = 60F;
             this.Path.HeaderText = "Путь";
             this.Path.Name = "Path";
             this.Path.ReadOnly = true;
@@ -215,6 +226,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Views.Main
         private System.Windows.Forms.Button Cancel_B;
         private System.Windows.Forms.Button OK_B;
         private System.Windows.Forms.DataGridViewTextBoxColumn Order;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypePath;
         private System.Windows.Forms.DataGridViewTextBoxColumn Path;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Finded;
         private System.Windows.Forms.DataGridViewButtonColumn Change;

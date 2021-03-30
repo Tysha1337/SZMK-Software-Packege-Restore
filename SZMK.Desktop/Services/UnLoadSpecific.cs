@@ -76,7 +76,7 @@ namespace SZMK.Desktop.Services
             Order order = SystemArgs.Request.GetOrder(List, Number);
             Int64 IDOrder = order.ID;
             List<Detail> details = SystemArgs.Request.GetDetails(IDOrder);
-            string pathDetails = order.PathDetails.Path;
+            string pathDetails = order.PathDetails.PathDWG;
 
             if (details.GroupBy(p => p.Position).Count() > 1)
             {
@@ -84,7 +84,7 @@ namespace SZMK.Desktop.Services
                 {
                     if (details[j] != null)
                     {
-                        if (CheckedDetail(pathDetails, details[j].Position.ToString()))
+                        if (CheckedDetail(pathDetails, details[j]))
                         {
                             if (ExecutorMails.Where(p => p.Executor.Equals(Executor)).Count() != 0)
                             {
@@ -92,7 +92,10 @@ namespace SZMK.Desktop.Services
                                 {
                                     if (Executor.Equals(item.Executor))
                                     {
-                                        item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, true));
+                                        if (item.GetSpecifics().FindAll(p => p.Number == Number && p.NumberSpecific == details[j].Position).Count == 0)
+                                        {
+                                            item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, true));
+                                        }
                                     }
                                 }
                             }
@@ -110,7 +113,10 @@ namespace SZMK.Desktop.Services
                                 {
                                     if (Executor.Equals(item.Executor))
                                     {
-                                        item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, false));
+                                        if (item.GetSpecifics().FindAll(p => p.Number == Number && p.NumberSpecific == details[j].Position).Count == 0)
+                                        {
+                                            item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, false));
+                                        }
                                     }
                                 }
                             }
@@ -124,21 +130,35 @@ namespace SZMK.Desktop.Services
                 }
             }
         }
-        private bool CheckedDetail(string pathDetails, string Position)
+        private bool CheckedDetail(string pathDetails, Detail detail)
         {
             try
             {
-                if (File.Exists(pathDetails + @"\" + "Дет." + Position + ".dwg"))
+                if (!String.IsNullOrEmpty(detail.Name))
                 {
-                    return true;
-                }
-                else if (Directory.Exists(pathDetails) && Directory.GetFiles(pathDetails, Position + " - Дет.*.dwg", SearchOption.TopDirectoryOnly).Length != 0)
-                {
-                    return true;
+                    if (File.Exists(pathDetails + @"\" + detail.Name + ".dwg"))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    return false;
+                    if (File.Exists(pathDetails + @"\" + "Дет." + detail.Position + ".dwg"))
+                    {
+                        return true;
+                    }
+                    else if (Directory.Exists(pathDetails) && Directory.GetFiles(pathDetails, detail.Position + " - Дет.*.dwg", SearchOption.TopDirectoryOnly).Length != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             catch
@@ -155,24 +175,78 @@ namespace SZMK.Desktop.Services
 
             foreach (var order in GroupOrder)
             {
+                orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key });
+
                 try
                 {
                     if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\Детали DWG"))
                     {
-                        orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = Orders[0].Model.Path + @"\Чертежи\Детали DWG", Finded = true });
+                        orderPathDetails.Last().PathDWG = Orders[0].Model.Path + @"\Чертежи\Детали DWG";
+                        orderPathDetails.Last().FindedDWG = true;
                     }
                     else if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали DWG"))
                     {
-                        orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали DWG", Finded = true });
+                        orderPathDetails.Last().PathDWG = Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали DWG";
+                        orderPathDetails.Last().FindedDWG = true;
                     }
                     else
                     {
-                        orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = "Не найдена папка деталировки", Finded = false });
+                        orderPathDetails.Last().PathDWG = "Не найдена папка деталировки";
+                        orderPathDetails.Last().FindedDWG = false;
                     }
                 }
                 catch
                 {
-                    orderPathDetails.Add(new OrderPathDetailsBindingModel { Order = order.Key, Path = "Ошибка прав доступа к папке с деталировкой", Finded = false });
+                    orderPathDetails.Last().PathDWG = "Ошибка прав доступа к папке с деталировкой";
+                    orderPathDetails.Last().FindedDWG = false;
+                }
+
+                try
+                {
+                    if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\Детали PDF"))
+                    {
+                        orderPathDetails.Last().PathPDF = Orders[0].Model.Path + @"\Чертежи\Детали PDF";
+                        orderPathDetails.Last().FindedPDF = true;
+                    }
+                    else if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали PDF"))
+                    {
+                        orderPathDetails.Last().PathPDF = Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали PDF";
+                        orderPathDetails.Last().FindedPDF = true;
+                    }
+                    else
+                    {
+                        orderPathDetails.Last().PathPDF = "Не найдена папка деталировки";
+                        orderPathDetails.Last().FindedPDF = false;
+                    }
+                }
+                catch
+                {
+                    orderPathDetails.Last().PathPDF = "Ошибка прав доступа к папке с деталировкой";
+                    orderPathDetails.Last().FindedPDF = false;
+                }
+
+                try
+                {
+                    if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\Детали DXF"))
+                    {
+                        orderPathDetails.Last().PathDXF = Orders[0].Model.Path + @"\Чертежи\Детали DXF";
+                        orderPathDetails.Last().FindedDXF = true;
+                    }
+                    else if (Directory.Exists(Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали DXF"))
+                    {
+                        orderPathDetails.Last().PathDXF = Orders[0].Model.Path + @"\Чертежи\" + order.Key + @"\Детали DXF";
+                        orderPathDetails.Last().FindedDXF = true;
+                    }
+                    else
+                    {
+                        orderPathDetails.Last().PathDXF = "Не найдена папка деталировки";
+                        orderPathDetails.Last().FindedDXF = false;
+                    }
+                }
+                catch
+                {
+                    orderPathDetails.Last().PathDXF = "Ошибка прав доступа к папке с деталировкой";
+                    orderPathDetails.Last().FindedDXF = false;
                 }
             }
 

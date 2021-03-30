@@ -1,0 +1,23 @@
+CREATE TABLE public."PathArhive"
+(
+    "ID" bigint NOT NULL,
+    "DateCreate" timestamp without time zone NOT NULL,
+    "Path" character varying NOT NULL,
+    PRIMARY KEY ("ID")
+);
+
+ALTER TABLE public."PathArhive"
+    OWNER to postgres;
+
+CREATE SEQUENCE public."PathArhive_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public."PathArhive_ID_seq"
+    OWNER TO postgres;
+
+ALTER TABLE public."PathArhive"
+    ALTER COLUMN "ID" SET DEFAULT nextval('"PathArhive_ID_seq"'::regclass);

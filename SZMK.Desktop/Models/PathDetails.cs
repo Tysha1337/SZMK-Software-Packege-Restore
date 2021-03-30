@@ -10,6 +10,8 @@ namespace SZMK.Desktop.Models
     {
         public long ID { get; set; }
         public DateTime DateCreate { get; set; }
-        public string Path { get; set; }
+        public string PathDWG { get; set; }
+        public string PathPDF { get; set; }
+        public string PathDXF { get; set; }
     }
 }

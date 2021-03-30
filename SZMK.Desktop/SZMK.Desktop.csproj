@@ -62,6 +62,12 @@
     <Reference Include="Npgsql, Version=4.1.2.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.1.2\lib\net461\Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="SimpleTCP, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleTCP.1.0.24\lib\net45\SimpleTCP.dll</HintPath>
@@ -121,12 +127,14 @@
     <Compile Include="BindingModels\OrderPathDetailsBindingModel.cs" />
     <Compile Include="BindingModels\OrdersGetting.cs" />
     <Compile Include="BindingModels\StringErrorBindingModels.cs" />
+    <Compile Include="Models\PathArhive.cs" />
     <Compile Include="Models\PathDetails.cs" />
     <Compile Include="Models\TypeAdd.cs" />
     <Compile Include="Services\DataGridView\PropertyComparer.cs" />
     <Compile Include="Services\DataGridView\SortableBindingList.cs" />
     <Compile Include="Services\DataGridView\Sort\ListFieldSort.cs" />
     <Compile Include="Services\OperationsDisplayDrawings.cs" />
+    <Compile Include="Services\PDFService.cs" />
     <Compile Include="Services\Scan\BaseScanBlankOrder.cs" />
     <Compile Include="Services\Scan\BaseScanOrder.cs" />
     <Compile Include="Services\Scan\ScannerBlankOrder.cs" />
@@ -240,12 +248,6 @@
     <Compile Include="Views\Arhive\AR_Decode_F.Designer.cs">
       <DependentUpon>AR_Decode_F.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Arhive\AR_DetailedInformationOrder_F.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Arhive\AR_DetailedInformationOrder_F.Designer.cs">
-      <DependentUpon>AR_DetailedInformationOrder_F.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Arhive\AR_NotDecode_F.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,12 +292,6 @@
     </Compile>
     <Compile Include="Views\Autorization\AVT_ChangePassword_F.Designer.cs">
       <DependentUpon>AVT_ChangePassword_F.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Chief_PDO\Chief_PDO_DetailedInformationOrder_F.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Chief_PDO\Chief_PDO_DetailedInformationOrder_F.Designer.cs">
-      <DependentUpon>Chief_PDO_DetailedInformationOrder_F.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Chief_PDO\Chief_PDO_ReportOrderOfDate_F.cs">
       <SubType>Form</SubType>
@@ -347,12 +343,6 @@
     <Compile Include="Views\Design_Engineer\Design_Engineer_ChangeOrder_F.Designer.cs">
       <DependentUpon>Design_Engineer_ChangeOrder_F.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Design_Engineer\Design_Engineer_DetailedInformationOrder_F.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Design_Engineer\Design_Engineer_DetailedInformationOrder_F.Designer.cs">
-      <DependentUpon>Design_Engineer_DetailedInformationOrder_F.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Design_Engineer\Design_Engineer_NotAdded_F.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -398,12 +388,6 @@
       <DependentUpon>KB_ChangeOrder_F.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Excel.cs" />
-    <Compile Include="Views\KB\KB_DetailedInformationOrder_F.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\KB\KB_DetailedInformationOrder_F.Designer.cs">
-      <DependentUpon>KB_DetailedInformationOrder_F.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\KB\KB_NotAdded_F.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -415,12 +399,6 @@
     </Compile>
     <Compile Include="Views\KB\KB_ReportOrderOfDate_F.Designer.cs">
       <DependentUpon>KB_ReportOrderOfDate_F.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\KB\KB_ScanUnloadSpecific.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\KB\KB_ScanUnloadSpecific.designer.cs">
-      <DependentUpon>KB_ScanUnloadSpecific.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\ALL_UpdateOrder_F.cs">
       <SubType>Form</SubType>
@@ -458,6 +436,12 @@
     <Compile Include="Views\KB\KB_SettingWebcam_F.Designer.cs">
       <DependentUpon>KB_SettingWebcam_F.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shared\DetailedInformaionsOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\DetailedInformaionsOrder.Designer.cs">
+      <DependentUpon>DetailedInformaionsOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\ForLongOperations_F.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -471,12 +455,6 @@
     </Compile>
     <Compile Include="Views\OPP\OPP_ChangeOrder_F.Designer.cs">
       <DependentUpon>OPP_ChangeOrder_F.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\OPP\OPP_DetailedInformationOrder_F.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\OPP\OPP_DetailedInformationOrder_F.Designer.cs">
-      <DependentUpon>OPP_DetailedInformationOrder_F.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\OPP\OPP_ReportOrderOfDate_F.cs">
       <SubType>Form</SubType>
@@ -526,12 +504,6 @@
     </Compile>
     <Compile Include="Views\PDO\PDO_ChangeOrder_F.Designer.cs">
       <DependentUpon>PDO_ChangeOrder_F.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PDO\PDO_DetailedInformationOrder_F.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\PDO\PDO_DetailedInformationOrder_F.Designer.cs">
-      <DependentUpon>PDO_DetailedInformationOrder_F.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\PDO\PDO_ReportOrderOfDate_F.cs">
       <SubType>Form</SubType>
@@ -663,6 +635,18 @@
     <Compile Include="Views\Shared\ReportErrors.Designer.cs">
       <DependentUpon>ReportErrors.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shared\ReportPrintSpecific.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\ReportPrintSpecific.Designer.cs">
+      <DependentUpon>ReportPrintSpecific.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\ReportUnloadingSpecific.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\ReportUnloadingSpecific.Designer.cs">
+      <DependentUpon>ReportUnloadingSpecific.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\Settings_MobileApp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -734,9 +718,6 @@
     <EmbeddedResource Include="Views\Arhive\AR_Decode_F.resx">
       <DependentUpon>AR_Decode_F.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Arhive\AR_DetailedInformationOrder_F.resx">
-      <DependentUpon>AR_DetailedInformationOrder_F.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\Arhive\AR_NotDecode_F.resx">
       <DependentUpon>AR_NotDecode_F.cs</DependentUpon>
     </EmbeddedResource>
@@ -757,9 +738,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Autorization\AVT_ChangePassword_F.resx">
       <DependentUpon>AVT_ChangePassword_F.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Chief_PDO\Chief_PDO_DetailedInformationOrder_F.resx">
-      <DependentUpon>Chief_PDO_DetailedInformationOrder_F.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Chief_PDO\Chief_PDO_ReportOrderOfDate_F.resx">
       <DependentUpon>Chief_PDO_ReportOrderOfDate_F.cs</DependentUpon>
@@ -785,9 +763,6 @@
     <EmbeddedResource Include="Views\Design_Engineer\Design_Engineer_ChangeOrder_F.resx">
       <DependentUpon>Design_Engineer_ChangeOrder_F.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Design_Engineer\Design_Engineer_DetailedInformationOrder_F.resx">
-      <DependentUpon>Design_Engineer_DetailedInformationOrder_F.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\Design_Engineer\Design_Engineer_F.resx">
       <DependentUpon>Design_Engineer_F.cs</DependentUpon>
     </EmbeddedResource>
@@ -809,17 +784,11 @@
     <EmbeddedResource Include="Views\KB\KB_ChangeOrder_F.resx">
       <DependentUpon>KB_ChangeOrder_F.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\KB\KB_DetailedInformationOrder_F.resx">
-      <DependentUpon>KB_DetailedInformationOrder_F.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\KB\KB_NotAdded_F.resx">
       <DependentUpon>KB_NotAdded_F.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\KB\KB_ReportOrderOfDate_F.resx">
       <DependentUpon>KB_ReportOrderOfDate_F.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\KB\KB_ScanUnloadSpecific.resx">
-      <DependentUpon>KB_ScanUnloadSpecific.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\ALL_UpdateOrder_F.resx">
       <DependentUpon>ALL_UpdateOrder_F.cs</DependentUpon>
@@ -838,6 +807,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\KB\KB_SettingWebcam_F.resx">
       <DependentUpon>KB_SettingWebcam_F.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Shared\DetailedInformaionsOrder.resx">
+      <DependentUpon>DetailedInformaionsOrder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\ForLongOperations_F.resx">
       <DependentUpon>ForLongOperations_F.cs</DependentUpon>
@@ -859,9 +831,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\OPP\OPP_ChangeOrder_F.resx">
       <DependentUpon>OPP_ChangeOrder_F.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\OPP\OPP_DetailedInformationOrder_F.resx">
-      <DependentUpon>OPP_DetailedInformationOrder_F.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\OPP\OPP_ReportOrderOfDate_F.resx">
       <DependentUpon>OPP_ReportOrderOfDate_F.cs</DependentUpon>
@@ -886,9 +855,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\PDO\PDO_ChangeOrder_F.resx">
       <DependentUpon>PDO_ChangeOrder_F.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\PDO\PDO_DetailedInformationOrder_F.resx">
-      <DependentUpon>PDO_DetailedInformationOrder_F.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\PDO\PDO_ReportOrderOfDate_F.resx">
       <DependentUpon>PDO_ReportOrderOfDate_F.cs</DependentUpon>
@@ -938,6 +904,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\ReportErrors.resx">
       <DependentUpon>ReportErrors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Shared\ReportPrintSpecific.resx">
+      <DependentUpon>ReportPrintSpecific.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Shared\ReportUnloadingSpecific.resx">
+      <DependentUpon>ReportUnloadingSpecific.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\Settings_MobileApp.resx">
       <DependentUpon>Settings_MobileApp.cs</DependentUpon>

@@ -379,8 +379,8 @@ namespace SZMK.Desktop.ViewModel
                 switch (Index)
                 {
                     case 0:
-                        double var4 = Convert.ToDouble(Profile.Substring(2, Profile.IndexOf("x") - 2));
-                        double var5 = Convert.ToDouble(Profile.Substring(1 + Profile.IndexOf("x"), Profile.Length - Profile.IndexOf("x") - 1));
+                        double var4 = Convert.ToDouble(Profile.Replace('.',',').Substring(2, Profile.IndexOf("x") - 2));
+                        double var5 = Convert.ToDouble(Profile.Replace('.', ',').Substring(1 + Profile.IndexOf("x"), Profile.Length - Profile.IndexOf("x") - 1));
 
                         if (var4 > var5)
                         {

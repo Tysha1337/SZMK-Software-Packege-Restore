@@ -350,14 +350,14 @@ namespace SZMK.Desktop.Services.Scan
         {
             try
             {
-                    notify.SetMaximum(Orders.Count);
-                    OrderScanSession = new List<OrderScanSession>();
-                    for (int i = 0; i < Orders.Count; i++)
-                    {
-                        notify.Notify(i, $"Проверка {i + 1} чертежа из {Orders.Count}");
+                notify.SetMaximum(Orders.Count);
+                OrderScanSession = new List<OrderScanSession>();
+                for (int i = 0; i < Orders.Count; i++)
+                {
+                    notify.Notify(i, $"Проверка {i + 1} чертежа из {Orders.Count}");
 
-                        SetResult(Orders[i], OrderScanSession, true);
-                    }
+                    SetResult(Orders[i], OrderScanSession, true);
+                }
             }
             catch (Exception Ex)
             {
@@ -378,7 +378,7 @@ namespace SZMK.Desktop.Services.Scan
                 {
                     foreach (var drawing in Orders.Where(p => p.Number == path.Order))
                     {
-                        drawing.PathDetails = new PathDetails { DateCreate = DateTime.Now, Path = path.Path };
+                        drawing.PathDetails = new PathDetails { DateCreate = DateTime.Now, PathDWG = path.PathDWG, PathPDF = path.PathPDF, PathDXF = path.PathDXF };
                     }
                 }
 

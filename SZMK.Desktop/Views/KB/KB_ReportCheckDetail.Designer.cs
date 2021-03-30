@@ -34,12 +34,13 @@ namespace SZMK.Desktop.Views.KB
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.Report_DGV = new System.Windows.Forms.DataGridView();
+            this.Cancel_B = new System.Windows.Forms.Button();
+            this.OK_B = new System.Windows.Forms.Button();
             this.Order = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypePath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Path = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Finded = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Change = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Cancel_B = new System.Windows.Forms.Button();
-            this.OK_B = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Report_DGV)).BeginInit();
             this.SuspendLayout();
@@ -95,6 +96,7 @@ namespace SZMK.Desktop.Views.KB
             this.Report_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Report_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Order,
+            this.TypePath,
             this.Path,
             this.Finded,
             this.Change});
@@ -108,47 +110,6 @@ namespace SZMK.Desktop.Views.KB
             this.Report_DGV.Size = new System.Drawing.Size(763, 366);
             this.Report_DGV.TabIndex = 1;
             this.Report_DGV.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Report_DGV_CellClick);
-            // 
-            // Order
-            // 
-            this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Order.DataPropertyName = "Order";
-            this.Order.FillWeight = 15F;
-            this.Order.HeaderText = "Заказ";
-            this.Order.Name = "Order";
-            this.Order.ReadOnly = true;
-            this.Order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Path
-            // 
-            this.Path.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Path.DataPropertyName = "Path";
-            this.Path.FillWeight = 70F;
-            this.Path.HeaderText = "Путь";
-            this.Path.Name = "Path";
-            this.Path.ReadOnly = true;
-            this.Path.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Finded
-            // 
-            this.Finded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Finded.DataPropertyName = "Finded";
-            this.Finded.FillWeight = 10F;
-            this.Finded.HeaderText = "Найден";
-            this.Finded.Name = "Finded";
-            this.Finded.ReadOnly = true;
-            this.Finded.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // Change
-            // 
-            this.Change.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.NullValue = "Обзор";
-            this.Change.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Change.FillWeight = 10F;
-            this.Change.HeaderText = "Изменить";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
             // 
             // Cancel_B
             // 
@@ -186,6 +147,56 @@ namespace SZMK.Desktop.Views.KB
             this.OK_B.Text = "Подтвердить";
             this.OK_B.UseVisualStyleBackColor = false;
             // 
+            // Order
+            // 
+            this.Order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Order.DataPropertyName = "Order";
+            this.Order.FillWeight = 10F;
+            this.Order.HeaderText = "Заказ";
+            this.Order.Name = "Order";
+            this.Order.ReadOnly = true;
+            this.Order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // TypePath
+            // 
+            this.TypePath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TypePath.FillWeight = 10F;
+            this.TypePath.HeaderText = "Тип";
+            this.TypePath.Name = "TypePath";
+            this.TypePath.ReadOnly = true;
+            this.TypePath.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Path
+            // 
+            this.Path.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Path.DataPropertyName = "Path";
+            this.Path.FillWeight = 60F;
+            this.Path.HeaderText = "Путь";
+            this.Path.Name = "Path";
+            this.Path.ReadOnly = true;
+            this.Path.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Finded
+            // 
+            this.Finded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Finded.DataPropertyName = "Finded";
+            this.Finded.FillWeight = 10F;
+            this.Finded.HeaderText = "Найден";
+            this.Finded.Name = "Finded";
+            this.Finded.ReadOnly = true;
+            this.Finded.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Change
+            // 
+            this.Change.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.NullValue = "Обзор";
+            this.Change.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Change.FillWeight = 10F;
+            this.Change.HeaderText = "Изменить";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
+            // 
             // KB_ReportCheckDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -212,11 +223,12 @@ namespace SZMK.Desktop.Views.KB
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView Report_DGV;
+        private System.Windows.Forms.Button Cancel_B;
+        private System.Windows.Forms.Button OK_B;
         private System.Windows.Forms.DataGridViewTextBoxColumn Order;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypePath;
         private System.Windows.Forms.DataGridViewTextBoxColumn Path;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Finded;
         private System.Windows.Forms.DataGridViewButtonColumn Change;
-        private System.Windows.Forms.Button Cancel_B;
-        private System.Windows.Forms.Button OK_B;
     }
 }

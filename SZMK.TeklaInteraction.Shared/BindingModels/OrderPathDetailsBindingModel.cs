@@ -9,7 +9,11 @@ namespace SZMK.TeklaInteraction.Shared.BindingModels
     public class OrderPathDetailsBindingModel
     {
         public string Order { get; set; }
-        public string Path { get; set; }
-        public bool Finded { get; set; }
+        public string PathDWG { get; set; }
+        public string PathPDF { get; set; }
+        public string PathDXF { get; set; }
+        public bool FindedDWG { get; set; }
+        public bool FindedPDF { get; set; }
+        public bool FindedDXF { get; set; }
     }
 }

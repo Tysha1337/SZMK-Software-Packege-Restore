@@ -185,7 +185,7 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
 
                 ModelObject modelObject = assembly.GetMainPart();
 
-                Details.Add(GetDetailAttribute(modelObject, 1));
+                Details.Add(GetDetailAttribute(assembly, modelObject, 1));
 
                 AddsSecondariesDrawingObjectsToTreeNode(assembly, Details);
 
@@ -220,7 +220,7 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                         Details.RemoveAll(p => p.Position == _position);
                     }
 
-                    Details.Add(GetDetailAttribute(modelObject, CountDetail + 1));
+                    Details.Add(GetDetailAttribute(assembly, modelObject, CountDetail + 1));
                 }
             }
             catch (Exception E)
@@ -228,10 +228,11 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                 throw new Exception(Error, E);
             }
         }
-        private Shared.Models.Detail GetDetailAttribute(ModelObject modelObject, Int64 CountDetail)
+        private Shared.Models.Detail GetDetailAttribute(Assembly assembly, ModelObject modelObject, Int64 CountDetail)
         {
             try
             {
+                string _name = "";
                 int _startnumber = 0;
                 string _position = "";
                 string _profile = "";
@@ -252,6 +253,7 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                 string _flangeThickness = "";
                 string _plateThickness = "";
 
+                _name = GetNameDetail(assembly, modelObject);
                 modelObject.GetReportProperty("PART_START_NUMBER", ref _startnumber);
                 modelObject.GetReportProperty("PART_POS", ref _position);
                 modelObject.GetReportProperty("PROFILE", ref _profile);
@@ -272,11 +274,12 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                 modelObject.GetReportProperty("PROFILE.FLANGE_THICKNESS_1", ref _flangeThickness);
                 modelObject.GetReportProperty("PROFILE.PLATE_THICKNESS", ref _plateThickness);
 
-                DetailViewModel detailViewModel = new DetailViewModel(_position, CountDetail.ToString(), _profile, _width, _lenght, _weight, _height, _diameter, _markSteel, _discription, _gmlenght, _gmwidth, _gmheight, _machining, _methodOfPaintingRAL, _paintingArea, _gostName, _flangeThickness, _plateThickness);
+                DetailViewModel detailViewModel = new DetailViewModel(_name, _position, CountDetail.ToString(), _profile, _width, _lenght, _weight, _height, _diameter, _markSteel, _discription, _gmlenght, _gmwidth, _gmheight, _machining, _methodOfPaintingRAL, _paintingArea, _gostName, _flangeThickness, _plateThickness);
 
                 return new Shared.Models.Detail
                 {
                     StartNumber = _startnumber,
+                    Name = detailViewModel.Name,
                     Position = detailViewModel.Position,
                     Count = CountDetail,
                     Profile = detailViewModel.Profile,
@@ -570,6 +573,214 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
             {
                 throw new Exception(E.Message, E);
             }
+        }
+        private String GetNameDetail(Assembly assembly, ModelObject modelObject)
+        {
+            string _name = "";
+
+            modelObject.GetReportProperty("ADVANCED_OPTION.XS_DRAWING_PLOT_FILE_NAME_W", ref _name);
+
+            string temp = _name;
+
+            while (true)
+            {
+                temp = temp.Remove(0, _name.IndexOf('%') + 1);
+
+                string parm = temp.Substring(0, temp.IndexOf('%'));
+
+                _name = _name.Replace($"%{parm}%", GetParametersDetail(assembly, modelObject, parm));
+
+                temp = _name;
+
+                if (temp.IndexOf('%') == -1)
+                {
+                    break;
+                }
+            }
+
+            return _name;
+        }
+
+        private String GetParametersDetail(Assembly assembly, ModelObject modelObject, string parm)
+        {
+            string strdata = "";
+            int intdata = 0;
+            double dbldata = 0;
+
+            if (parm == "NAME" || parm == "DRAWING_NAME")
+            {
+                string prefix = "";
+
+                modelObject.GetReportProperty("PREFIX", ref prefix);
+
+                if (prefix != "")
+                {
+                    modelObject.GetReportProperty("PART_POS", ref strdata);
+
+                    return prefix + "_" + strdata;
+                }
+                else
+                {
+                    modelObject.GetReportProperty("PART_POS", ref strdata);
+
+                    return strdata;
+                }
+            }
+            if (parm == "NAME.-" || parm == "DRAWING_NAME.-")
+            {
+                string prefix = "";
+
+                modelObject.GetReportProperty("PREFIX", ref prefix);
+
+                if (prefix != "")
+                {
+                    modelObject.GetReportProperty("PART_POS", ref strdata);
+
+                    return prefix + "-" + strdata;
+                }
+                else
+                {
+                    modelObject.GetReportProperty("PART_POS", ref strdata);
+
+                    return strdata;
+                }
+            }
+            if (parm == "NAME." || parm == "DRAWING_NAME.")
+            {
+                string prefix = "";
+
+                modelObject.GetReportProperty("PREFIX", ref prefix);
+
+                if (prefix != "")
+                {
+                    modelObject.GetReportProperty("PART_POS", ref strdata);
+
+                    return prefix + strdata;
+                }
+                else
+                {
+                    modelObject.GetReportProperty("PART_POS", ref strdata);
+
+                    return strdata;
+                }
+            }
+            if (parm == "REV" || parm == "REVISION" || parm == "DRAWING_REVISION")
+            {
+                modelObject.GetReportProperty("DRAWING.REVISION.NUMBER", ref intdata);
+
+                return intdata.ToString();
+            }
+            if (parm == "REV_MARK" || parm == "REVISION_MARK" || parm == "DRAWING_REVISION_MARK")
+            {
+                modelObject.GetReportProperty("DRAWING.REVISION.MARK", ref strdata);
+
+                return strdata;
+            }
+            if (parm == "TITLE" || parm == "DRAWING_TITLE")
+            {
+                modelObject.GetReportProperty("DRAWING.TITLE", ref strdata);
+
+                return strdata;
+            }
+            if (parm.IndexOf("UDA:") != -1)
+            {
+                modelObject.GetReportProperty("DRAWING." + parm.Remove(0, 4), ref strdata);
+
+                if (strdata != "")
+                {
+                    return strdata;
+                }
+
+                modelObject.GetReportProperty("DRAWING." + parm.Remove(0, 4), ref intdata);
+
+                if (intdata != 0)
+                {
+                    return intdata.ToString();
+                }
+
+                modelObject.GetReportProperty("DRAWING." + parm.Remove(0, 4), ref dbldata);
+
+                if (dbldata != 0)
+                {
+                    return dbldata.ToString();
+                }
+            }
+            if (parm.IndexOf("REV? - ") != -1)
+            {
+                int rev = 0;
+
+                modelObject.GetReportProperty("DRAWING.REVISION.NUMBER", ref rev);
+
+                if (rev != 0)
+                {
+                    strdata = parm.Remove(0, 8);
+
+                    return strdata.Remove(strdata.Length - 1);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            if (parm.IndexOf("REVISION? - ") != -1)
+            {
+                int rev = 0;
+
+                modelObject.GetReportProperty("DRAWING.REVISION.NUMBER", ref rev);
+
+                if (rev != 0)
+                {
+                    strdata = parm.Remove(0, 13);
+
+                    return strdata.Remove(strdata.Length - 1);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            if (parm.IndexOf("DRAWING_REVISION? - ") != -1)
+            {
+                int rev = 0;
+
+                modelObject.GetReportProperty("DRAWING.REVISION.NUMBER", ref rev);
+
+                if (rev != 0)
+                {
+                    strdata = parm.Remove(0, 21);
+
+                    return strdata.Remove(strdata.Length - 1);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            if (parm.IndexOf("TPL:") != -1)
+            {
+                modelObject.GetReportProperty("DRAWING." + parm.Remove(0, 4), ref strdata);
+
+                if (strdata != "")
+                {
+                    return strdata;
+                }
+
+                modelObject.GetReportProperty("DRAWING." + parm.Remove(0, 4), ref intdata);
+
+                if (intdata == 0)
+                {
+                    return intdata.ToString();
+                }
+
+                modelObject.GetReportProperty("DRAWING." + parm.Remove(0, 4), ref dbldata);
+
+                if (dbldata == 0)
+                {
+                    return dbldata.ToString();
+                }
+            }
+
+            return "";
         }
 
     }

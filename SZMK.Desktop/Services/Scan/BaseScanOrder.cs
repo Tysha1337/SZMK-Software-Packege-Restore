@@ -172,7 +172,7 @@ namespace SZMK.Desktop.Services.Scan
             }
             else
             {
-                UniqueList.Add(new Order(Order.ID, Order.DateCreate, Order.Number, Order.Executor, Order.ExecutorWork, Order.List, Order.Mark, Order.Lenght, Order.Weight, Order.Status, Order.StatusDate, Order.TypeAdd, Order.Model, Order.PathDetails, Order.User, Order.BlankOrder, Order.Canceled, Order.Finished));
+                UniqueList.Add(new Order(Order.ID, Order.DateCreate, Order.Number, Order.Executor, Order.ExecutorWork, Order.List, Order.Mark, Order.Lenght, Order.Weight, Order.Status, Order.StatusDate, Order.TypeAdd, Order.Model, Order.PathDetails, Order.PathArhive, Order.User, Order.BlankOrder, Order.Canceled, Order.Finished));
                 return true;
             }
         }
@@ -185,7 +185,7 @@ namespace SZMK.Desktop.Services.Scan
                 throw new Exception($"В DataMatrix менее 6 полей");
             }
 
-            return new Order(0, DateTime.Now, ValidationDataMatrix[0], ValidationDataMatrix[3], "Исполнитель не определен", ValidationDataMatrix[1], ValidationDataMatrix[2], Convert.ToDouble(ValidationDataMatrix[4].Replace(".", ",")), Convert.ToDouble(ValidationDataMatrix[5].Replace(".", ",")), null, DateTime.Now, null, null, null, null, new BlankOrder(), false, false);
+            return new Order(0, DateTime.Now, ValidationDataMatrix[0], ValidationDataMatrix[3], "Исполнитель не определен", ValidationDataMatrix[1], ValidationDataMatrix[2], Convert.ToDouble(ValidationDataMatrix[4].Replace(".", ",")), Convert.ToDouble(ValidationDataMatrix[5].Replace(".", ",")), null, DateTime.Now, null, null, null, null, null, new BlankOrder(), false, false);
         }
     }
 }

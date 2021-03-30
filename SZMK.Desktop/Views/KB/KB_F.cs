@@ -25,6 +25,7 @@ using SZMK.Desktop.Views.Shared.Interfaces;
 using System.ComponentModel;
 using SZMK.Desktop.Services.DataGridView;
 using SZMK.Desktop.Services.DataGridView.Sort;
+using PdfSharp.Pdf;
 
 namespace SZMK.Desktop.Views.KB
 {
@@ -264,7 +265,7 @@ namespace SZMK.Desktop.Views.KB
 
                     if (SystemArgs.UnLoadSpecific.ExecutorMails.Count != 0)
                     {
-                        KB_ScanUnloadSpecific unloadSpecific = new KB_ScanUnloadSpecific();
+                        ReportUnloadingSpecific unloadSpecific = new ReportUnloadingSpecific();
                         unloadSpecific.ShowDialog();
                     }
 
@@ -315,7 +316,7 @@ namespace SZMK.Desktop.Views.KB
                     if (Dialog.ShowDialog() == DialogResult.OK)
                     {
                         List<DateTime> StatusDate = SystemArgs.StatusOfOrders.Where(p => p.IDOrder == Temp.ID && p.IDStatus == Temp.Status.ID).Select(p => p.DateCreate).ToList();
-                        Order NewOrder = new Order(Temp.ID, Temp.DateCreate, Dialog.Number_TB.Text, Dialog.Executor_TB.Text, Temp.ExecutorWork, Dialog.List_TB.Text, Dialog.Mark_TB.Text, Convert.ToDouble(Dialog.Lenght_TB.Text), Convert.ToDouble(Dialog.Weight_TB.Text), Temp.Status, StatusDate[0], Temp.TypeAdd, Temp.Model, Temp.PathDetails, Temp.User, Temp.BlankOrder, Temp.Canceled, Temp.Finished);
+                        Order NewOrder = new Order(Temp.ID, Temp.DateCreate, Dialog.Number_TB.Text, Dialog.Executor_TB.Text, Temp.ExecutorWork, Dialog.List_TB.Text, Dialog.Mark_TB.Text, Convert.ToDouble(Dialog.Lenght_TB.Text), Convert.ToDouble(Dialog.Weight_TB.Text), Temp.Status, StatusDate[0], Temp.TypeAdd, Temp.Model, Temp.PathDetails, Temp.PathArhive, Temp.User, Temp.BlankOrder, Temp.Canceled, Temp.Finished);
 
                         if (SystemArgs.Request.UpdateOrder(NewOrder))
                         {
@@ -650,7 +651,7 @@ namespace SZMK.Desktop.Views.KB
                             List<Order> Order = SystemArgs.Orders.Where(p => p.ID == item.IDOrder).ToList();
                             if (Order.Count > 0)
                             {
-                                Temp.Add(new Order(Order[0].ID, Order[0].DateCreate, Order[0].Number, Order[0].Executor, Order[0].ExecutorWork, Order[0].List, Order[0].Mark, Order[0].Lenght, Order[0].Weight, Order[0].Status, Order[0].StatusDate, Order[0].TypeAdd, Order[0].Model, Order[0].PathDetails, Order[0].User, Order[0].BlankOrder, Order[0].Canceled, Order[0].Finished));
+                                Temp.Add(new Order(Order[0].ID, Order[0].DateCreate, Order[0].Number, Order[0].Executor, Order[0].ExecutorWork, Order[0].List, Order[0].Mark, Order[0].Lenght, Order[0].Weight, Order[0].Status, Order[0].StatusDate, Order[0].TypeAdd, Order[0].Model, Order[0].PathDetails, Order[0].PathArhive, Order[0].User, Order[0].BlankOrder, Order[0].Canceled, Order[0].Finished));
                             }
                         }
                         SystemArgs.Orders = Temp;
@@ -1299,20 +1300,8 @@ namespace SZMK.Desktop.Views.KB
                 if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex < View.Count() && e.RowIndex >= 0)
                 {
                     Order Temp = (Order)View[Order_DGV.CurrentCell.RowIndex];
-                    KB_DetailedInformationOrder_F Dialog = new KB_DetailedInformationOrder_F();
-                    List<StatusOfOrder> Statuses = SystemArgs.StatusOfOrders.Where(p => p.IDOrder == Temp.ID).OrderBy(p => p.DateCreate).ToList();
-                    for (int i = 0; i < Statuses.Count; i++)
-                    {
-                        Dialog.Statuses_DGV.Rows.Add();
-                        Dialog.Statuses_DGV[0, i].Value = SystemArgs.Statuses.Where(p => p.ID == Statuses[i].IDStatus).Select(p => p.Name).Single();
-                        Dialog.Statuses_DGV[1, i].Value = Statuses[i].DateCreate;
-                        Models.User TempUser = SystemArgs.Users.Where(p => p.ID == Statuses[i].IDUser).Single();
-                        Dialog.Statuses_DGV[2, i].Value = TempUser.Surname + " " + TempUser.Name.First() + "." + TempUser.MiddleName.First() + ".";
-                    }
-                    if (Dialog.ShowDialog() == DialogResult.OK)
-                    {
-
-                    }
+                    DetailedInformaionsOrder Dialog = new DetailedInformaionsOrder(Temp);
+                    Dialog.ShowDialog();
                 }
             }
             catch (Exception E)
@@ -1817,6 +1806,95 @@ namespace SZMK.Desktop.Views.KB
         private async Task<Boolean> ReportSteelStandartAsync(List<Order> Report, String filename)
         {
             return await Task.Run(() => SystemArgs.Excel.ReportSteelOfDate(Report, filename));
+        }
+
+        private void CheckDetails_TSMI_Click(object sender, EventArgs e)
+        {
+            ForLongOperations_F Dialog = new ForLongOperations_F();
+
+            try
+            {
+                List<Order> selected = new List<Order>();
+
+                if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex >= 0)
+                {
+                    Dialog.Show();
+
+                    Dialog.SetMaximum(Order_DGV.SelectedRows.Count);
+
+                    for (int i = 0; i < Order_DGV.SelectedRows.Count; i++)
+                    {
+                        selected.Add((Order)(View[Order_DGV.SelectedRows[i].Index]));
+
+                        Dialog.Notify(i + 1, $"Получение чертежа {i + 1} из {Order_DGV.SelectedRows.Count}");
+                    }
+
+                    Task<Boolean> task = CheckedDetailsAsync(selected, Dialog);
+                    task.ContinueWith(t =>
+                    {
+                        if (t.Result)
+                        {
+                            Dialog.Invoke((MethodInvoker)delegate ()
+                            {
+                                Dialog.Close();
+                            });
+                            if (SystemArgs.UnLoadSpecific.ExecutorMails.Count != 0)
+                            {
+                                ReportUnloadingSpecific unloadSpecific = new ReportUnloadingSpecific();
+                                unloadSpecific.ShowDialog();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Все детали найдены!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+
+                            SystemArgs.UnLoadSpecific.ExecutorMails.Clear();
+                        }
+                        else
+                        {
+                            Dialog.Invoke((MethodInvoker)delegate ()
+                            {
+                                Dialog.Close();
+                            });
+                            MessageBox.Show("Ошибка проверки деталировки", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    });
+                }
+                else
+                {
+                    throw new Exception("Необходимо выбрать чертежи");
+                }
+            }
+            catch (Exception E)
+            {
+                Dialog.Close();
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task<Boolean> CheckedDetailsAsync(List<Order> selected, ForLongOperations_F dialog)
+        {
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    dialog.SetMaximum(selected.Count);
+
+                    for (int i = 0; i < selected.Count; i++)
+                    {
+                        SystemArgs.UnLoadSpecific.ChekedUnloading(selected[i].Number, selected[i].List, selected[i].Executor);
+                        dialog.Notify(i + 1, $"Проверка чертежа {i + 1} из {selected.Count}");
+                    }
+
+                    return true;
+                }
+                catch (Exception E)
+                {
+                    SystemArgs.PrintLog(E.ToString());
+                    return false;
+                }
+            });
         }
     }
 }

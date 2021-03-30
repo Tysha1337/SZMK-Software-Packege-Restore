@@ -65,6 +65,7 @@
             this.CompleteStatusReport_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.чертежиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.переименоватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CheckDetails_TSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingColumn_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingConfig_TSM = new System.Windows.Forms.ToolStripMenuItem();
@@ -271,14 +272,14 @@
             // ReportSteelStandart_TSB
             // 
             this.ReportSteelStandart_TSB.Name = "ReportSteelStandart_TSB";
-            this.ReportSteelStandart_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelStandart_TSB.Size = new System.Drawing.Size(147, 22);
             this.ReportSteelStandart_TSB.Text = "Стандартный";
             this.ReportSteelStandart_TSB.Click += new System.EventHandler(this.ReportSteelStandart_TSB_Click);
             // 
             // ReportSteelMark_TSB
             // 
             this.ReportSteelMark_TSB.Name = "ReportSteelMark_TSB";
-            this.ReportSteelMark_TSB.Size = new System.Drawing.Size(180, 22);
+            this.ReportSteelMark_TSB.Size = new System.Drawing.Size(147, 22);
             this.ReportSteelMark_TSB.Text = "По маркам";
             this.ReportSteelMark_TSB.Click += new System.EventHandler(this.ReportSteelMark_TSB_Click);
             // 
@@ -292,7 +293,8 @@
             // чертежиToolStripMenuItem
             // 
             this.чертежиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.переименоватьToolStripMenuItem});
+            this.переименоватьToolStripMenuItem,
+            this.CheckDetails_TSMI});
             this.чертежиToolStripMenuItem.Name = "чертежиToolStripMenuItem";
             this.чертежиToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.чертежиToolStripMenuItem.Text = "Чертежи";
@@ -300,9 +302,16 @@
             // переименоватьToolStripMenuItem
             // 
             this.переименоватьToolStripMenuItem.Name = "переименоватьToolStripMenuItem";
-            this.переименоватьToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.переименоватьToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
             this.переименоватьToolStripMenuItem.Text = "Переименовать";
             this.переименоватьToolStripMenuItem.Click += new System.EventHandler(this.RenameOrder_TSM_Click);
+            // 
+            // CheckDetails_TSMI
+            // 
+            this.CheckDetails_TSMI.Name = "CheckDetails_TSMI";
+            this.CheckDetails_TSMI.Size = new System.Drawing.Size(201, 22);
+            this.CheckDetails_TSMI.Text = "Проверка деталировки";
+            this.CheckDetails_TSMI.Click += new System.EventHandler(this.CheckDetails_TSMI_Click);
             // 
             // настройкиToolStripMenuItem
             // 
@@ -849,7 +858,7 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(190, 35);
             this.label12.TabIndex = 26;
-            this.label12.Text = "Выделенно чертежей";
+            this.label12.Text = "Выделено чертежей";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CountOrder_TB
@@ -1331,5 +1340,6 @@
         private System.Windows.Forms.ToolStripMenuItem Steel_TSM;
         private System.Windows.Forms.ToolStripMenuItem ReportSteelStandart_TSB;
         private System.Windows.Forms.ToolStripMenuItem ReportSteelMark_TSB;
+        private System.Windows.Forms.ToolStripMenuItem CheckDetails_TSMI;
     }
 }

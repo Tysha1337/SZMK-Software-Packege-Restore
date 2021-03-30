@@ -818,7 +818,6 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\S
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_ChangeOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_DecodeReport_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_Decode_F.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_DetailedInformationOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_NotDecode_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_RenameOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_ReportOrderOfDate_F.resources
@@ -826,7 +825,6 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\S
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_SelectedColumnDGV_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Arhive.AR_SettingConfig_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Autorization.AVT_ChangePassword_F.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Chief_PDO.Chief_PDO_DetailedInformationOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Chief_PDO.Chief_PDO_ReportOrderOfDate_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Chief_PDO.Chief_PDO_SelectedColumnDGV_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Chief_PDO.Chief_PDO_ChangeOrder_F.resources
@@ -835,7 +833,6 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\S
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.ALL_FormingReportForAllPosition_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_AddData_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_ChangeOrder_F.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_DetailedInformationOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_NotAdded_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_ReportOrderOfDate_F.resources
@@ -843,10 +840,8 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\S
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_SelectedColumnDGV_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Design_Engineer.Design_Engineer_SettingConfig_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_ChangeOrder_F.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_DetailedInformationOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_NotAdded_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_ReportOrderOfDate_F.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_ScanUnloadSpecific.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.ALL_UpdateOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_Scan_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_F.resources
@@ -860,7 +855,6 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\S
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Admin.MainSettings.Information_Mail.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Autorization.AVT_Autorization_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.OPP.OPP_ChangeOrder_F.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.OPP.OPP_DetailedInformationOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.OPP.OPP_ReportOrderOfDate_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.OPP.OPP_Scan_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.OPP.OPP_SearchParam_F.resources
@@ -869,7 +863,6 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\S
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.OPP.OPP_SettingConfig_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.OPP.OPP_SettingWebcam_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.PDO.PDO_ChangeOrder_F.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.PDO.PDO_DetailedInformationOrder_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.PDO.PDO_ReportOrderOfDate_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.PDO.PDO_Scan_F.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.PDO.PDO_SearchParam_F.resources
@@ -896,4 +889,12 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\A
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\Interop.AcroPDFLib.dll
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\AxInterop.AcroPDFLib.dll
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.KB.KB_ReportCheckDetail.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.csprojAssemblyReference.cache
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\PdfSharp.Charting.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\PdfSharp.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\PdfSharp.xml
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\PdfSharp.Charting.xml
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\de\PdfSharp.resources.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\de\PdfSharp.Charting.resources.dll
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.DetailedInformaionsOrder.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.ReportUnloadingSpecific.resources
+C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.ReportPrintSpecific.resources

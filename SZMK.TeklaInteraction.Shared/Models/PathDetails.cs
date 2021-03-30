@@ -10,7 +10,9 @@ namespace SZMK.TeklaInteraction.Shared.Models
     {
         public long Id { get; set; }
         public DateTime DateCreate { get; set; }
-        public string Path { get; set; }
+        public string PathDWG { get; set; }
+        public string PathPDF { get; set; }
+        public string PathDXF { get; set; }
         public List<Drawing> Drawings { get; set; }
     }
 }

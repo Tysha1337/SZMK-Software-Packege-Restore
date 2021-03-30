@@ -13,6 +13,7 @@ namespace SZMK.Desktop.Models
         private String _List;
         private string _NumberSpecific;
         private string _PathDetails;
+        private long _Count;
         private Boolean _Finded;
         public Specific(String Number, String List, string NumberSpecific, string PathDetails, Boolean Finded)
         {
@@ -48,6 +49,35 @@ namespace SZMK.Desktop.Models
             {
                 throw new Exception("Путь до деталей не заполнен");
             }
+            _Finded = Finded;
+        }
+        public Specific(String Number, string NumberSpecific, string PathDetails, long Count, Boolean Finded)
+        {
+            if (!String.IsNullOrEmpty(Number))
+            {
+                _Number = Number;
+            }
+            else
+            {
+                throw new Exception("Не задан номер заказа");
+            }
+            if (!String.IsNullOrEmpty(NumberSpecific))
+            {
+                _NumberSpecific = NumberSpecific;
+            }
+            else
+            {
+                throw new Exception("Номер детали не заполнен");
+            }
+            if (!String.IsNullOrEmpty(PathDetails))
+            {
+                _PathDetails = PathDetails;
+            }
+            else
+            {
+                throw new Exception("Путь до деталей не заполнен");
+            }
+            _Count = Count;
             _Finded = Finded;
         }
         public String Number
@@ -104,6 +134,17 @@ namespace SZMK.Desktop.Models
                 {
                     _PathDetails = value;
                 }
+            }
+        }
+        public long Count
+        {
+            get
+            {
+                return _Count;
+            }
+            set
+            {
+                _Count = value;
             }
         }
         public Boolean Finded

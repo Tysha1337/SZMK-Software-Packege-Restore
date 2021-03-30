@@ -10,6 +10,7 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
     public class DetailViewModel
     {
         private long _ID;
+        private string _Name;
         private string _Position;
         private long _Count;
         private string _Profile;
@@ -32,11 +33,13 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
         private string _PlateThickness;
 
 
-        public DetailViewModel(string Position, string Count, string Profile, double Width, double Lenght, double Weight, double Height, string Diameter, string MarkSteel, string Discription, double GMLenght, double GMWidth, double GMHeight, string Machining, string MethodOfPaintingRAL, double PaintingArea, string GostName, string FlangeThickness, string PlateThickness)
+        public DetailViewModel(string Name, string Position, string Count, string Profile, double Width, double Lenght, double Weight, double Height, string Diameter, string MarkSteel, string Discription, double GMLenght, double GMWidth, double GMHeight, string Machining, string MethodOfPaintingRAL, double PaintingArea, string GostName, string FlangeThickness, string PlateThickness)
         {
             string Error = "";
             try
             {
+                _Name = Name;
+
                 if (String.IsNullOrEmpty(Position))
                 {
                     Error = $"Не заполнена позиция детали";
@@ -120,6 +123,17 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
                 {
                     _ID = value;
                 }
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                _Name = value;
             }
         }
         public string Position
@@ -418,8 +432,8 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
                 switch (Index)
                 {
                     case 0:
-                        double var4 = Convert.ToDouble(Profile.Substring(2, Profile.IndexOf("*") - 2));
-                        double var5 = Convert.ToDouble(Profile.Substring(1 + Profile.IndexOf("*"), Profile.Length - Profile.IndexOf("*") - 1));
+                        double var4 = Convert.ToDouble(Profile.Replace('.', ',').Substring(2, Profile.IndexOf("*") - 2));
+                        double var5 = Convert.ToDouble(Profile.Replace('.', ',').Substring(1 + Profile.IndexOf("*"), Profile.Length - Profile.IndexOf("*") - 1));
 
                         if (var4 > var5)
                         {
