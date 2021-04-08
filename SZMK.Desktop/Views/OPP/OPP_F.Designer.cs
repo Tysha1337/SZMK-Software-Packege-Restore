@@ -312,15 +312,15 @@
             // CheckDetails_TSMI
             // 
             this.CheckDetails_TSMI.Name = "CheckDetails_TSMI";
-            this.CheckDetails_TSMI.Size = new System.Drawing.Size(202, 22);
+            this.CheckDetails_TSMI.Size = new System.Drawing.Size(248, 22);
             this.CheckDetails_TSMI.Text = "Проверка деталировки";
             this.CheckDetails_TSMI.Click += new System.EventHandler(this.CheckDetails_TSMI_Click);
             // 
             // PrintDrawings_To_PDF_TSMI
             // 
             this.PrintDrawings_To_PDF_TSMI.Name = "PrintDrawings_To_PDF_TSMI";
-            this.PrintDrawings_To_PDF_TSMI.Size = new System.Drawing.Size(202, 22);
-            this.PrintDrawings_To_PDF_TSMI.Text = "Печать чертежей в PDF";
+            this.PrintDrawings_To_PDF_TSMI.Size = new System.Drawing.Size(248, 22);
+            this.PrintDrawings_To_PDF_TSMI.Text = "Печать чертежей деталей в PDF";
             this.PrintDrawings_To_PDF_TSMI.Click += new System.EventHandler(this.PrintDrawings_To_PDF_TSMI_Click);
             // 
             // настройкиToolStripMenuItem

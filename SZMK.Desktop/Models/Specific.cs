@@ -11,11 +11,12 @@ namespace SZMK.Desktop.Models
     {
         private String _Number;
         private String _List;
+        private string _Type;
         private string _NumberSpecific;
         private string _PathDetails;
         private long _Count;
         private Boolean _Finded;
-        public Specific(String Number, String List, string NumberSpecific, string PathDetails, Boolean Finded)
+        public Specific(String Number, String List, string Type, string NumberSpecific, string PathDetails, Boolean Finded)
         {
             if (!String.IsNullOrEmpty(Number))
             {
@@ -32,6 +33,14 @@ namespace SZMK.Desktop.Models
             else
             {
                 throw new Exception("Номер листа заказа меньше 0");
+            }
+            if (!String.IsNullOrEmpty(Type))
+            {
+                _Type = Type;
+            }
+            else
+            {
+                throw new Exception("Не задан тип проверки");
             }
             if (!String.IsNullOrEmpty(NumberSpecific))
             {
@@ -105,6 +114,20 @@ namespace SZMK.Desktop.Models
                 if (!String.IsNullOrEmpty(value))
                 {
                     _List = value;
+                }
+            }
+        }
+        public string Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                if (!String.IsNullOrEmpty(value))
+                {
+                    _Type = value;
                 }
             }
         }

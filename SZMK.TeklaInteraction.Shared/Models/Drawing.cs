@@ -12,6 +12,7 @@ namespace SZMK.TeklaInteraction.Shared.Models
         public string Mark { get; set; }
         public string Executor { get; set; }
         public double WeightMark { get; set; }
+        public double WeightDifferent { get; set; }
         public int CountMark { get; set; }
         public double SubTotalWeight { get; set; }
         public double SubTotalLenght { get; set; }
@@ -20,6 +21,7 @@ namespace SZMK.TeklaInteraction.Shared.Models
         public Model Model { get; set; }
         public PathDetails PathDetails { get; set; }
         public List<Detail> Details { get; set; }
+        public Revision Revision { get; set; }
         public override string ToString()
         {
             return $"{Order}_{List}_{Mark}_{Executor}_{SubTotalLenght}_{SubTotalWeight}";

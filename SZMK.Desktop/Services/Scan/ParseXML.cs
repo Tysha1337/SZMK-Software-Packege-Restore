@@ -123,7 +123,7 @@ namespace SZMK.Desktop.Services.Scan
                         Error = "Кол_во_марок";
                         CountMarks = assembly.Element("Кол_во_марок").Value.Replace(" ", "");
 
-                        Order CheckedOrder = new Order(0, DateTime.Now, Number, Executor, "Исполнитель не определен", List, Mark, Lenght, Weight, null, DateTime.Now, null, Model, null, null, false, false, CountMarks, new List<Detail>());
+                        Order CheckedOrder = new Order(0, DateTime.Now, Number, Executor, "Исполнитель не определен", List, Mark, Lenght, Weight, GetWeightDifferent(Number, List, Mark, Weight), null, DateTime.Now, null, Model, GetRevision(assembly), null, null, false, false, CountMarks, new List<Detail>());
 
                         GetDetails(CheckedOrder.Details, assembly);
 
@@ -154,6 +154,9 @@ namespace SZMK.Desktop.Services.Scan
             {
                 foreach (var detail in assembly.Elements("Деталь"))
                 {
+                    Error = "ADVANCED_OPTION.XS_DRAWING_PLOT_FILE_NAME_W";
+                    string Name = GetNameDetail(assembly, detail);
+
                     Error = "Позиция_детали";
                     string Position = detail.Element("Позиция_детали").Value;
 
@@ -206,6 +209,7 @@ namespace SZMK.Desktop.Services.Scan
                     string PlateThickness = detail.Element("PLATE_THICKNESS").Value;
 
                     DetailViewModel detailViewModel = new DetailViewModel(
+                        Name,
                         Position,
                         Count,
                         Profile,
@@ -227,6 +231,7 @@ namespace SZMK.Desktop.Services.Scan
 
                     details.Add(new Detail
                     {
+                        Name = detailViewModel.Name,
                         Position = detailViewModel.Position,
                         Count = detailViewModel.Count,
                         Profile = detailViewModel.Profile,
@@ -335,6 +340,8 @@ namespace SZMK.Desktop.Services.Scan
                     Detail.Nodes.Add(MethodOfPaintingRAL);
                     TreeNode PaintingArea = new TreeNode($"Площадь покраски: {Details[i].PaintingArea}");
                     Detail.Nodes.Add(PaintingArea);
+                    TreeNode Name = new TreeNode($"Наименование детали: {Details[i].Name}");
+                    Detail.Nodes.Add(Name);
 
                     tnDetails.Nodes.Add(Detail);
                 }
@@ -388,6 +395,194 @@ namespace SZMK.Desktop.Services.Scan
             {
                 return false;
             }
+        }
+        private String GetNameDetail(XElement assembly, XElement detail)
+        {
+            string _name = assembly.Element("ADVANCED_OPTION.XS_DRAWING_PLOT_FILE_NAME_W").Value.Trim();
+
+            string temp = _name;
+
+            while (true)
+            {
+                temp = temp.Remove(0, _name.IndexOf('%') + 1);
+
+                string parm = temp.Substring(0, temp.IndexOf('%'));
+
+                _name = _name.Replace($"%{parm}%", GetParametersDetail(detail, parm));
+
+                temp = _name;
+
+                if (temp.IndexOf('%') == -1)
+                {
+                    break;
+                }
+            }
+
+            return _name;
+        }
+
+        private String GetParametersDetail(XElement detail, string parm)
+        {
+            string strdata = "";
+
+            if (parm == "NAME" || parm == "DRAWING_NAME")
+            {
+                string prefix = detail.Element("PART_PREFIX").Value.Trim();
+
+                if (prefix != "")
+                {
+                    strdata = detail.Element("Позиция_детали").Value.Trim();
+
+                    return prefix + "_" + strdata;
+                }
+                else
+                {
+                    strdata = detail.Element("Позиция_детали").Value.Trim();
+
+                    return strdata;
+                }
+            }
+            if (parm == "NAME.-" || parm == "DRAWING_NAME.-")
+            {
+                string prefix = detail.Element("PART_PREFIX").Value.Trim();
+
+                if (prefix != "")
+                {
+                    strdata = detail.Element("Позиция_детали").Value.Trim();
+
+                    return prefix + "-" + strdata;
+                }
+                else
+                {
+                    strdata = detail.Element("Позиция_детали").Value.Trim();
+
+                    return strdata;
+                }
+            }
+            if (parm == "NAME." || parm == "DRAWING_NAME.")
+            {
+                string prefix = detail.Element("PART_PREFIX").Value.Trim();
+
+                if (prefix != "")
+                {
+                    strdata = detail.Element("Позиция_детали").Value.Trim();
+
+                    return prefix + strdata;
+                }
+                else
+                {
+                    strdata = detail.Element("Позиция_детали").Value.Trim();
+
+                    return strdata;
+                }
+            }
+            if (parm == "REV" || parm == "REVISION" || parm == "DRAWING_REVISION")
+            {
+                strdata = detail.Element("DRAWING.REVISION.NUMBER").Value.Trim();
+
+                return strdata;
+            }
+            if (parm == "REV_MARK" || parm == "REVISION_MARK" || parm == "DRAWING_REVISION_MARK")
+            {
+                strdata = detail.Element("DRAWING.REVISION.MARK").Value.Trim();
+
+                return strdata;
+            }
+            if (parm == "TITLE" || parm == "DRAWING_TITLE")
+            {
+                strdata = detail.Element("DRAWING.TITLE").Value.Trim();
+
+                return strdata;
+            }
+            if (parm.IndexOf("UDA:") != -1)
+            {
+                strdata = detail.Element("DRAWING." + parm.Remove(0, 4)).Value.Trim();
+
+                return strdata;
+            }
+            if (parm.IndexOf("REV? - ") != -1)
+            {
+                int rev = 0;
+
+                rev = Convert.ToInt32(detail.Element("DRAWING.REVISION.NUMBER").Value.Trim());
+
+                if (rev != 0)
+                {
+                    strdata = parm.Remove(0, 7);
+
+                    return strdata;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            if (parm.IndexOf("REVISION? - ") != -1)
+            {
+                int rev = 0;
+
+                rev = Convert.ToInt32(detail.Element("DRAWING.REVISION.NUMBER").Value.Trim());
+
+                if (rev != 0)
+                {
+                    strdata = parm.Remove(0, 12);
+
+                    return strdata;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            if (parm.IndexOf("DRAWING_REVISION? - ") != -1)
+            {
+                int rev = 0;
+
+                rev = Convert.ToInt32(detail.Element("DRAWING.REVISION.NUMBER").Value.Trim());
+
+                if (rev != 0)
+                {
+                    strdata = parm.Remove(0, 20);
+
+                    return strdata;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            if (parm.IndexOf("TPL:") != -1)
+            {
+                strdata = detail.Element("DRAWING." + parm.Remove(0, 4)).Value.Trim();
+
+                return strdata;
+            }
+
+            return "";
+        }
+
+        private Revision GetRevision(XElement assembly)
+        {
+            return new Revision
+            {
+                DateCreate = Convert.ToDateTime(assembly.Element("DRAWING.REVISION.DATE_CREATE").Value.Trim()),
+                CreatedBy = assembly.Element("DRAWING.REVISION.CREATED_BY").Value.Trim(),
+                Information = assembly.Element("DRAWING.REVISION.INFO2").Value.Trim(),
+                Description = assembly.Element("DRAWING.REVISION.DESCRIPTION").Value.Trim(),
+                LastApptovedBy = assembly.Element("DRAWING.REVISION.LAST_APPROVED_BY").Value.Trim()
+            };
+        }
+        private string GetWeightDifferent(string Number, string List, string Mark, string Weight)
+        {
+
+            double previosWeight = SystemArgs.Request.GetWeightPreviousOrder(Number, List, Mark);
+
+            if (previosWeight != 0)
+            {
+                previosWeight = Convert.ToDouble(Weight.Replace(" ", "").Replace(".", ",")) - previosWeight;
+            }
+
+            return previosWeight.ToString();
         }
     }
 }

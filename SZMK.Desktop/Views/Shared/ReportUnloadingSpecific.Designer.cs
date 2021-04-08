@@ -29,21 +29,23 @@ namespace SZMK.Desktop.Views.Shared
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.Report_DGV = new System.Windows.Forms.DataGridView();
+            this.OK_B = new System.Windows.Forms.Button();
+            this.Send_B = new System.Windows.Forms.Button();
             this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.List = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TypeDetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Executor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NumberSpecific = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Finded = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OK_B = new System.Windows.Forms.Button();
-            this.Send_B = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Report_DGV)).BeginInit();
             this.SuspendLayout();
@@ -94,6 +96,7 @@ namespace SZMK.Desktop.Views.Shared
             this.Report_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Number,
             this.List,
+            this.TypeDetail,
             this.Executor,
             this.NumberSpecific,
             this.Finded});
@@ -106,66 +109,6 @@ namespace SZMK.Desktop.Views.Shared
             this.Report_DGV.Size = new System.Drawing.Size(815, 386);
             this.Report_DGV.TabIndex = 0;
             this.Report_DGV.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.Report_DGV_CellFormatting);
-            // 
-            // Number
-            // 
-            this.Number.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Number.DataPropertyName = "Number";
-            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Number.DefaultCellStyle = dataGridViewCellStyle41;
-            this.Number.FillWeight = 20F;
-            this.Number.HeaderText = "Номер заказа";
-            this.Number.Name = "Number";
-            this.Number.ReadOnly = true;
-            this.Number.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // List
-            // 
-            this.List.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.List.DataPropertyName = "_Specific.List";
-            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.List.DefaultCellStyle = dataGridViewCellStyle42;
-            this.List.FillWeight = 15F;
-            this.List.HeaderText = "Номер листа";
-            this.List.Name = "List";
-            this.List.ReadOnly = true;
-            this.List.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Executor
-            // 
-            this.Executor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Executor.DataPropertyName = "Executor";
-            dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Executor.DefaultCellStyle = dataGridViewCellStyle43;
-            this.Executor.FillWeight = 40F;
-            this.Executor.HeaderText = "Исполнитель";
-            this.Executor.Name = "Executor";
-            this.Executor.ReadOnly = true;
-            this.Executor.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // NumberSpecific
-            // 
-            this.NumberSpecific.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.NumberSpecific.DataPropertyName = "_Specific.NumberSpecific";
-            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.NumberSpecific.DefaultCellStyle = dataGridViewCellStyle44;
-            this.NumberSpecific.FillWeight = 15F;
-            this.NumberSpecific.HeaderText = "Номер детали";
-            this.NumberSpecific.Name = "NumberSpecific";
-            this.NumberSpecific.ReadOnly = true;
-            this.NumberSpecific.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Finded
-            // 
-            this.Finded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Finded.DataPropertyName = "_Specific.FindedView";
-            dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Finded.DefaultCellStyle = dataGridViewCellStyle45;
-            this.Finded.FillWeight = 10F;
-            this.Finded.HeaderText = "Найдено";
-            this.Finded.Name = "Finded";
-            this.Finded.ReadOnly = true;
-            this.Finded.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
             // OK_B
             // 
@@ -204,6 +147,75 @@ namespace SZMK.Desktop.Views.Shared
             this.Send_B.UseVisualStyleBackColor = false;
             this.Send_B.Click += new System.EventHandler(this.Send_B_Click);
             // 
+            // Number
+            // 
+            this.Number.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Number.DataPropertyName = "Number";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Number.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Number.FillWeight = 15F;
+            this.Number.HeaderText = "Номер заказа";
+            this.Number.Name = "Number";
+            this.Number.ReadOnly = true;
+            this.Number.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // List
+            // 
+            this.List.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.List.DataPropertyName = "_Specific.List";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.List.DefaultCellStyle = dataGridViewCellStyle2;
+            this.List.FillWeight = 15F;
+            this.List.HeaderText = "Номер листа";
+            this.List.Name = "List";
+            this.List.ReadOnly = true;
+            this.List.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // TypeDetail
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TypeDetail.DefaultCellStyle = dataGridViewCellStyle3;
+            this.TypeDetail.FillWeight = 8F;
+            this.TypeDetail.HeaderText = "Тип";
+            this.TypeDetail.Name = "TypeDetail";
+            this.TypeDetail.ReadOnly = true;
+            // 
+            // Executor
+            // 
+            this.Executor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Executor.DataPropertyName = "Executor";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Executor.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Executor.FillWeight = 42F;
+            this.Executor.HeaderText = "Исполнитель";
+            this.Executor.Name = "Executor";
+            this.Executor.ReadOnly = true;
+            this.Executor.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // NumberSpecific
+            // 
+            this.NumberSpecific.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.NumberSpecific.DataPropertyName = "_Specific.NumberSpecific";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.NumberSpecific.DefaultCellStyle = dataGridViewCellStyle5;
+            this.NumberSpecific.FillWeight = 15F;
+            this.NumberSpecific.HeaderText = "Номер детали";
+            this.NumberSpecific.Name = "NumberSpecific";
+            this.NumberSpecific.ReadOnly = true;
+            this.NumberSpecific.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Finded
+            // 
+            this.Finded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Finded.DataPropertyName = "_Specific.FindedView";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Finded.DefaultCellStyle = dataGridViewCellStyle6;
+            this.Finded.FillWeight = 10F;
+            this.Finded.HeaderText = "Найдено";
+            this.Finded.Name = "Finded";
+            this.Finded.ReadOnly = true;
+            this.Finded.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
             // ReportUnloadingSpecific
             // 
             this.AcceptButton = this.OK_B;
@@ -233,12 +245,13 @@ namespace SZMK.Desktop.Views.Shared
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView Report_DGV;
+        private System.Windows.Forms.Button OK_B;
+        private System.Windows.Forms.Button Send_B;
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
         private System.Windows.Forms.DataGridViewTextBoxColumn List;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TypeDetail;
         private System.Windows.Forms.DataGridViewTextBoxColumn Executor;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberSpecific;
         private System.Windows.Forms.DataGridViewTextBoxColumn Finded;
-        private System.Windows.Forms.Button OK_B;
-        private System.Windows.Forms.Button Send_B;
     }
 }

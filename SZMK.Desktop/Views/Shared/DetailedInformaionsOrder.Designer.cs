@@ -54,12 +54,37 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsDWG_TB = new System.Windows.Forms.TextBox();
             this.PathDetailsDXF_TB = new System.Windows.Forms.TextBox();
             this.PathModel_TB = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.RevisionDate_TB = new System.Windows.Forms.TextBox();
+            this.RevisionInfo_TB = new System.Windows.Forms.TextBox();
+            this.RevisionDiscription_TB = new System.Windows.Forms.TextBox();
+            this.RevisionLastApproved_TB = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.Weight_TB = new System.Windows.Forms.TextBox();
+            this.WeightDifferent_TB = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.History_DGV = new System.Windows.Forms.DataGridView();
+            this.label13 = new System.Windows.Forms.Label();
+            this.RevisionCreatedBy_TB = new System.Windows.Forms.TextBox();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WeightDifferent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ListStatuses_TP.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Statuses_DGV)).BeginInit();
             this.Locations_TP.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.History_DGV)).BeginInit();
             this.SuspendLayout();
             // 
             // ListStatuses_TP
@@ -101,6 +126,7 @@ namespace SZMK.Desktop.Views.Shared
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.Locations_TP);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -183,7 +209,7 @@ namespace SZMK.Desktop.Views.Shared
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 116F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
             this.tableLayoutPanel1.Controls.Add(this.PathArhive_TB, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
@@ -218,7 +244,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathArhive_TB.BackColor = System.Drawing.Color.White;
             this.PathArhive_TB.Location = new System.Drawing.Point(103, 151);
             this.PathArhive_TB.Name = "PathArhive_TB";
-            this.PathArhive_TB.Size = new System.Drawing.Size(442, 22);
+            this.PathArhive_TB.Size = new System.Drawing.Size(439, 22);
             this.PathArhive_TB.TabIndex = 71;
             this.PathArhive_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathArhive_TB_MouseDoubleClick);
             // 
@@ -286,10 +312,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsDWG_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsDWG_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsDWG_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsDWG_B.Location = new System.Drawing.Point(554, 6);
+            this.ChangePathDetailsDWG_B.Location = new System.Drawing.Point(551, 6);
             this.ChangePathDetailsDWG_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsDWG_B.Name = "ChangePathDetailsDWG_B";
-            this.ChangePathDetailsDWG_B.Size = new System.Drawing.Size(106, 25);
+            this.ChangePathDetailsDWG_B.Size = new System.Drawing.Size(109, 25);
             this.ChangePathDetailsDWG_B.TabIndex = 62;
             this.ChangePathDetailsDWG_B.Text = "Изменить";
             this.ChangePathDetailsDWG_B.UseVisualStyleBackColor = false;
@@ -304,10 +330,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsPDF_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsPDF_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsPDF_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsPDF_B.Location = new System.Drawing.Point(554, 42);
+            this.ChangePathDetailsPDF_B.Location = new System.Drawing.Point(551, 42);
             this.ChangePathDetailsPDF_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsPDF_B.Name = "ChangePathDetailsPDF_B";
-            this.ChangePathDetailsPDF_B.Size = new System.Drawing.Size(106, 25);
+            this.ChangePathDetailsPDF_B.Size = new System.Drawing.Size(109, 25);
             this.ChangePathDetailsPDF_B.TabIndex = 63;
             this.ChangePathDetailsPDF_B.Text = "Изменить";
             this.ChangePathDetailsPDF_B.UseVisualStyleBackColor = false;
@@ -322,10 +348,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsDXF_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsDXF_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsDXF_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsDXF_B.Location = new System.Drawing.Point(554, 78);
+            this.ChangePathDetailsDXF_B.Location = new System.Drawing.Point(551, 78);
             this.ChangePathDetailsDXF_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsDXF_B.Name = "ChangePathDetailsDXF_B";
-            this.ChangePathDetailsDXF_B.Size = new System.Drawing.Size(106, 25);
+            this.ChangePathDetailsDXF_B.Size = new System.Drawing.Size(109, 25);
             this.ChangePathDetailsDXF_B.TabIndex = 64;
             this.ChangePathDetailsDXF_B.Text = "Изменить";
             this.ChangePathDetailsDXF_B.UseVisualStyleBackColor = false;
@@ -340,10 +366,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathModel_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathModel_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathModel_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathModel_B.Location = new System.Drawing.Point(554, 114);
+            this.ChangePathModel_B.Location = new System.Drawing.Point(551, 114);
             this.ChangePathModel_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathModel_B.Name = "ChangePathModel_B";
-            this.ChangePathModel_B.Size = new System.Drawing.Size(106, 25);
+            this.ChangePathModel_B.Size = new System.Drawing.Size(109, 25);
             this.ChangePathModel_B.TabIndex = 65;
             this.ChangePathModel_B.Text = "Изменить";
             this.ChangePathModel_B.UseVisualStyleBackColor = false;
@@ -358,10 +384,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathArhive_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathArhive_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathArhive_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathArhive_B.Location = new System.Drawing.Point(554, 150);
+            this.ChangePathArhive_B.Location = new System.Drawing.Point(551, 150);
             this.ChangePathArhive_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathArhive_B.Name = "ChangePathArhive_B";
-            this.ChangePathArhive_B.Size = new System.Drawing.Size(106, 25);
+            this.ChangePathArhive_B.Size = new System.Drawing.Size(109, 25);
             this.ChangePathArhive_B.TabIndex = 66;
             this.ChangePathArhive_B.Text = "Изменить";
             this.ChangePathArhive_B.UseVisualStyleBackColor = false;
@@ -373,7 +399,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsPDF_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsPDF_TB.Location = new System.Drawing.Point(103, 43);
             this.PathDetailsPDF_TB.Name = "PathDetailsPDF_TB";
-            this.PathDetailsPDF_TB.Size = new System.Drawing.Size(442, 22);
+            this.PathDetailsPDF_TB.Size = new System.Drawing.Size(439, 22);
             this.PathDetailsPDF_TB.TabIndex = 67;
             this.PathDetailsPDF_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathDetailsPDF_TB_MouseDoubleClick);
             // 
@@ -383,7 +409,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsDWG_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsDWG_TB.Location = new System.Drawing.Point(103, 7);
             this.PathDetailsDWG_TB.Name = "PathDetailsDWG_TB";
-            this.PathDetailsDWG_TB.Size = new System.Drawing.Size(442, 22);
+            this.PathDetailsDWG_TB.Size = new System.Drawing.Size(439, 22);
             this.PathDetailsDWG_TB.TabIndex = 68;
             this.PathDetailsDWG_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathDetailsDWG_TB_MouseDoubleClick);
             // 
@@ -393,7 +419,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsDXF_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsDXF_TB.Location = new System.Drawing.Point(103, 79);
             this.PathDetailsDXF_TB.Name = "PathDetailsDXF_TB";
-            this.PathDetailsDXF_TB.Size = new System.Drawing.Size(442, 22);
+            this.PathDetailsDXF_TB.Size = new System.Drawing.Size(439, 22);
             this.PathDetailsDXF_TB.TabIndex = 69;
             this.PathDetailsDXF_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathDetailsDXF_TB_MouseDoubleClick);
             // 
@@ -403,9 +429,296 @@ namespace SZMK.Desktop.Views.Shared
             this.PathModel_TB.BackColor = System.Drawing.Color.White;
             this.PathModel_TB.Location = new System.Drawing.Point(103, 115);
             this.PathModel_TB.Name = "PathModel_TB";
-            this.PathModel_TB.Size = new System.Drawing.Size(442, 22);
+            this.PathModel_TB.Size = new System.Drawing.Size(439, 22);
             this.PathModel_TB.TabIndex = 70;
             this.PathModel_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathModel_TB_MouseDoubleClick);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.tableLayoutPanel2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(666, 343);
+            this.tabPage2.TabIndex = 2;
+            this.tabPage2.Text = "Ревизии чертежа";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 5;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.16626F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.83374F));
+            this.tableLayoutPanel2.Controls.Add(this.RevisionDate_TB, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.RevisionInfo_TB, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.RevisionDiscription_TB, 2, 2);
+            this.tableLayoutPanel2.Controls.Add(this.RevisionLastApproved_TB, 2, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label7, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label8, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label9, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label10, 1, 4);
+            this.tableLayoutPanel2.Controls.Add(this.Weight_TB, 2, 4);
+            this.tableLayoutPanel2.Controls.Add(this.WeightDifferent_TB, 4, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label11, 3, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.History_DGV, 0, 6);
+            this.tableLayoutPanel2.Controls.Add(this.label13, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.RevisionCreatedBy_TB, 4, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 7;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 128F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(660, 337);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // RevisionDate_TB
+            // 
+            this.RevisionDate_TB.BackColor = System.Drawing.Color.White;
+            this.RevisionDate_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevisionDate_TB.Location = new System.Drawing.Point(189, 3);
+            this.RevisionDate_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.RevisionDate_TB.Name = "RevisionDate_TB";
+            this.RevisionDate_TB.ReadOnly = true;
+            this.RevisionDate_TB.Size = new System.Drawing.Size(174, 22);
+            this.RevisionDate_TB.TabIndex = 0;
+            // 
+            // RevisionInfo_TB
+            // 
+            this.RevisionInfo_TB.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel2.SetColumnSpan(this.RevisionInfo_TB, 3);
+            this.RevisionInfo_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevisionInfo_TB.Location = new System.Drawing.Point(189, 31);
+            this.RevisionInfo_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.RevisionInfo_TB.Name = "RevisionInfo_TB";
+            this.RevisionInfo_TB.ReadOnly = true;
+            this.RevisionInfo_TB.Size = new System.Drawing.Size(471, 22);
+            this.RevisionInfo_TB.TabIndex = 1;
+            // 
+            // RevisionDiscription_TB
+            // 
+            this.RevisionDiscription_TB.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel2.SetColumnSpan(this.RevisionDiscription_TB, 3);
+            this.RevisionDiscription_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevisionDiscription_TB.Location = new System.Drawing.Point(189, 59);
+            this.RevisionDiscription_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.RevisionDiscription_TB.Name = "RevisionDiscription_TB";
+            this.RevisionDiscription_TB.ReadOnly = true;
+            this.RevisionDiscription_TB.Size = new System.Drawing.Size(471, 22);
+            this.RevisionDiscription_TB.TabIndex = 2;
+            // 
+            // RevisionLastApproved_TB
+            // 
+            this.RevisionLastApproved_TB.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel2.SetColumnSpan(this.RevisionLastApproved_TB, 3);
+            this.RevisionLastApproved_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevisionLastApproved_TB.Location = new System.Drawing.Point(189, 87);
+            this.RevisionLastApproved_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.RevisionLastApproved_TB.Name = "RevisionLastApproved_TB";
+            this.RevisionLastApproved_TB.ReadOnly = true;
+            this.RevisionLastApproved_TB.Size = new System.Drawing.Size(471, 22);
+            this.RevisionLastApproved_TB.TabIndex = 3;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.tableLayoutPanel2.SetColumnSpan(this.label6, 2);
+            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(183, 28);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Дата выпуска ревизии";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.tableLayoutPanel2.SetColumnSpan(this.label7, 2);
+            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label7.Location = new System.Drawing.Point(0, 28);
+            this.label7.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(183, 28);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Номер служебной записки";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.tableLayoutPanel2.SetColumnSpan(this.label8, 2);
+            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label8.Location = new System.Drawing.Point(0, 56);
+            this.label8.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(183, 28);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Описание изменений";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.tableLayoutPanel2.SetColumnSpan(this.label9, 2);
+            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label9.Location = new System.Drawing.Point(0, 84);
+            this.label9.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(183, 28);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Основание изменения";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label10.Location = new System.Drawing.Point(125, 112);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(58, 28);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Вес";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Weight_TB
+            // 
+            this.Weight_TB.BackColor = System.Drawing.Color.White;
+            this.Weight_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Weight_TB.Location = new System.Drawing.Point(189, 115);
+            this.Weight_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.Weight_TB.Name = "Weight_TB";
+            this.Weight_TB.ReadOnly = true;
+            this.Weight_TB.Size = new System.Drawing.Size(174, 22);
+            this.Weight_TB.TabIndex = 10;
+            // 
+            // WeightDifferent_TB
+            // 
+            this.WeightDifferent_TB.BackColor = System.Drawing.Color.White;
+            this.WeightDifferent_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WeightDifferent_TB.Location = new System.Drawing.Point(471, 115);
+            this.WeightDifferent_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.WeightDifferent_TB.Name = "WeightDifferent_TB";
+            this.WeightDifferent_TB.ReadOnly = true;
+            this.WeightDifferent_TB.Size = new System.Drawing.Size(189, 22);
+            this.WeightDifferent_TB.TabIndex = 11;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label11.Location = new System.Drawing.Point(366, 112);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(99, 28);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "Разница веса";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.tableLayoutPanel2.SetColumnSpan(this.label12, 5);
+            this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label12.Location = new System.Drawing.Point(5, 145);
+            this.label12.Margin = new System.Windows.Forms.Padding(5);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(650, 25);
+            this.label12.TabIndex = 12;
+            this.label12.Text = "История";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // History_DGV
+            // 
+            this.History_DGV.AllowUserToAddRows = false;
+            this.History_DGV.AllowUserToDeleteRows = false;
+            this.History_DGV.AllowUserToResizeColumns = false;
+            this.History_DGV.AllowUserToResizeRows = false;
+            this.History_DGV.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
+            this.History_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.History_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.WeightDifferent});
+            this.tableLayoutPanel2.SetColumnSpan(this.History_DGV, 5);
+            this.History_DGV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.History_DGV.Location = new System.Drawing.Point(0, 175);
+            this.History_DGV.Margin = new System.Windows.Forms.Padding(0);
+            this.History_DGV.Name = "History_DGV";
+            this.History_DGV.ReadOnly = true;
+            this.History_DGV.RowHeadersVisible = false;
+            this.History_DGV.Size = new System.Drawing.Size(660, 162);
+            this.History_DGV.TabIndex = 13;
+            this.History_DGV.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.History_DGV_CellMouseDoubleClick);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label13.Location = new System.Drawing.Point(366, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(99, 28);
+            this.label13.TabIndex = 14;
+            this.label13.Text = "Выпустил";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // RevisionCreatedBy_TB
+            // 
+            this.RevisionCreatedBy_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevisionCreatedBy_TB.Location = new System.Drawing.Point(471, 3);
+            this.RevisionCreatedBy_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.RevisionCreatedBy_TB.Name = "RevisionCreatedBy_TB";
+            this.RevisionCreatedBy_TB.Size = new System.Drawing.Size(189, 22);
+            this.RevisionCreatedBy_TB.TabIndex = 15;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "List";
+            this.dataGridViewTextBoxColumn1.FillWeight = 20F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Лист";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "Mark";
+            this.dataGridViewTextBoxColumn2.FillWeight = 20F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Марка";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Weight";
+            this.dataGridViewTextBoxColumn3.FillWeight = 30F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "Вес";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // WeightDifferent
+            // 
+            this.WeightDifferent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.WeightDifferent.DataPropertyName = "WeightDifferent";
+            this.WeightDifferent.FillWeight = 30F;
+            this.WeightDifferent.HeaderText = "Разница веса";
+            this.WeightDifferent.Name = "WeightDifferent";
+            this.WeightDifferent.ReadOnly = true;
             // 
             // DetailedInformaionsOrder
             // 
@@ -432,6 +745,10 @@ namespace SZMK.Desktop.Views.Shared
             this.Locations_TP.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.History_DGV)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -463,5 +780,27 @@ namespace SZMK.Desktop.Views.Shared
         private System.Windows.Forms.TextBox PathDetailsDWG_TB;
         private System.Windows.Forms.TextBox PathDetailsDXF_TB;
         private System.Windows.Forms.TextBox PathModel_TB;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TextBox RevisionDate_TB;
+        private System.Windows.Forms.TextBox RevisionInfo_TB;
+        private System.Windows.Forms.TextBox RevisionDiscription_TB;
+        private System.Windows.Forms.TextBox RevisionLastApproved_TB;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox Weight_TB;
+        private System.Windows.Forms.TextBox WeightDifferent_TB;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        public System.Windows.Forms.DataGridView History_DGV;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox RevisionCreatedBy_TB;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WeightDifferent;
     }
 }

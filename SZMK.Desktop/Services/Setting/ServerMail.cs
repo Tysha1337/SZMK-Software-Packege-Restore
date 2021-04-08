@@ -426,7 +426,7 @@ namespace SZMK.Desktop.Services.Setting
                                     $"<td> № детали</td>" +
                                     $"<td> Путь папки с деталями</td>" +
                                     $"</tr>";
-                foreach (var Specifics in Executor.GetSpecifics())
+                foreach (var Specifics in Executor.GetSpecifics().OrderBy(p=>p.Type).ThenBy(p=>p.Number).ThenBy(p=>p.List))
                 {
                     if (!Specifics.Finded)
                     {

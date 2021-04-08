@@ -1,0 +1,25 @@
+[2021-04-09 03:05:26.4713] [INFO] Инициализация успешно пройдена
+[2021-04-09 03:05:26.5091] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-09 03:05:26.5269] [INFO] Начата авторизация пользователя
+[2021-04-09 03:05:27.1220] [INFO] Authorization was successful
+[2021-04-09 03:05:36.6971] [INFO] Клиент подключился
+[2021-04-09 03:05:36.7754] [INFO] Модель подключена
+[2021-04-09 03:05:36.8053] [INFO] Чертежи успешно получены
+[2021-04-09 03:05:36.9220] [INFO] Чертежи добавлены
+[2021-04-09 03:05:36.9668] [INFO] Начат показ чертежей
+[2021-04-09 03:05:36.9838] [INFO] Дерево успешно собрано
+[2021-04-09 03:06:01.5290] [INFO] Инициализация успешно пройдена
+[2021-04-09 03:06:01.5729] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-09 03:06:01.5939] [INFO] Начата авторизация пользователя
+[2021-04-09 03:06:02.4077] [INFO] Authorization was successful
+[2021-04-09 03:06:10.7873] [INFO] Клиент подключился
+[2021-04-09 03:06:10.9189] [INFO] Модель подключена
+[2021-04-09 03:06:10.9408] [INFO] Чертежи успешно получены
+[2021-04-09 03:06:26.9322] [ERROR] System.Exception: Не заполнено описание в поле "Описание" ---> System.Exception: Не заполнено описание в поле "Описание"
+   в SZMK.TeklaInteraction.Shared.ViewModels.RevisionViewModel..ctor(Int32 DateCreate, String CreatedBy, String Information, String Description, String LastApprovedBy, String List) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Shared\ViewModels\RevisionViewModel.cs:строка 82
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetRevision(Assembly assembly, String List) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 801
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 412
+   --- Конец трассировки внутреннего стека исключений ---
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 419
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetData(User user) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 89
+[2021-04-09 03:06:28.7288] [INFO] Чертежи добавлены

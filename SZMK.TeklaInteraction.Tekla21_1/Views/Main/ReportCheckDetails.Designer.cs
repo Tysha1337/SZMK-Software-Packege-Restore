@@ -106,7 +106,6 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Views.Main
             this.Report_DGV.Location = new System.Drawing.Point(5, 50);
             this.Report_DGV.Margin = new System.Windows.Forms.Padding(5);
             this.Report_DGV.Name = "Report_DGV";
-            this.Report_DGV.ReadOnly = true;
             this.Report_DGV.RowHeadersVisible = false;
             this.Report_DGV.Size = new System.Drawing.Size(763, 366);
             this.Report_DGV.TabIndex = 1;
@@ -174,7 +173,6 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Views.Main
             this.Path.FillWeight = 60F;
             this.Path.HeaderText = "Путь";
             this.Path.Name = "Path";
-            this.Path.ReadOnly = true;
             this.Path.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Finded
@@ -191,7 +189,7 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Views.Main
             // 
             this.Change.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.NullValue = "Обзор";
+            dataGridViewCellStyle2.NullValue = "Изменить";
             this.Change.DefaultCellStyle = dataGridViewCellStyle2;
             this.Change.FillWeight = 10F;
             this.Change.HeaderText = "Изменить";

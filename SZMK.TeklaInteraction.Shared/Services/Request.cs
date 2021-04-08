@@ -201,7 +201,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
                     Connect.Open();
 
                     using (var Command = new NpgsqlCommand($"UPDATE public.\"Orders\" SET \"Canceled\" = {true}" +
-                                                           $" WHERE \"Number\" = {Drawing.Order} AND \"List\" = {Drawing.List};", Connect))
+                                                           $" WHERE \"Number\" = '{Drawing.Order}' AND \"List\" = '{Drawing.List}';", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -211,7 +211,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
 
                 return true;
             }
-            catch
+            catch(Exception Ex)
             {
                 return false;
             }
@@ -225,7 +225,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"Number\",\"Mark\", \"List\" FROM public.\"Orders\" WHERE(\"List\" NOT LIKE '%{List + "и"}' OR \"List\"='{List}') AND \"Number\"='{Number}';", Connect))
+                    using (var Command = new NpgsqlCommand($"SELECT \"Number\",\"Mark\", \"List\" FROM public.\"Orders\" WHERE(\"List\" LIKE '%{List + "и"}' OR \"List\"='{List}') AND \"Number\"='{Number}';", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
                         {
@@ -401,6 +401,77 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 return false;
             }
         }
+        public double GetWeightPreviousOrder(string Number, string List, string Mark)
+        {
+            try
+            {
+                double weight = 0;
+
+                String ReplaceMark = "";
+
+                String[] ExistingCharaterEnglish = new String[] { "A", "a", "B", "C", "c", "E", "e", "H", "K", "M", "O", "o", "P", "p", "T" };
+                String[] ExistingCharaterRussia = new String[] { "А", "а", "В", "С", "с", "Е", "е", "Н", "К", "М", "О", "о", "Р", "р", "Т" };
+
+                for (int i = 0; i < ExistingCharaterRussia.Length; i++)
+                {
+                    ReplaceMark = Mark.Replace(ExistingCharaterRussia[i], ExistingCharaterEnglish[i]);
+                }
+
+                string[] ListSplitted = List.Split('и');
+
+                while (ListSplitted[0][0] == '0')
+                {
+                    ListSplitted[0] = ListSplitted[0].Remove(0, 1);
+                }
+
+                if (ListSplitted.Length == 2 && ListSplitted[1] == "1")
+                {
+                    using (var Connect = new NpgsqlConnection(db.ToString()))
+                    {
+                        Connect.Open();
+
+                        using (var Command = new NpgsqlCommand($"SELECT \"Weight\" FROM public.\"Orders\" WHERE \"Number\"='{Number}' AND \"List\"='{ListSplitted[0]}' AND \"Mark\"='{ReplaceMark}';", Connect))
+                        {
+                            using (var Reader = Command.ExecuteReader())
+                            {
+                                while (Reader.Read())
+                                {
+                                    weight = Convert.ToDouble(Reader.GetString(0));
+                                }
+                            }
+                        }
+
+                        Connect.Close();
+                    }
+                }
+                else if (ListSplitted.Length == 2)
+                {
+                    using (var Connect = new NpgsqlConnection(db.ToString()))
+                    {
+                        Connect.Open();
+
+                        using (var Command = new NpgsqlCommand($"SELECT \"Weight\" FROM public.\"Orders\" WHERE \"Number\"='{Number}' AND \"List\"='{ListSplitted[0]}и{Convert.ToInt32(ListSplitted[1]) - 1}' AND \"Mark\"='{ReplaceMark}';", Connect))
+                        {
+                            using (var Reader = Command.ExecuteReader())
+                            {
+                                while (Reader.Read())
+                                {
+                                    weight = Convert.ToDouble(Reader.GetString(0));
+                                }
+                            }
+                        }
+
+                        Connect.Close();
+                    }
+                }
+
+                return weight;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.ToString());
+            }
+        }
         public bool InsertDrawing(Drawing Drawing)
         {
             try
@@ -410,8 +481,8 @@ namespace SZMK.TeklaInteraction.Shared.Services
                     Connect.Open();
 
                     using (var Command = new NpgsqlCommand($"INSERT INTO public.\"Orders\"(" +
-                                                            "\"DateCreate\", \"Executor\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"Canceled\",\"ID_TypeAdd\",\"ID_Model\",\"ID_PathDetails\" )" +
-                                                            $"VALUES('{DateTime.Now}', '{Drawing.Executor}', '{Drawing.Order}', '{Drawing.List}', '{Drawing.Mark}', '{Drawing.SubTotalLenght}', '{Drawing.SubTotalWeight}', {false},'{Drawing.TypeAdd.Id}','{Drawing.Model.Id}','{Drawing.PathDetails.Id}');", Connect))
+                                                            "\"DateCreate\", \"Executor\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\",\"WeightDifferent\", \"Canceled\",\"ID_TypeAdd\",\"ID_Model\",\"ID_PathDetails\",\"ID_Revision\" )" +
+                                                            $"VALUES('{DateTime.Now}', '{Drawing.Executor}', '{Drawing.Order}', '{Drawing.List}', '{Drawing.Mark}', '{Drawing.SubTotalLenght}','{Drawing.SubTotalWeight}', '{Drawing.WeightDifferent}', {false},'{Drawing.TypeAdd.Id}','{Drawing.Model.Id}','{Drawing.PathDetails.Id}','{Drawing.Revision.Id}');", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -811,6 +882,89 @@ namespace SZMK.TeklaInteraction.Shared.Services
                     Connect.Open();
 
                     using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"PathDWG\", \"PathPDF\", \"PathDXF\" FROM public.\"PathDetails\" WHERE \"PathDWG\"='{pathDetails.PathDWG}' AND \"PathPDF\"='{pathDetails.PathPDF}' AND \"PathDXF\"='{pathDetails.PathDXF}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return flag;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public Revision GetRevision(Revision revision)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"CreatedBy\", \"Information\", \"Description\", \"LastApptovedBy\" FROM public.\"Revision\" WHERE \"DateCreate\"='{revision.DateCreate}' AND \"CreatedBy\"='{revision.CreatedBy}' AND \"Information\"='{revision.Information}' AND \"Description\"='{revision.Description}' AND \"LastApptovedBy\"='{revision.LastApprovedBy}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                revision = new Revision { Id = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), CreatedBy = Reader.GetString(2), Information = Reader.GetString(3), Description = Reader.GetString(4), LastApprovedBy = Reader.GetString(5) };
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return revision;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.ToString());
+            }
+        }
+        public bool InsertRevision(Revision revision)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"Revision\"(\"DateCreate\", \"CreatedBy\", \"Information\", \"Description\", \"LastApptovedBy\") VALUES('{revision.DateCreate}', '{revision.CreatedBy}', '{revision.Information}', '{revision.Description}', '{revision.LastApprovedBy}'); ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public bool ExistRevision(Revision revision)
+        {
+            Boolean flag = false;
+            try
+            {
+
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"CreatedBy\", \"Information\", \"Description\", \"LastApptovedBy\" FROM public.\"Revision\" WHERE \"DateCreate\"='{revision.DateCreate}' AND \"CreatedBy\"='{revision.CreatedBy}' AND \"Information\"='{revision.Information}' AND \"Description\"='{revision.Description}' AND \"LastApptovedBy\"='{revision.LastApprovedBy}';", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
                         {

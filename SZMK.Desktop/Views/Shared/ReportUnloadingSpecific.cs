@@ -35,17 +35,18 @@ namespace SZMK.Desktop.Views.Shared
                     Report_DGV.Rows.Add();
                     Report_DGV[0, Report_DGV.Rows.Count - 1].Value = SystemArgs.UnLoadSpecific.ExecutorMails[i][j].Number;
                     Report_DGV[1, Report_DGV.Rows.Count - 1].Value = SystemArgs.UnLoadSpecific.ExecutorMails[i][j].List;
-                    Report_DGV[2, Report_DGV.Rows.Count - 1].Value = SystemArgs.UnLoadSpecific.ExecutorMails[i].Executor;
-                    Report_DGV[3, Report_DGV.Rows.Count - 1].Value = SystemArgs.UnLoadSpecific.ExecutorMails[i][j].NumberSpecific;
+                    Report_DGV[2, Report_DGV.Rows.Count - 1].Value = SystemArgs.UnLoadSpecific.ExecutorMails[i][j].Type;
+                    Report_DGV[3, Report_DGV.Rows.Count - 1].Value = SystemArgs.UnLoadSpecific.ExecutorMails[i].Executor;
+                    Report_DGV[4, Report_DGV.Rows.Count - 1].Value = SystemArgs.UnLoadSpecific.ExecutorMails[i][j].NumberSpecific;
                     if (SystemArgs.UnLoadSpecific.ExecutorMails[i][j].Finded)
                     {
-                        Report_DGV[4, Report_DGV.Rows.Count - 1].Style.BackColor = Color.Lime;
-                        Report_DGV[4, Report_DGV.Rows.Count - 1].Value = "Найдено";
+                        Report_DGV[5, Report_DGV.Rows.Count - 1].Style.BackColor = Color.Lime;
+                        Report_DGV[5, Report_DGV.Rows.Count - 1].Value = "Найдено";
                     }
                     else
                     {
-                        Report_DGV[4, Report_DGV.Rows.Count - 1].Style.BackColor = Color.Red;
-                        Report_DGV[4, Report_DGV.Rows.Count - 1].Value = "Не найдено";
+                        Report_DGV[5, Report_DGV.Rows.Count - 1].Style.BackColor = Color.Red;
+                        Report_DGV[5, Report_DGV.Rows.Count - 1].Value = "Не найдено";
                     }
                 }
             }

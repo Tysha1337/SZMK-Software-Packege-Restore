@@ -356,6 +356,13 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
 
                             Session[i].Drawing.PathDetails = request.GetPathDetails(Session[i].Drawing.PathDetails);
 
+                            if (!request.ExistRevision(Session[i].Drawing.Revision))
+                            {
+                                request.InsertRevision(Session[i].Drawing.Revision);
+                            }
+
+                            Session[i].Drawing.Revision = request.GetRevision(Session[i].Drawing.Revision);
+
                             if (request.InsertDrawing(Session[i].Drawing))
                             {
                                 for (int j = 0; j < Session[i].Drawing.Details.Count; j++)

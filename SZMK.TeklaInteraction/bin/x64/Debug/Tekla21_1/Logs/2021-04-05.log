@@ -1,0 +1,75 @@
+[2021-04-05 22:51:20.4176] [INFO] Инициализация успешно пройдена
+[2021-04-05 22:51:20.4760] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-05 22:51:20.4984] [INFO] Начата авторизация пользователя
+[2021-04-05 22:51:21.4243] [INFO] Authorization was successful
+[2021-04-05 22:52:26.5602] [INFO] Инициализация успешно пройдена
+[2021-04-05 22:52:26.7008] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-05 22:52:26.7407] [INFO] Начата авторизация пользователя
+[2021-04-05 22:52:27.7988] [INFO] Authorization was successful
+[2021-04-05 22:53:12.3636] [INFO] Клиент подключился
+[2021-04-05 22:53:12.5379] [INFO] Модель подключена
+[2021-04-05 22:53:12.5838] [INFO] Чертежи успешно получены
+[2021-04-05 22:54:21.4118] [INFO] Инициализация успешно пройдена
+[2021-04-05 22:54:21.5041] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-05 22:54:21.5447] [INFO] Начата авторизация пользователя
+[2021-04-05 22:54:22.5249] [INFO] Authorization was successful
+[2021-04-05 22:54:22.5439] [INFO] Клиент подключился
+[2021-04-05 22:54:22.7216] [INFO] Модель подключена
+[2021-04-05 22:54:22.7518] [INFO] Чертежи успешно получены
+[2021-04-05 22:55:24.5787] [INFO] Инициализация успешно пройдена
+[2021-04-05 22:55:24.6450] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-05 22:55:24.6678] [INFO] Начата авторизация пользователя
+[2021-04-05 22:55:25.8224] [INFO] Authorization was successful
+[2021-04-05 22:55:25.8723] [INFO] Клиент подключился
+[2021-04-05 22:55:26.0132] [INFO] Модель подключена
+[2021-04-05 22:55:26.0541] [INFO] Чертежи успешно получены
+[2021-04-05 22:55:40.3960] [ERROR] System.Exception: Строка не распознана как действительное значение DateTime. ---> System.FormatException: Строка не распознана как действительное значение DateTime.
+   в System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   в System.Convert.ToDateTime(String value)
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetRevision(Assembly assembly) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 797
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 410
+   --- Конец трассировки внутреннего стека исключений ---
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 417
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetData(User user) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 87
+[2021-04-05 22:55:40.4014] [INFO] Чертежи добавлены
+[2021-04-05 22:56:38.9375] [INFO] Клиент подключился
+[2021-04-05 22:56:38.9881] [INFO] Модель подключена
+[2021-04-05 22:56:39.0121] [INFO] Чертежи успешно получены
+[2021-04-05 22:56:47.9317] [INFO] Инициализация успешно пройдена
+[2021-04-05 22:56:48.0027] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-05 22:56:48.0516] [INFO] Начата авторизация пользователя
+[2021-04-05 22:56:49.4698] [INFO] Authorization was successful
+[2021-04-05 22:59:08.3456] [INFO] Клиент подключился
+[2021-04-05 22:59:08.5417] [INFO] Модель подключена
+[2021-04-05 22:59:08.5680] [INFO] Чертежи успешно получены
+[2021-04-05 23:00:11.4041] [INFO] Инициализация успешно пройдена
+[2021-04-05 23:00:11.4778] [INFO] Инициализация контроллера авторизации успешна
+[2021-04-05 23:00:11.5037] [INFO] Начата авторизация пользователя
+[2021-04-05 23:00:12.6614] [INFO] Authorization was successful
+[2021-04-05 23:00:12.7036] [INFO] Клиент подключился
+[2021-04-05 23:00:13.0262] [INFO] Модель подключена
+[2021-04-05 23:00:13.0621] [INFO] Чертежи успешно получены
+[2021-04-05 23:00:25.6278] [ERROR] System.Exception: Строка не распознана как действительное значение DateTime. ---> System.FormatException: Строка не распознана как действительное значение DateTime.
+   в System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   в System.Convert.ToDateTime(String value)
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetRevision(Assembly assembly) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 797
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 410
+   --- Конец трассировки внутреннего стека исключений ---
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 417
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetData(User user) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 87
+[2021-04-05 23:00:25.6337] [INFO] Чертежи добавлены
+[2021-04-05 23:01:15.7989] [INFO] Клиент подключился
+[2021-04-05 23:01:15.8478] [INFO] Модель подключена
+[2021-04-05 23:01:15.8618] [INFO] Чертежи успешно получены
+[2021-04-05 23:01:21.3889] [ERROR] System.Exception: Строка не распознана как действительное значение DateTime. ---> System.FormatException: Строка не распознана как действительное значение DateTime.
+   в System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   в System.Convert.ToDateTime(String value)
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetRevision(Assembly assembly) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 797
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 410
+   --- Конец трассировки внутреннего стека исключений ---
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetDrawing(Assembly assembly, AssemblyDrawing parentDrawing) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 417
+   в SZMK.TeklaInteraction.Tekla21_1.Services.Server.Tekla.GetData(User user) в C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.TeklaInteraction.Tekla21_1\Services\Server\Tekla.cs:строка 87
+[2021-04-05 23:01:21.3889] [INFO] Чертежи добавлены
+[2021-04-05 23:01:30.9693] [INFO] Клиент подключился
+[2021-04-05 23:01:31.0137] [INFO] Модель подключена
+[2021-04-05 23:01:31.0267] [INFO] Чертежи успешно получены

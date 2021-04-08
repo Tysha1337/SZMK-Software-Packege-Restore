@@ -129,6 +129,7 @@
     <Compile Include="BindingModels\StringErrorBindingModels.cs" />
     <Compile Include="Models\PathArhive.cs" />
     <Compile Include="Models\PathDetails.cs" />
+    <Compile Include="Models\Revision.cs" />
     <Compile Include="Models\TypeAdd.cs" />
     <Compile Include="Services\DataGridView\PropertyComparer.cs" />
     <Compile Include="Services\DataGridView\SortableBindingList.cs" />

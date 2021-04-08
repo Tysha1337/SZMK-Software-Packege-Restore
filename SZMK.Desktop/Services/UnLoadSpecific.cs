@@ -74,9 +74,7 @@ namespace SZMK.Desktop.Services
         public void ChekedUnloading(String Number, String List, String Executor)
         {
             Order order = SystemArgs.Request.GetOrder(List, Number);
-            Int64 IDOrder = order.ID;
-            List<Detail> details = SystemArgs.Request.GetDetails(IDOrder);
-            string pathDetails = order.PathDetails.PathDWG;
+            List<Detail> details = SystemArgs.Request.GetDetails(order.ID);
 
             if (details.GroupBy(p => p.Position).Count() > 1)
             {
@@ -84,53 +82,49 @@ namespace SZMK.Desktop.Services
                 {
                     if (details[j] != null)
                     {
-                        if (CheckedDetail(pathDetails, details[j]))
+                        if (CheckedDetailDWG(order.PathDetails.PathDWG, details[j]))
                         {
-                            if (ExecutorMails.Where(p => p.Executor.Equals(Executor)).Count() != 0)
-                            {
-                                foreach (var item in SystemArgs.UnLoadSpecific.ExecutorMails)
-                                {
-                                    if (Executor.Equals(item.Executor))
-                                    {
-                                        if (item.GetSpecifics().FindAll(p => p.Number == Number && p.NumberSpecific == details[j].Position).Count == 0)
-                                        {
-                                            item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, true));
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                ExecutorMails.Add(new ExecutorMail(Executor));
-                                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, true));
-                            }
+                            AddSpecific(Executor, Number, List, details[j], order.PathDetails.PathDWG, "DWG", true);
                         }
                         else
                         {
-                            if (ExecutorMails.Where(p => p.Executor.Equals(Executor)).Count() != 0)
-                            {
-                                foreach (var item in ExecutorMails)
-                                {
-                                    if (Executor.Equals(item.Executor))
-                                    {
-                                        if (item.GetSpecifics().FindAll(p => p.Number == Number && p.NumberSpecific == details[j].Position).Count == 0)
-                                        {
-                                            item.GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, false));
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                ExecutorMails.Add(new ExecutorMail(Executor));
-                                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, details[j].Position, pathDetails, false));
-                            }
+                            AddSpecific(Executor, Number, List, details[j], order.PathDetails.PathDWG, "DWG", false);
+                        }
+
+                        if (CheckedDetailPDF(order.PathDetails.PathPDF, details[j]))
+                        {
+                            AddSpecific(Executor, Number, List, details[j], order.PathDetails.PathPDF, "PDF", true);
+                        }
+                        else
+                        {
+                            AddSpecific(Executor, Number, List, details[j], order.PathDetails.PathPDF, "PDF", false);
                         }
                     }
                 }
             }
         }
-        private bool CheckedDetail(string pathDetails, Detail detail)
+        private void AddSpecific(string Executor, string Number, string List, Detail Detail, string PathDetails, string Type, bool Finded)
+        {
+            if (ExecutorMails.Where(p => p.Executor.Equals(Executor)).Count() != 0)
+            {
+                foreach (var item in ExecutorMails)
+                {
+                    if (Executor.Equals(item.Executor))
+                    {
+                        if (item.GetSpecifics().FindAll(p => p.Number == Number && p.NumberSpecific == Detail.Position && p.Type == Type).Count == 0)
+                        {
+                            item.GetSpecifics().Add(new Specific(Number, List, Type, Detail.Position, PathDetails, Finded));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ExecutorMails.Add(new ExecutorMail(Executor));
+                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, Type, Detail.Position, PathDetails, Finded));
+            }
+        }
+        private bool CheckedDetailDWG(string pathDetails, Detail detail)
         {
             try
             {
@@ -152,6 +146,42 @@ namespace SZMK.Desktop.Services
                         return true;
                     }
                     else if (Directory.Exists(pathDetails) && Directory.GetFiles(pathDetails, detail.Position + " - Дет.*.dwg", SearchOption.TopDirectoryOnly).Length != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        private bool CheckedDetailPDF(string pathDetails, Detail detail)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(detail.Name))
+                {
+                    if (File.Exists(pathDetails + @"\" + detail.Name + ".pdf"))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (File.Exists(pathDetails + @"\" + "Дет." + detail.Position + ".pdf"))
+                    {
+                        return true;
+                    }
+                    else if (Directory.Exists(pathDetails) && Directory.GetFiles(pathDetails, detail.Position + " - Дет.*.pdf", SearchOption.TopDirectoryOnly).Length != 0)
                     {
                         return true;
                     }

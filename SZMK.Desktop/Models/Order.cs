@@ -21,6 +21,7 @@ namespace SZMK.Desktop.Models
         private Int32 _CountMarks;
         private Double _Lenght;
         private Double _Weight;
+        private Double _WeightDifferent;
         private Status _Status;
         private DateTime _StatusDate;
         private BlankOrder _BlankOrder;
@@ -29,13 +30,14 @@ namespace SZMK.Desktop.Models
         private Model _Model;
         private PathDetails _PathDetails;
         private PathArhive _PathArhive;
+        private Revision _Revision;
         private List<Detail> _Details;
         private User _User;
         private Boolean _Canceled;
         private Boolean _Finished;
 
 
-        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, Double Lenght, Double Weight, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, PathDetails PathDetails, PathArhive PathArhive, User User, BlankOrder BlankOrder, Boolean Canceled, Boolean Finished)
+        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, Double Lenght, Double Weight, Double WeightDifferent, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, PathDetails PathDetails, PathArhive PathArhive, Revision Revision, User User, BlankOrder BlankOrder, Boolean Canceled, Boolean Finished)
         {
             if (ID >= 0)
             {
@@ -113,6 +115,8 @@ namespace SZMK.Desktop.Models
                 throw new Exception("Значение веса меньше 0");
             }
 
+            _WeightDifferent = WeightDifferent;
+
             if (TypeAdd != null)
             {
                 _TypeAdd = TypeAdd;
@@ -128,7 +132,7 @@ namespace SZMK.Desktop.Models
             }
             else
             {
-                _Model = new Model { ID = 0, DateCreate = DateTime.Now, Path = "Путь не определен" };
+                _Model = new Model { ID = 0, DateCreate = new DateTime(1970, 1, 1), Path = "Путь не определен" };
             }
             if (PathDetails != null)
             {
@@ -136,7 +140,7 @@ namespace SZMK.Desktop.Models
             }
             else
             {
-                _PathDetails = new PathDetails { ID = 0, DateCreate = DateTime.Now, PathDWG = "Не найдена папка деталировки", PathPDF = "Не найдена папка деталировки", PathDXF = "Не найдена папка деталировки" };
+                _PathDetails = new PathDetails { ID = 0, DateCreate = new DateTime(1970, 1, 1), PathDWG = "Не найдена папка деталировки", PathPDF = "Не найдена папка деталировки", PathDXF = "Не найдена папка деталировки" };
             }
             if (PathArhive != null)
             {
@@ -144,7 +148,16 @@ namespace SZMK.Desktop.Models
             }
             else
             {
-                _PathArhive = new PathArhive { ID = 0, DateCreate = DateTime.Now, Path = "Не найдена папка архива" };
+                _PathArhive = new PathArhive { ID = 0, DateCreate = new DateTime(1970, 1, 1), Path = "Не найдена папка архива" };
+            }
+
+            if (Revision != null)
+            {
+                _Revision = Revision;
+            }
+            else
+            {
+                _Revision = new Revision { ID = 0, DateCreate = new DateTime(1970, 1, 1), CreatedBy = "Исполнитель не найден", Information = "Информация не найдена", Description = "Описание не найдено", LastApptovedBy = "Основание не найдено" };
             }
 
             _Details = new List<Detail>();
@@ -166,7 +179,7 @@ namespace SZMK.Desktop.Models
 
             _Finished = Finished;
         }
-        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, String Lenght, String Weight, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, User User, BlankOrder BlankOrder, Boolean Canceled, Boolean Finished, String CountMarks, List<Detail> Details)
+        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, String Lenght, String Weight, String WeightDifferent, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, Revision Revision, User User, BlankOrder BlankOrder, Boolean Canceled, Boolean Finished, String CountMarks, List<Detail> Details)
         {
             string Error = "";
             try
@@ -241,6 +254,9 @@ namespace SZMK.Desktop.Models
                 Error = "Вес чертежа должна быть целым или вещественным числом";
                 _Weight = Convert.ToDouble(Weight.Replace(" ", "").Replace(".", ","));
 
+                Error = "Разница веса чертежа должна быть целым или вещественным числом";
+                _WeightDifferent = Convert.ToDouble(WeightDifferent.Replace(" ", "").Replace(".", ","));
+
                 Error = "Количество марок чертежа должно быть целым или вещественным числом";
                 _CountMarks = Convert.ToInt32(CountMarks.Replace(" ", ""));
 
@@ -270,7 +286,16 @@ namespace SZMK.Desktop.Models
                 }
                 else
                 {
-                    _Model = new Model { ID = 0, DateCreate = DateTime.Now, Path = "Путь не определен" };
+                    _Model = new Model { ID = 0, DateCreate = new DateTime(1970, 1, 1), Path = "Путь не определен" };
+                }
+
+                if (Revision != null)
+                {
+                    _Revision = Revision;
+                }
+                else
+                {
+                    _Revision = new Revision { ID = 0, DateCreate = new DateTime(1970, 1, 1), CreatedBy = "Исполнитель не найден", Information = "Информация не найдена", Description = "Описание не найдено", LastApptovedBy = "Основание не найдено" };
                 }
 
                 _User = User;
@@ -288,6 +313,7 @@ namespace SZMK.Desktop.Models
         {
             try
             {
+                _ID = Order.ID;
                 _DateCreate = Order.DateCreate;
                 _Number = Order.Number;
                 _Executor = Order.Executor;
@@ -296,10 +322,14 @@ namespace SZMK.Desktop.Models
                 _Mark = Order.Mark;
                 _Lenght = Order.Lenght;
                 _Weight = Order.Weight;
+                _WeightDifferent = Order.WeightDifferent;
                 _Status = Order.Status;
                 _StatusDate = Order.StatusDate;
                 _TypeAdd = Order.TypeAdd;
                 _Model = Order.Model;
+                _PathDetails = Order.PathDetails;
+                _PathArhive = Order.PathArhive;
+                _Revision = Order.Revision;
                 _User = Order.User;
                 _BlankOrder = Order.BlankOrder;
                 _Finished = Order.Finished;
@@ -313,7 +343,7 @@ namespace SZMK.Desktop.Models
             }
         }
 
-        public Order() : this(-1, DateTime.Now, "Нет номера заказа", "Нет исполнителя", "Нет исполнителя работ", "Нет листа", "Нет марки", -1, -1, null, DateTime.Now, null, null, null, null, null, null, false, false) { }
+        public Order() : this(-1, DateTime.Now, "Нет номера заказа", "Нет исполнителя", "Нет исполнителя работ", "Нет листа", "Нет марки", -1, -1, -1, null, DateTime.Now, null, null, null, null, null, null, null, false, false) { }
 
         public Int64 ID
         {
@@ -449,6 +479,20 @@ namespace SZMK.Desktop.Models
                 }
             }
         }
+        public Double WeightDifferent
+        {
+            get
+            {
+                return _WeightDifferent;
+            }
+            set
+            {
+                if (value >= 0)
+                {
+                    _WeightDifferent = value;
+                }
+            }
+        }
 
         public Status Status
         {
@@ -532,6 +576,20 @@ namespace SZMK.Desktop.Models
                 if (value != null)
                 {
                     _PathArhive = value;
+                }
+            }
+        }
+        public Revision Revision
+        {
+            get
+            {
+                return _Revision;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _Revision = value;
                 }
             }
         }

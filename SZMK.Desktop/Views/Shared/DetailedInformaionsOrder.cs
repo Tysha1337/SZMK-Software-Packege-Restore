@@ -17,10 +17,12 @@ namespace SZMK.Desktop.Views.Shared
     public partial class DetailedInformaionsOrder : Form
     {
         private Order Order;
+        private List<Order> HistoryOrders;
 
         public DetailedInformaionsOrder(Order Order)
         {
             this.Order = Order;
+            HistoryOrders = new List<Order>();
 
             InitializeComponent();
         }
@@ -46,6 +48,18 @@ namespace SZMK.Desktop.Views.Shared
                 PathModel_TB.Text = Order.Model.Path;
                 PathArhive_TB.Text = Order.PathArhive.Path;
 
+                RevisionDate_TB.Text = Order.Revision.DateCreate.ToShortDateString();
+                RevisionCreatedBy_TB.Text = Order.Revision.CreatedBy;
+                RevisionInfo_TB.Text = Order.Revision.Information;
+                RevisionDiscription_TB.Text = Order.Revision.Description;
+                RevisionLastApproved_TB.Text = Order.Revision.LastApptovedBy;
+                Weight_TB.Text = Order.Weight.ToString();
+                WeightDifferent_TB.Text = Order.WeightDifferent.ToString();
+
+                HistoryOrders = SystemArgs.Request.GetHistoryOrders(Order.Number, Order.List.Split('и')[0]);
+
+                History_DGV.AutoGenerateColumns = false;
+                History_DGV.DataSource = HistoryOrders;
             }
             catch (Exception E)
             {
@@ -632,6 +646,24 @@ namespace SZMK.Desktop.Views.Shared
             catch (Exception Ex)
             {
                 throw new Exception(Ex.Message, Ex);
+            }
+        }
+
+        private void History_DGV_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                if (History_DGV.CurrentCell != null && History_DGV.CurrentCell.RowIndex < HistoryOrders.Count() && e.RowIndex >= 0)
+                {
+                    Order Temp = (Order)HistoryOrders[History_DGV.CurrentCell.RowIndex];
+                    DetailedInformaionsOrder Dialog = new DetailedInformaionsOrder(Temp);
+                    Dialog.ShowDialog();
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.ToString(), "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

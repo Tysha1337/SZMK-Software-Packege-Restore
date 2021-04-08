@@ -45,56 +45,212 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Views.Main
             {
                 if (Report_DGV.Columns[e.ColumnIndex].Name == "Change" && e.RowIndex >= 0)
                 {
-                    FolderBrowserDialog Fbd = new FolderBrowserDialog()
-                    {
-                        ShowNewFolderButton = false,
-                        Description = "Выберите папку с деталями"
-                    };
+                    OrderPathDetailsBindingModel Paths = pathDetails.FirstOrDefault(p => p.Order == Report_DGV[0, e.RowIndex].Value.ToString());
 
-                    if (Fbd.ShowDialog() == DialogResult.OK)
+                    if (Paths != null)
                     {
-                        OrderPathDetailsBindingModel Paths = pathDetails.FirstOrDefault(p => p.Order == Report_DGV[0, e.RowIndex].Value.ToString());
-
-                        if (Paths != null)
+                        switch (Report_DGV[1, e.RowIndex].Value)
                         {
-                            string ModelPath = Fbd.SelectedPath;
-
-                            if (ModelPath.Substring(0, 2) != @"\\")
-                            {
-                                using (var managementObject = new ManagementObject())
+                            case "DWG":
+                                if (Report_DGV[2, e.RowIndex].Value.ToString() == Paths.PathDWG)
                                 {
-                                    managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
-                                    var driveType = (DriveType)(uint)managementObject["DriveType"];
-                                    var networkPath = Convert.ToString(managementObject["ProviderName"]);
+                                    FolderBrowserDialog Fbd = new FolderBrowserDialog()
+                                    {
+                                        ShowNewFolderButton = false,
+                                        Description = "Выберите папку с деталями"
+                                    };
 
-                                    ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                    if (Fbd.ShowDialog() == DialogResult.OK)
+                                    {
+
+                                        string ModelPath = Fbd.SelectedPath;
+
+                                        if (ModelPath.Substring(0, 2) != @"\\")
+                                        {
+                                            using (var managementObject = new ManagementObject())
+                                            {
+                                                managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                                                var driveType = (DriveType)(uint)managementObject["DriveType"];
+                                                var networkPath = Convert.ToString(managementObject["ProviderName"]);
+
+                                                ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                            }
+                                        }
+
+                                        ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                                        Paths.PathDWG = ModelPath;
+                                        Paths.FindedDWG = true;
+
+                                        DGV_refresh();
+                                    }
                                 }
-                            }
+                                else
+                                {
+                                    if (Directory.Exists(Report_DGV[2, e.RowIndex].Value.ToString()))
+                                    {
+                                        string ModelPath = Report_DGV[2, e.RowIndex].Value.ToString();
 
-                            ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+                                        if (ModelPath.Substring(0, 2) != @"\\")
+                                        {
+                                            using (var managementObject = new ManagementObject())
+                                            {
+                                                managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                                                var driveType = (DriveType)(uint)managementObject["DriveType"];
+                                                var networkPath = Convert.ToString(managementObject["ProviderName"]);
 
-                            switch (Report_DGV[1, e.RowIndex].Value)
-                            {
-                                case "DWG":
-                                    Paths.PathDWG = ModelPath;
-                                    Paths.FindedDWG = true;
-                                    break;
-                                case "PDF":
-                                    Paths.PathPDF = ModelPath;
-                                    Paths.FindedPDF = true;
-                                    break;
-                                case "DXF":
-                                    Paths.PathDXF = ModelPath;
-                                    Paths.FindedDXF = true;
-                                    break;
-                            }
+                                                ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                            }
+                                        }
 
-                            DGV_refresh();
+                                        ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                                        Paths.PathDWG = ModelPath;
+                                        Paths.FindedDWG = true;
+
+                                        DGV_refresh();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("По указанному пути папка не найдена!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                                break;
+                            case "PDF":
+                                if (Report_DGV[2, e.RowIndex].Value.ToString() == Paths.PathPDF)
+                                {
+                                    FolderBrowserDialog Fbd = new FolderBrowserDialog()
+                                    {
+                                        ShowNewFolderButton = false,
+                                        Description = "Выберите папку с деталями"
+                                    };
+
+                                    if (Fbd.ShowDialog() == DialogResult.OK)
+                                    {
+
+                                        string ModelPath = Fbd.SelectedPath;
+
+                                        if (ModelPath.Substring(0, 2) != @"\\")
+                                        {
+                                            using (var managementObject = new ManagementObject())
+                                            {
+                                                managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                                                var driveType = (DriveType)(uint)managementObject["DriveType"];
+                                                var networkPath = Convert.ToString(managementObject["ProviderName"]);
+
+                                                ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                            }
+                                        }
+
+                                        ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                                        Paths.PathPDF = ModelPath;
+                                        Paths.FindedPDF = true;
+
+                                        DGV_refresh();
+                                    }
+                                }
+                                else
+                                {
+                                    if (Directory.Exists(Report_DGV[2, e.RowIndex].Value.ToString()))
+                                    {
+                                        string ModelPath = Report_DGV[2, e.RowIndex].Value.ToString();
+
+                                        if (ModelPath.Substring(0, 2) != @"\\")
+                                        {
+                                            using (var managementObject = new ManagementObject())
+                                            {
+                                                managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                                                var driveType = (DriveType)(uint)managementObject["DriveType"];
+                                                var networkPath = Convert.ToString(managementObject["ProviderName"]);
+
+                                                ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                            }
+                                        }
+
+                                        ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                                        Paths.PathPDF = ModelPath;
+                                        Paths.FindedPDF = true;
+
+                                        DGV_refresh();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("По указанному пути папка не найдена!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                                break;
+                            case "DXF":
+                                if (Report_DGV[2, e.RowIndex].Value.ToString() == Paths.PathDXF)
+                                {
+                                    FolderBrowserDialog Fbd = new FolderBrowserDialog()
+                                    {
+                                        ShowNewFolderButton = false,
+                                        Description = "Выберите папку с деталями"
+                                    };
+
+                                    if (Fbd.ShowDialog() == DialogResult.OK)
+                                    {
+
+                                        string ModelPath = Fbd.SelectedPath;
+
+                                        if (ModelPath.Substring(0, 2) != @"\\")
+                                        {
+                                            using (var managementObject = new ManagementObject())
+                                            {
+                                                managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                                                var driveType = (DriveType)(uint)managementObject["DriveType"];
+                                                var networkPath = Convert.ToString(managementObject["ProviderName"]);
+
+                                                ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                            }
+                                        }
+
+                                        ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                                        Paths.PathDXF = ModelPath;
+                                        Paths.FindedDXF = true;
+
+                                        DGV_refresh();
+                                    }
+                                }
+                                else
+                                {
+                                    if (Directory.Exists(Report_DGV[2, e.RowIndex].Value.ToString()))
+                                    {
+                                        string ModelPath = Report_DGV[2, e.RowIndex].Value.ToString();
+
+                                        if (ModelPath.Substring(0, 2) != @"\\")
+                                        {
+                                            using (var managementObject = new ManagementObject())
+                                            {
+                                                managementObject.Path = new ManagementPath($"Win32_LogicalDisk='{ModelPath.Substring(0, 2)}'");
+                                                var driveType = (DriveType)(uint)managementObject["DriveType"];
+                                                var networkPath = Convert.ToString(managementObject["ProviderName"]);
+
+                                                ModelPath = networkPath + ModelPath.Remove(0, 2);
+                                            }
+                                        }
+
+                                        ModelPath = ModelPath.Replace("tekla-fs", "10.0.7.249");
+
+                                        Paths.PathDXF = ModelPath;
+                                        Paths.FindedDXF = true;
+
+                                        DGV_refresh();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("По указанному пути папка не найдена!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                                break;
                         }
-                        else
-                        {
-                            throw new Exception("Ошибка изменения пути деталировки");
-                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Ошибка изменения пути деталировки");
                     }
                 }
             }

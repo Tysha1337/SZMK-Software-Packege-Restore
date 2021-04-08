@@ -9,6 +9,7 @@ namespace SZMK.Desktop.ViewModel
     public class DetailViewModel
     {
         private long _ID;
+        private string _Name;
         private string _Position;
         private long _Count;
         private string _Profile;
@@ -28,11 +29,13 @@ namespace SZMK.Desktop.ViewModel
         private string _PlateThickness;
 
 
-        public DetailViewModel(string Position, string Count, string Profile, string Width, string Lenght, string Weight, string Height, string Diameter, string SubtotalWeight, string MarkSteel, string Discription, string Machining, string MethodOfPaintingRAL, string PaintingArea, string GostName, string FlangeThickness, string PlateThickness)
+        public DetailViewModel(string Name, string Position, string Count, string Profile, string Width, string Lenght, string Weight, string Height, string Diameter, string SubtotalWeight, string MarkSteel, string Discription, string Machining, string MethodOfPaintingRAL, string PaintingArea, string GostName, string FlangeThickness, string PlateThickness)
         {
             string Error = "";
             try
             {
+                _Name = Name;
+
                 if (String.IsNullOrEmpty(Position))
                 {
                     Error = $"Не заполнена позиция детали";
@@ -123,6 +126,17 @@ namespace SZMK.Desktop.ViewModel
                 {
                     _ID = value;
                 }
+            }
+        }
+        public string Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                _Name = value;
             }
         }
         public string Position

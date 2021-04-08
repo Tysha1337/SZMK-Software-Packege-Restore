@@ -24,12 +24,14 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
     {
         private readonly Logger logger;
         private readonly MailLogger maillogger;
+        private readonly Request request;
         private readonly INotifyProgress notify;
 
         public Tekla(INotifyProgress notify)
         {
             logger = LogManager.GetCurrentClassLogger();
             maillogger = new MailLogger();
+            request = new Request();
             this.notify = notify;
         }
 
@@ -407,7 +409,7 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
 
                 if (!BadStartNumber)
                 {
-                    Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list, Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details });
+                    Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list, Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), WeightDifferent = GetWeightDifferent(_order, _list, _mark, Convert.ToDouble(_subTotalWeight.ToString("F2"))), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details, Revision = GetRevision(assembly) });
                 }
 
                 return true;
@@ -611,7 +613,7 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
             {
                 string prefix = "";
 
-                modelObject.GetReportProperty("PREFIX", ref prefix);
+                modelObject.GetReportProperty("PART_PREFIX", ref prefix);
 
                 if (prefix != "")
                 {
@@ -630,7 +632,7 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
             {
                 string prefix = "";
 
-                modelObject.GetReportProperty("PREFIX", ref prefix);
+                modelObject.GetReportProperty("PART_PREFIX", ref prefix);
 
                 if (prefix != "")
                 {
@@ -649,7 +651,7 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
             {
                 string prefix = "";
 
-                modelObject.GetReportProperty("PREFIX", ref prefix);
+                modelObject.GetReportProperty("PART_PREFIX", ref prefix);
 
                 if (prefix != "")
                 {
@@ -782,6 +784,39 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
 
             return "";
         }
+        private Shared.Models.Revision GetRevision(Assembly assembly)
+        {
+            int _dateCreate = 0;
+            string _createdBy = "";
+            string _information = "";
+            string _description = "";
+            string _lastApptovedBy = "";
 
+            assembly.GetReportProperty("DRAWING.REVISION.DATE_CREATE", ref _dateCreate);
+            assembly.GetReportProperty("DRAWING.REVISION.CREATED_BY", ref _createdBy);
+            assembly.GetReportProperty("DRAWING.REVISION.INFO2", ref _information);
+            assembly.GetReportProperty("DRAWING.REVISION.DESCRIPTION", ref _description);
+            assembly.GetReportProperty("DRAWING.REVISION.LAST_APPROVED_BY", ref _lastApptovedBy);
+
+            return new Shared.Models.Revision
+            {
+                DateCreate = new DateTime(1970, 1, 1).AddSeconds(_dateCreate),
+                CreatedBy = _createdBy,
+                Information = _information,
+                Description = _description,
+                LastApptovedBy = _lastApptovedBy
+            };
+        }
+        private double GetWeightDifferent(string Number, string List, string Mark, double Weight)
+        {
+            double previosWeight = request.GetWeightPreviousOrder(Number, List, Mark);
+
+            if (previosWeight != 0)
+            {
+                previosWeight = Weight - previosWeight;
+            }
+
+            return previosWeight;
+        }
     }
 }

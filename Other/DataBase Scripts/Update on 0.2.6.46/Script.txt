@@ -1,0 +1,33 @@
+ALTER TABLE public."Orders"
+    ADD COLUMN "WeightDifferent" character varying NOT NULL DEFAULT 0;
+
+CREATE TABLE public."Revision"
+(
+    "ID" bigint NOT NULL,
+    "DateCreate" timestamp without time zone NOT NULL,
+    "CreatedBy" character varying NOT NULL,
+    "Information" character varying NOT NULL,
+    "Description" character varying NOT NULL,
+    "LastApptovedBy" character varying NOT NULL,
+    PRIMARY KEY ("ID")
+);
+
+ALTER TABLE public."Revision"
+    OWNER to postgres;
+
+CREATE SEQUENCE public."Revision_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public."Revision_ID_seq"
+    OWNER TO postgres;
+
+ALTER TABLE public."Revision"
+    ALTER COLUMN "ID" SET DEFAULT nextval('"Revision_ID_seq"'::regclass);
+
+ALTER TABLE public."Orders"
+    ADD COLUMN "ID_Revision" bigint;
+ALTER TABLE "Orders" ADD CONSTRAINT "Orders_fk4" FOREIGN KEY ("ID_Revision") REFERENCES "Revision"("ID") ON DELETE CASCADE;
