@@ -457,107 +457,6 @@ namespace SZMK.Desktop.Views.Shared
                 MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void PathDetailsDWG_TB_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (Directory.Exists(Order.PathDetails.PathDWG))
-                {
-                    Process.Start("explorer", Order.PathDetails.PathDWG);
-                }
-                else
-                {
-                    throw new Exception("Не найдена папка");
-                }
-            }
-            catch (Exception E)
-            {
-                SystemArgs.PrintLog(E.ToString());
-                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void PathDetailsPDF_TB_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (Directory.Exists(Order.PathDetails.PathPDF))
-                {
-                    Process.Start("explorer", Order.PathDetails.PathPDF);
-                }
-                else
-                {
-                    throw new Exception("Не найдена папка");
-                }
-            }
-            catch (Exception E)
-            {
-                SystemArgs.PrintLog(E.ToString());
-                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void PathDetailsDXF_TB_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (Directory.Exists(Order.PathDetails.PathDXF))
-                {
-                    Process.Start("explorer", Order.PathDetails.PathDXF);
-                }
-                else
-                {
-                    throw new Exception("Не найдена папка");
-                }
-            }
-            catch (Exception E)
-            {
-                SystemArgs.PrintLog(E.ToString());
-                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void PathModel_TB_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (Directory.Exists(Order.Model.Path))
-                {
-                    Process.Start("explorer", Order.Model.Path);
-                }
-                else
-                {
-                    throw new Exception("Не найдена папка");
-                }
-            }
-            catch (Exception E)
-            {
-                SystemArgs.PrintLog(E.ToString());
-                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void PathArhive_TB_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (Directory.Exists(Order.PathArhive.Path))
-                {
-                    Process.Start("explorer", Order.PathArhive.Path);
-                }
-                else
-                {
-                    throw new Exception("Не найдена папка");
-                }
-
-            }
-            catch (Exception E)
-            {
-                SystemArgs.PrintLog(E.ToString());
-                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
         private void SetPathDetails(PathDetails oldpath)
         {
             try
@@ -664,6 +563,107 @@ namespace SZMK.Desktop.Views.Shared
             {
                 SystemArgs.PrintLog(E.ToString());
                 MessageBox.Show(E.ToString(), "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PathDWG_L_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(Order.PathDetails.PathDWG))
+                {
+                    Process.Start("explorer", Order.PathDetails.PathDWG);
+                }
+                else
+                {
+                    throw new Exception("Не найдена папка");
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PathPDF_L_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(Order.PathDetails.PathPDF))
+                {
+                    Process.Start("explorer", Order.PathDetails.PathPDF);
+                }
+                else
+                {
+                    throw new Exception("Не найдена папка");
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PathDXF_L_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(Order.PathDetails.PathDXF))
+                {
+                    Process.Start("explorer", Order.PathDetails.PathDXF);
+                }
+                else
+                {
+                    throw new Exception("Не найдена папка");
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PathModel_L_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(Order.Model.Path))
+                {
+                    Process.Start("explorer", Order.Model.Path);
+                }
+                else
+                {
+                    throw new Exception("Не найдена папка");
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PathArhive_L_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(Order.PathArhive.Path))
+                {
+                    Process.Start("explorer", Order.PathArhive.Path);
+                }
+                else
+                {
+                    throw new Exception("Не найдена папка");
+                }
+
+            }
+            catch (Exception E)
+            {
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

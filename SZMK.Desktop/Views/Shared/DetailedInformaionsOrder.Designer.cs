@@ -40,11 +40,11 @@ namespace SZMK.Desktop.Views.Shared
             this.Locations_TP = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PathArhive_TB = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.PathDWG_L = new System.Windows.Forms.Label();
+            this.PathPDF_L = new System.Windows.Forms.Label();
+            this.PathDXF_L = new System.Windows.Forms.Label();
+            this.PathModel_L = new System.Windows.Forms.Label();
+            this.PathArhive_L = new System.Windows.Forms.Label();
             this.ChangePathDetailsDWG_B = new System.Windows.Forms.Button();
             this.ChangePathDetailsPDF_B = new System.Windows.Forms.Button();
             this.ChangePathDetailsDXF_B = new System.Windows.Forms.Button();
@@ -70,12 +70,12 @@ namespace SZMK.Desktop.Views.Shared
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.History_DGV = new System.Windows.Forms.DataGridView();
-            this.label13 = new System.Windows.Forms.Label();
-            this.RevisionCreatedBy_TB = new System.Windows.Forms.TextBox();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WeightDifferent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label13 = new System.Windows.Forms.Label();
+            this.RevisionCreatedBy_TB = new System.Windows.Forms.TextBox();
             this.ListStatuses_TP.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -209,13 +209,13 @@ namespace SZMK.Desktop.Views.Shared
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 122F));
             this.tableLayoutPanel1.Controls.Add(this.PathArhive_TB, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.PathDWG_L, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.PathPDF_L, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.PathDXF_L, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.PathModel_L, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.PathArhive_L, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.ChangePathDetailsDWG_B, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.ChangePathDetailsPDF_B, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.ChangePathDetailsDXF_B, 2, 2);
@@ -244,64 +244,68 @@ namespace SZMK.Desktop.Views.Shared
             this.PathArhive_TB.BackColor = System.Drawing.Color.White;
             this.PathArhive_TB.Location = new System.Drawing.Point(103, 151);
             this.PathArhive_TB.Name = "PathArhive_TB";
-            this.PathArhive_TB.Size = new System.Drawing.Size(439, 22);
+            this.PathArhive_TB.Size = new System.Drawing.Size(436, 22);
             this.PathArhive_TB.TabIndex = 71;
-            this.PathArhive_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathArhive_TB_MouseDoubleClick);
             // 
-            // label1
+            // PathDWG_L
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(4, 1);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 35);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Детали DWG";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathDWG_L.AutoSize = true;
+            this.PathDWG_L.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PathDWG_L.Location = new System.Drawing.Point(4, 1);
+            this.PathDWG_L.Name = "PathDWG_L";
+            this.PathDWG_L.Size = new System.Drawing.Size(92, 35);
+            this.PathDWG_L.TabIndex = 0;
+            this.PathDWG_L.Text = "Детали DWG";
+            this.PathDWG_L.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathDWG_L.Click += new System.EventHandler(this.PathDWG_L_Click);
             // 
-            // label2
+            // PathPDF_L
             // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(4, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 35);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Детали PDF";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathPDF_L.AutoSize = true;
+            this.PathPDF_L.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PathPDF_L.Location = new System.Drawing.Point(4, 37);
+            this.PathPDF_L.Name = "PathPDF_L";
+            this.PathPDF_L.Size = new System.Drawing.Size(92, 35);
+            this.PathPDF_L.TabIndex = 1;
+            this.PathPDF_L.Text = "Детали PDF";
+            this.PathPDF_L.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathPDF_L.Click += new System.EventHandler(this.PathPDF_L_Click);
             // 
-            // label3
+            // PathDXF_L
             // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(4, 73);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 35);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Детали DXF";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathDXF_L.AutoSize = true;
+            this.PathDXF_L.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PathDXF_L.Location = new System.Drawing.Point(4, 73);
+            this.PathDXF_L.Name = "PathDXF_L";
+            this.PathDXF_L.Size = new System.Drawing.Size(92, 35);
+            this.PathDXF_L.TabIndex = 2;
+            this.PathDXF_L.Text = "Детали DXF";
+            this.PathDXF_L.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathDXF_L.Click += new System.EventHandler(this.PathDXF_L_Click);
             // 
-            // label4
+            // PathModel_L
             // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(4, 109);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(92, 35);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Модель";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathModel_L.AutoSize = true;
+            this.PathModel_L.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PathModel_L.Location = new System.Drawing.Point(4, 109);
+            this.PathModel_L.Name = "PathModel_L";
+            this.PathModel_L.Size = new System.Drawing.Size(92, 35);
+            this.PathModel_L.TabIndex = 3;
+            this.PathModel_L.Text = "Модель";
+            this.PathModel_L.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathModel_L.Click += new System.EventHandler(this.PathModel_L_Click);
             // 
-            // label5
+            // PathArhive_L
             // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(4, 145);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(92, 35);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Архив";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathArhive_L.AutoSize = true;
+            this.PathArhive_L.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PathArhive_L.Location = new System.Drawing.Point(4, 145);
+            this.PathArhive_L.Name = "PathArhive_L";
+            this.PathArhive_L.Size = new System.Drawing.Size(92, 35);
+            this.PathArhive_L.TabIndex = 4;
+            this.PathArhive_L.Text = "Архив";
+            this.PathArhive_L.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.PathArhive_L.Click += new System.EventHandler(this.PathArhive_L_Click);
             // 
             // ChangePathDetailsDWG_B
             // 
@@ -312,10 +316,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsDWG_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsDWG_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsDWG_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsDWG_B.Location = new System.Drawing.Point(551, 6);
+            this.ChangePathDetailsDWG_B.Location = new System.Drawing.Point(548, 6);
             this.ChangePathDetailsDWG_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsDWG_B.Name = "ChangePathDetailsDWG_B";
-            this.ChangePathDetailsDWG_B.Size = new System.Drawing.Size(109, 25);
+            this.ChangePathDetailsDWG_B.Size = new System.Drawing.Size(112, 25);
             this.ChangePathDetailsDWG_B.TabIndex = 62;
             this.ChangePathDetailsDWG_B.Text = "Изменить";
             this.ChangePathDetailsDWG_B.UseVisualStyleBackColor = false;
@@ -330,10 +334,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsPDF_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsPDF_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsPDF_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsPDF_B.Location = new System.Drawing.Point(551, 42);
+            this.ChangePathDetailsPDF_B.Location = new System.Drawing.Point(548, 42);
             this.ChangePathDetailsPDF_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsPDF_B.Name = "ChangePathDetailsPDF_B";
-            this.ChangePathDetailsPDF_B.Size = new System.Drawing.Size(109, 25);
+            this.ChangePathDetailsPDF_B.Size = new System.Drawing.Size(112, 25);
             this.ChangePathDetailsPDF_B.TabIndex = 63;
             this.ChangePathDetailsPDF_B.Text = "Изменить";
             this.ChangePathDetailsPDF_B.UseVisualStyleBackColor = false;
@@ -348,10 +352,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsDXF_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsDXF_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsDXF_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsDXF_B.Location = new System.Drawing.Point(551, 78);
+            this.ChangePathDetailsDXF_B.Location = new System.Drawing.Point(548, 78);
             this.ChangePathDetailsDXF_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsDXF_B.Name = "ChangePathDetailsDXF_B";
-            this.ChangePathDetailsDXF_B.Size = new System.Drawing.Size(109, 25);
+            this.ChangePathDetailsDXF_B.Size = new System.Drawing.Size(112, 25);
             this.ChangePathDetailsDXF_B.TabIndex = 64;
             this.ChangePathDetailsDXF_B.Text = "Изменить";
             this.ChangePathDetailsDXF_B.UseVisualStyleBackColor = false;
@@ -366,10 +370,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathModel_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathModel_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathModel_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathModel_B.Location = new System.Drawing.Point(551, 114);
+            this.ChangePathModel_B.Location = new System.Drawing.Point(548, 114);
             this.ChangePathModel_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathModel_B.Name = "ChangePathModel_B";
-            this.ChangePathModel_B.Size = new System.Drawing.Size(109, 25);
+            this.ChangePathModel_B.Size = new System.Drawing.Size(112, 25);
             this.ChangePathModel_B.TabIndex = 65;
             this.ChangePathModel_B.Text = "Изменить";
             this.ChangePathModel_B.UseVisualStyleBackColor = false;
@@ -384,10 +388,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathArhive_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathArhive_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathArhive_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathArhive_B.Location = new System.Drawing.Point(551, 150);
+            this.ChangePathArhive_B.Location = new System.Drawing.Point(548, 150);
             this.ChangePathArhive_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathArhive_B.Name = "ChangePathArhive_B";
-            this.ChangePathArhive_B.Size = new System.Drawing.Size(109, 25);
+            this.ChangePathArhive_B.Size = new System.Drawing.Size(112, 25);
             this.ChangePathArhive_B.TabIndex = 66;
             this.ChangePathArhive_B.Text = "Изменить";
             this.ChangePathArhive_B.UseVisualStyleBackColor = false;
@@ -399,9 +403,8 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsPDF_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsPDF_TB.Location = new System.Drawing.Point(103, 43);
             this.PathDetailsPDF_TB.Name = "PathDetailsPDF_TB";
-            this.PathDetailsPDF_TB.Size = new System.Drawing.Size(439, 22);
+            this.PathDetailsPDF_TB.Size = new System.Drawing.Size(436, 22);
             this.PathDetailsPDF_TB.TabIndex = 67;
-            this.PathDetailsPDF_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathDetailsPDF_TB_MouseDoubleClick);
             // 
             // PathDetailsDWG_TB
             // 
@@ -409,9 +412,8 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsDWG_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsDWG_TB.Location = new System.Drawing.Point(103, 7);
             this.PathDetailsDWG_TB.Name = "PathDetailsDWG_TB";
-            this.PathDetailsDWG_TB.Size = new System.Drawing.Size(439, 22);
+            this.PathDetailsDWG_TB.Size = new System.Drawing.Size(436, 22);
             this.PathDetailsDWG_TB.TabIndex = 68;
-            this.PathDetailsDWG_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathDetailsDWG_TB_MouseDoubleClick);
             // 
             // PathDetailsDXF_TB
             // 
@@ -419,9 +421,8 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsDXF_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsDXF_TB.Location = new System.Drawing.Point(103, 79);
             this.PathDetailsDXF_TB.Name = "PathDetailsDXF_TB";
-            this.PathDetailsDXF_TB.Size = new System.Drawing.Size(439, 22);
+            this.PathDetailsDXF_TB.Size = new System.Drawing.Size(436, 22);
             this.PathDetailsDXF_TB.TabIndex = 69;
-            this.PathDetailsDXF_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathDetailsDXF_TB_MouseDoubleClick);
             // 
             // PathModel_TB
             // 
@@ -429,9 +430,8 @@ namespace SZMK.Desktop.Views.Shared
             this.PathModel_TB.BackColor = System.Drawing.Color.White;
             this.PathModel_TB.Location = new System.Drawing.Point(103, 115);
             this.PathModel_TB.Name = "PathModel_TB";
-            this.PathModel_TB.Size = new System.Drawing.Size(439, 22);
+            this.PathModel_TB.Size = new System.Drawing.Size(436, 22);
             this.PathModel_TB.TabIndex = 70;
-            this.PathModel_TB.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PathModel_TB_MouseDoubleClick);
             // 
             // tabPage2
             // 
@@ -586,9 +586,9 @@ namespace SZMK.Desktop.Views.Shared
             // 
             this.label10.AutoSize = true;
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label10.Location = new System.Drawing.Point(125, 112);
+            this.label10.Location = new System.Drawing.Point(124, 112);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(58, 28);
+            this.label10.Size = new System.Drawing.Size(59, 28);
             this.label10.TabIndex = 8;
             this.label10.Text = "Вес";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -660,29 +660,10 @@ namespace SZMK.Desktop.Views.Shared
             this.History_DGV.Name = "History_DGV";
             this.History_DGV.ReadOnly = true;
             this.History_DGV.RowHeadersVisible = false;
+            this.History_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.History_DGV.Size = new System.Drawing.Size(660, 162);
             this.History_DGV.TabIndex = 13;
             this.History_DGV.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.History_DGV_CellMouseDoubleClick);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label13.Location = new System.Drawing.Point(366, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(99, 28);
-            this.label13.TabIndex = 14;
-            this.label13.Text = "Выпустил";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // RevisionCreatedBy_TB
-            // 
-            this.RevisionCreatedBy_TB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RevisionCreatedBy_TB.Location = new System.Drawing.Point(471, 3);
-            this.RevisionCreatedBy_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.RevisionCreatedBy_TB.Name = "RevisionCreatedBy_TB";
-            this.RevisionCreatedBy_TB.Size = new System.Drawing.Size(189, 22);
-            this.RevisionCreatedBy_TB.TabIndex = 15;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -719,6 +700,26 @@ namespace SZMK.Desktop.Views.Shared
             this.WeightDifferent.HeaderText = "Разница веса";
             this.WeightDifferent.Name = "WeightDifferent";
             this.WeightDifferent.ReadOnly = true;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label13.Location = new System.Drawing.Point(366, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(99, 28);
+            this.label13.TabIndex = 14;
+            this.label13.Text = "Выпустил";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // RevisionCreatedBy_TB
+            // 
+            this.RevisionCreatedBy_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevisionCreatedBy_TB.Location = new System.Drawing.Point(471, 3);
+            this.RevisionCreatedBy_TB.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.RevisionCreatedBy_TB.Name = "RevisionCreatedBy_TB";
+            this.RevisionCreatedBy_TB.Size = new System.Drawing.Size(189, 22);
+            this.RevisionCreatedBy_TB.TabIndex = 15;
             // 
             // DetailedInformaionsOrder
             // 
@@ -766,11 +767,11 @@ namespace SZMK.Desktop.Views.Shared
         private System.Windows.Forms.TabPage Locations_TP;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TextBox PathArhive_TB;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label PathDWG_L;
+        private System.Windows.Forms.Label PathPDF_L;
+        private System.Windows.Forms.Label PathDXF_L;
+        private System.Windows.Forms.Label PathModel_L;
+        private System.Windows.Forms.Label PathArhive_L;
         public System.Windows.Forms.Button ChangePathDetailsDWG_B;
         public System.Windows.Forms.Button ChangePathDetailsPDF_B;
         public System.Windows.Forms.Button ChangePathDetailsDXF_B;

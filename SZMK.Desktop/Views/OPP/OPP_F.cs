@@ -193,14 +193,14 @@ namespace SZMK.Desktop.Views.OPP
                         Dialog.MaximumSize = new Size(Dialog.Width, Dialog.Height - 100);
                         Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
                         Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
-                        SystemArgs.ScannerBlankOrder = new ScannerBlankOrder(false);//Сервер мобильного приложения
+                        SystemArgs.ScannerBlankOrder = new ScannerBlankOrder(false, false);//Сервер мобильного приложения
                         if (!SystemArgs.ScannerOrder.Start())
                         {
                             throw new Exception("Ошибка подключения сканера, проверьте порт");
                         }
                         break;
                     case 1:
-                        SystemArgs.WebcamScanBlankOrder = new WebcamScanBlankOrder(false);
+                        SystemArgs.WebcamScanBlankOrder = new WebcamScanBlankOrder(false, false);
                         if (!SystemArgs.WebcamScanBlankOrder.Start())
                         {
                             throw new Exception("Ошибка подключения вебкамеры");
@@ -215,7 +215,7 @@ namespace SZMK.Desktop.Views.OPP
                         Dialog.MaximumSize = new Size(Dialog.Width, Dialog.Height - 100);
                         Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
                         Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
-                        SystemArgs.ServerMobileAppBlankOrder = new ServerMobileAppBlankOrder(false);//Сервер мобильного приложения
+                        SystemArgs.ServerMobileAppBlankOrder = new ServerMobileAppBlankOrder(false, false);//Сервер мобильного приложения
                         if (!SystemArgs.ServerMobileAppBlankOrder.Start())
                         {
                             throw new Exception("Ошибка открытия сервера для получения данных с мобильного приложения");
@@ -267,6 +267,135 @@ namespace SZMK.Desktop.Views.OPP
                             }
 
                             Status TempStatus = SystemArgs.User.StatusesUser.First();
+
+                            foreach (BlankOrderScanSession.NumberAndList NumberAndList in ScanSession[i].GetNumberAndLists())
+                            {
+                                if (NumberAndList.Finded == 1)
+                                {
+                                    if (!SystemArgs.Request.InsertStatus(NumberAndList.Number, NumberAndList.List, TempStatus.ID, SystemArgs.User))
+                                    {
+                                        MessageBox.Show("Ошибка добавления в базу данных, обновление статуса " + ScanSession[i].QRBlankOrder + " не будет произведено", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    }
+
+                                    SystemArgs.UnLoadSpecific.ChekedUnloading(NumberAndList.Number, NumberAndList.List, SystemArgs.Request.GetExecutor(NumberAndList.Number, NumberAndList.List));
+                                }
+                            }
+                        }
+                    }
+
+                    if (SystemArgs.UnLoadSpecific.ExecutorMails.Count != 0)
+                    {
+                        SystemArgs.ServerMail.SendMail(true, SystemArgs.User.StatusesUser[0].Name);
+                    }
+
+                    SystemArgs.UnLoadSpecific.ExecutorMails.Clear();
+
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception E)
+            {
+                SystemArgs.UnLoadSpecific.ExecutorMails.Clear();
+                SystemArgs.PrintLog(E.ToString());
+                MessageBox.Show(E.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
+        private bool MovingOrder()
+        {
+            try
+            {
+                OPP_Scan_F Dialog = new OPP_Scan_F();
+                switch (SystemArgs.SettingsUser.TypeScan)
+                {
+                    case 0:
+                        Dialog.Web_L.Visible = false;
+                        Dialog.ViewWeb_PB.Visible = false;
+                        Dialog.Main_TLP.SetRow(Dialog.Position_L, 2);
+                        Dialog.Main_TLP.SetRow(Dialog.Scan_DGV, 3);
+                        Dialog.Main_TLP.SetRowSpan(Dialog.Scan_DGV, 8);
+                        Dialog.MaximumSize = new Size(Dialog.Width, Dialog.Height - 100);
+                        Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
+                        Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
+                        SystemArgs.ScannerBlankOrder = new ScannerBlankOrder(false, true);//Сервер мобильного приложения
+                        if (!SystemArgs.ScannerOrder.Start())
+                        {
+                            throw new Exception("Ошибка подключения сканера, проверьте порт");
+                        }
+                        break;
+                    case 1:
+                        SystemArgs.WebcamScanBlankOrder = new WebcamScanBlankOrder(false, true);
+                        if (!SystemArgs.WebcamScanBlankOrder.Start())
+                        {
+                            throw new Exception("Ошибка подключения вебкамеры");
+                        }
+                        break;
+                    case 2:
+                        Dialog.Web_L.Visible = false;
+                        Dialog.ViewWeb_PB.Visible = false;
+                        Dialog.Main_TLP.SetRow(Dialog.Position_L, 2);
+                        Dialog.Main_TLP.SetRow(Dialog.Scan_DGV, 3);
+                        Dialog.Main_TLP.SetRowSpan(Dialog.Scan_DGV, 8);
+                        Dialog.MaximumSize = new Size(Dialog.Width, Dialog.Height - 100);
+                        Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
+                        Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
+                        SystemArgs.ServerMobileAppBlankOrder = new ServerMobileAppBlankOrder(false, true);//Сервер мобильного приложения
+                        if (!SystemArgs.ServerMobileAppBlankOrder.Start())
+                        {
+                            throw new Exception("Ошибка открытия сервера для получения данных с мобильного приложения");
+                        }
+                        break;
+                }
+                BlankOrder NewBlankOrder = new BlankOrder();
+                Int64 IndexBlankOrder = 0;
+                List<Order> TempForBlankOrder = new List<Order>();
+                Dialog.ServerStatus_TB.Text = "Запущен";
+                Dialog.ServerStatus_TB.BackColor = Color.FromArgb(233, 245, 255);
+                Dialog.Status_TB.AppendText($"Ожидание QR" + Environment.NewLine);
+                if (Dialog.ShowDialog() == DialogResult.OK)
+                {
+                    List<BlankOrderScanSession> ScanSession;
+                    switch (SystemArgs.SettingsUser.TypeScan)
+                    {
+                        case 0:
+                            ScanSession = SystemArgs.ScannerBlankOrder.GetScanSessions();
+                            break;
+                        case 1:
+                            ScanSession = SystemArgs.WebcamScanBlankOrder.GetScanSessions();
+                            break;
+                        case 2:
+                            ScanSession = SystemArgs.ServerMobileAppBlankOrder.GetScanSessions();
+                            break;
+                        default:
+                            ScanSession = new List<BlankOrderScanSession>();
+                            break;
+                    }
+                    for (int i = 0; i < ScanSession.Count; i++)
+                    {
+                        if (ScanSession[i].Added)
+                        {
+                            using (var Connect = new NpgsqlConnection(SystemArgs.DataBase.ToString()))
+                            {
+                                Connect.Open();
+
+                                using (var Command = new NpgsqlCommand($"SELECT last_value FROM \"BlankOrder_ID_seq\"", Connect))
+                                {
+                                    using (var Reader = Command.ExecuteReader())
+                                    {
+                                        while (Reader.Read())
+                                        {
+                                            IndexBlankOrder = Reader.GetInt64(0);
+                                        }
+                                    }
+                                }
+                            }
+
+                            Status TempStatus = SystemArgs.Statuses[7];
 
                             foreach (BlankOrderScanSession.NumberAndList NumberAndList in ScanSession[i].GetNumberAndLists())
                             {
@@ -392,13 +521,33 @@ namespace SZMK.Desktop.Views.OPP
                                 {
                                     if (SystemArgs.Request.DeleteOrder(Temp))
                                     {
+                                        if (SystemArgs.Request.CheckedNeedRemoveModel(Temp.Model))
+                                        {
+                                            SystemArgs.Request.DeleteModel(Temp.Model);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathDetails(Temp.PathDetails))
+                                        {
+                                            SystemArgs.Request.DeletePathDetails(Temp.PathDetails);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathArhive(Temp.PathArhive))
+                                        {
+                                            SystemArgs.Request.DeletePathArhive(Temp.PathArhive);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemoveRevision(Temp.Revision))
+                                        {
+                                            SystemArgs.Request.DeleteRevision(Temp.Revision);
+                                        }
+
                                         SystemArgs.Orders.Remove(Temp);
                                     }
                                 }
                             }
                             catch
                             {
-                                MessageBox.Show("Ошибка удаления чертежа: Номер-" + Temp.Number + " Лист-" + Temp.List, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Ошибка удаления чертежа: Номер-" + Temp.Number + "Лист-" + Temp.List, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
 
                         }
@@ -1378,45 +1527,14 @@ namespace SZMK.Desktop.Views.OPP
 
         private void MoveToWorkShop_TSM_Click(object sender, EventArgs e)
         {
-            try
+            LockedButtonForLoadData(false);
+
+            if (MovingOrder())
             {
-                List<Order> OrdersMovings = new List<Order>();
-                if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex >= 0)
-                {
-                    for (int i = 0; i < Order_DGV.SelectedRows.Count; i++)
-                    {
-                        OrdersMovings.Add((Order)(View[Order_DGV.SelectedRows[i].Index]));
-                    }
-                }
-                else
-                {
-                    throw new Exception("Необходимо выбрать чертежи");
-                }
-
-                if (MessageBox.Show("Вы уверены в переносе чертежей в Цех заготовки?", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    for (int i = 0; i < OrdersMovings.Count; i++)
-                    {
-
-                        if (!SystemArgs.Request.InsertStatus(OrdersMovings[i].Number, OrdersMovings[i].List, 8, SystemArgs.User))
-                        {
-                            MessageBox.Show("Ошибка добавления в базу данных, обновление статуса " + OrdersMovings[i].Number + "_" + OrdersMovings[i].List + " не будет произведено", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-
-                    }
-
-                    SystemArgs.UnLoadSpecific.ExecutorMails.Clear();
-
-                    MessageBox.Show("Успешный перенос чертежей!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
-                }
+                RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
             }
-            catch (Exception E)
-            {
-                SystemArgs.PrintLog(E.ToString());
-                MessageBox.Show(E.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+
+            LockedButtonForLoadData(true);
         }
 
         private void ViewSelected_B_Click(object sender, EventArgs e)

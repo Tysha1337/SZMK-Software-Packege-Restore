@@ -20,6 +20,7 @@ namespace SZMK.Desktop.Services.Scan
     {
         private INotifyProcess notify;
         public List<Order> Orders { get; set; }
+        public List<StringErrorBindingModels> WarningOrders { get; set; }
         public List<StringErrorBindingModels> ErrorOrders { get; set; }
         public List<TreeNode> TreeNodes { get; set; }
         public List<OrderScanSession> OrderScanSession { get; set; }
@@ -84,6 +85,7 @@ namespace SZMK.Desktop.Services.Scan
             try
             {
                 List<Order> SucsessfulOrders = new List<Order>();
+                WarningOrders = new List<StringErrorBindingModels>();
                 ErrorOrders = new List<StringErrorBindingModels>();
 
                 XDocument doc = XDocument.Load(FileName);
@@ -123,7 +125,7 @@ namespace SZMK.Desktop.Services.Scan
                         Error = "Кол_во_марок";
                         CountMarks = assembly.Element("Кол_во_марок").Value.Replace(" ", "");
 
-                        Order CheckedOrder = new Order(0, DateTime.Now, Number, Executor, "Исполнитель не определен", List, Mark, Lenght, Weight, GetWeightDifferent(Number, List, Mark, Weight), null, DateTime.Now, null, Model, GetRevision(assembly), null, null, false, false, CountMarks, new List<Detail>());
+                        Order CheckedOrder = new Order(0, DateTime.Now, Number, Executor, "Исполнитель не определен", List, Mark, Lenght, Weight, GetWeightDifferent(Number, List, Mark, Weight), null, DateTime.Now, null, Model, GetRevision(assembly, Number, List), null, null, false, false, CountMarks, new List<Detail>());
 
                         GetDetails(CheckedOrder.Details, assembly);
 
@@ -131,11 +133,11 @@ namespace SZMK.Desktop.Services.Scan
                     }
                     catch (NullReferenceException Ex)
                     {
-                        ErrorOrders.Add(new StringErrorBindingModels { Data = $"В отчете чертеж под номером: {CountIter}", Error = $"Отсутвует поле {Error}" });
+                        ErrorOrders.Add(new StringErrorBindingModels { Order = Number.Trim(), List = List.Trim(), Error = $"Отсутвует поле {Error}" });
                     }
                     catch (Exception Ex)
                     {
-                        ErrorOrders.Add(new StringErrorBindingModels { Data = $"Номер заказа:{Number.Trim()}, Лист:{List.Trim()}", Error = Ex.Message });
+                        ErrorOrders.Add(new StringErrorBindingModels { Order = Number.Trim(), List = List.Trim(), Error = Ex.Message });
                     }
                 }
 
@@ -561,16 +563,61 @@ namespace SZMK.Desktop.Services.Scan
             return "";
         }
 
-        private Revision GetRevision(XElement assembly)
+        private Revision GetRevision(XElement assembly, string Number, string List)
         {
-            return new Revision
+            string Error = "";
+
+            string _dateCreate = "";
+            string _createdBy = "";
+            string _information = "";
+            string _description = "";
+            string _lastApptovedBy = "";
+
+            try
             {
-                DateCreate = Convert.ToDateTime(assembly.Element("DRAWING.REVISION.DATE_CREATE").Value.Trim()),
-                CreatedBy = assembly.Element("DRAWING.REVISION.CREATED_BY").Value.Trim(),
-                Information = assembly.Element("DRAWING.REVISION.INFO2").Value.Trim(),
-                Description = assembly.Element("DRAWING.REVISION.DESCRIPTION").Value.Trim(),
-                LastApptovedBy = assembly.Element("DRAWING.REVISION.LAST_APPROVED_BY").Value.Trim()
-            };
+                Error = "Не найдено поле \"DRAWING.REVISION.DATE_CREATE\"";
+                _dateCreate = assembly.Element("DRAWING.REVISION.DATE_CREATE").Value.Trim();
+
+                Error = "Не найдено поле \"DRAWING.REVISION.CREATED_BY\"";
+                _createdBy = assembly.Element("DRAWING.REVISION.CREATED_BY").Value.Trim();
+
+                Error = "Не найдено поле \"DRAWING.REVISION.INFO2\"";
+                _information = assembly.Element("DRAWING.REVISION.INFO2").Value.Trim();
+
+                Error = "Не найдено поле \"DRAWING.REVISION.DESCRIPTION\"";
+                _description = assembly.Element("DRAWING.REVISION.DESCRIPTION").Value.Trim();
+
+                Error = "Не найдено поле \"DRAWING.REVISION.LAST_APPROVED_BY\"";
+                _lastApptovedBy = assembly.Element("DRAWING.REVISION.LAST_APPROVED_BY").Value.Trim();
+
+                RevisionViewModel viewModel = new RevisionViewModel(_dateCreate, _createdBy, _information, _description, _lastApptovedBy, List);
+
+                return new Revision
+                {
+                    DateCreate = viewModel.DateCreate,
+                    CreatedBy = viewModel.CreatedBy,
+                    Information = viewModel.Information,
+                    Description = viewModel.Description,
+                    LastApptovedBy = viewModel.LastApprovedBy
+                };
+            }
+            catch (NullReferenceException Ex)
+            {
+                throw new Exception(Error, Ex);
+            }
+            catch (Exception Ex)
+            {
+                WarningOrders.Add(new StringErrorBindingModels { Order = Number, List = List, Error = Ex.Message });
+
+                return new Revision
+                {
+                    DateCreate = Convert.ToDateTime(_dateCreate),
+                    CreatedBy = _createdBy,
+                    Information = _information,
+                    Description = _description,
+                    LastApptovedBy = _lastApptovedBy
+                };
+            }
         }
         private string GetWeightDifferent(string Number, string List, string Mark, string Weight)
         {

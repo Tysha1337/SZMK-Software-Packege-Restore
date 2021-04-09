@@ -16,6 +16,7 @@ namespace SZMK.Desktop.Services.Scan
     public class WebcamScanBlankOrder : BaseScanBlankOrder
     {
         private Boolean _Added;
+        private Boolean _BS;
         private VideoCaptureDevice videoSource;
         private BarcodeReader reader;
         private String Device;
@@ -27,12 +28,13 @@ namespace SZMK.Desktop.Services.Scan
         public event LoadVideo LoadFrame;
         private readonly List<BlankOrderScanSession> _Orders;
 
-        public WebcamScanBlankOrder(Boolean Added)
+        public WebcamScanBlankOrder(Boolean Added, Boolean BS)
         {
             try
             {
                 GetDevice();
                 _Added = Added;
+                _BS = BS;
                 _Orders = new List<BlankOrderScanSession>();
             }
             catch (Exception E)
@@ -50,6 +52,17 @@ namespace SZMK.Desktop.Services.Scan
             set
             {
                 _Added = value;
+            }
+        }
+        public Boolean BS
+        {
+            get
+            {
+                return _BS;
+            }
+            set
+            {
+                _BS = value;
             }
         }
         public List<BlankOrderScanSession> GetScanSessions()
@@ -115,7 +128,7 @@ namespace SZMK.Desktop.Services.Scan
                 Result result = reader.Decode((Bitmap)eventArgs.Frame.Clone());
                 if (result != null)
                 {
-                    if (SetResult(result.Text, Added, _Orders))
+                    if (SetResult(result.Text, Added, BS, _Orders))
                     {
                         Status?.Invoke(result.Text.Replace("\u00a0", "").Replace(" ", ""));
                         LoadResult?.Invoke(_Orders);
@@ -136,7 +149,7 @@ namespace SZMK.Desktop.Services.Scan
                 if (videoSource != null && videoSource.IsRunning)
                 {
                     videoSource.NewFrame -= new NewFrameEventHandler(video_NewFrame);
-                    reader =null;
+                    reader = null;
                     videoSource.SignalToStop();
                     Dispatcher.CurrentDispatcher.InvokeShutdown();
                     videoSource.WaitForStop();

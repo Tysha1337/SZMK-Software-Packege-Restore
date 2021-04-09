@@ -16,15 +16,17 @@ namespace SZMK.Desktop.Services.Scan
     {
         SimpleTcpServer ServerTCP;
         private Boolean _Added;
+        private Boolean _BS;
         public delegate void LoadData(List<BlankOrderScanSession> ScanSession);
         public event LoadData Load;
         public delegate void LoadStatus(String QRBlankOrder);
         public event LoadStatus Status;
         private readonly List<BlankOrderScanSession> _Orders;
 
-        public ServerMobileAppBlankOrder(Boolean Added)
+        public ServerMobileAppBlankOrder(Boolean Added, Boolean BS)
         {
             _Added = Added;
+            _BS = BS;
             _Orders = new List<BlankOrderScanSession>();
         }
         public Boolean Added
@@ -36,6 +38,17 @@ namespace SZMK.Desktop.Services.Scan
             set
             {
                 _Added = value;
+            }
+        }
+        public Boolean BS
+        {
+            get
+            {
+                return _BS;
+            }
+            set
+            {
+                _BS = value;
             }
         }
         public BlankOrderScanSession this[Int32 Index]
@@ -81,7 +94,7 @@ namespace SZMK.Desktop.Services.Scan
         }
         private void Server_DataReceived(object sender, SimpleTCP.Message e)
         {
-            if(SetResult(e.MessageString, Added, _Orders))
+            if (SetResult(e.MessageString, Added, BS, _Orders))
             {
                 Status?.Invoke(e.MessageString.Replace("\u00a0", "").Replace(" ", ""));
                 Load?.Invoke(_Orders);

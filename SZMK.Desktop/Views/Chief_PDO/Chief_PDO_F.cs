@@ -352,13 +352,33 @@ namespace SZMK.Desktop.Views.Chief_PDO
                                 {
                                     if (SystemArgs.Request.DeleteOrder(Temp))
                                     {
+                                        if (SystemArgs.Request.CheckedNeedRemoveModel(Temp.Model))
+                                        {
+                                            SystemArgs.Request.DeleteModel(Temp.Model);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathDetails(Temp.PathDetails))
+                                        {
+                                            SystemArgs.Request.DeletePathDetails(Temp.PathDetails);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathArhive(Temp.PathArhive))
+                                        {
+                                            SystemArgs.Request.DeletePathArhive(Temp.PathArhive);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemoveRevision(Temp.Revision))
+                                        {
+                                            SystemArgs.Request.DeleteRevision(Temp.Revision);
+                                        }
+
                                         SystemArgs.Orders.Remove(Temp);
                                     }
                                 }
                             }
                             catch
                             {
-                                MessageBox.Show("Ошибка удаления чертежа: Номер-" + Temp.Number + " Лист-" + Temp.List, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Ошибка удаления чертежа: Номер-" + Temp.Number + "Лист-" + Temp.List, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
 
                         }

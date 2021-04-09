@@ -70,7 +70,7 @@ namespace SZMK.Desktop.Services
         {
             try
             {
-                notifier.Notify(0,"Получение данных");
+                notifier.Notify(0, "Получение данных");
 
                 if (GetData())
                 {
@@ -270,7 +270,7 @@ namespace SZMK.Desktop.Services
 
                     if (!Finished)
                     {
-                        SystemArgs.Orders = SystemArgs.Orders.FindAll(p=>!p.Finished);
+                        SystemArgs.Orders = SystemArgs.Orders.FindAll(p => !p.Finished);
                     }
 
                     notifier.Notify(75, "Сопоставление данных");
@@ -291,6 +291,54 @@ namespace SZMK.Desktop.Services
                     notifier.Notify(100, "Присвоение данных");
                     SystemArgs.Orders = Temp;
                 }
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        public List<Order> GetOrdersForReport()
+        {
+            try
+            {
+                List<Order> TempOrders = GetDataForReport();
+                var GroupStatuses = FormingGroupStatuses();
+                var GroupBlankOrders = FormingGroupBlankOrders();
+
+                List<OrdersGetting> Orders = GettingNeedOrders(GroupBlankOrders, GroupStatuses);
+
+                for (int i = 0; i < TempOrders.Count(); i++)
+                {
+                    var Data = Orders.FindAll(p => p.ID == TempOrders[i].ID).SingleOrDefault();
+                    if (Data != null)
+                    {
+                        TempOrders[i].Status = Data.Status;
+                        TempOrders[i].User = Data.User;
+                        TempOrders[i].BlankOrder = Data.BlankOrder;
+                        TempOrders[i].StatusDate = Data.DateStatus;
+                    }
+                }
+
+                return TempOrders;
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
+            }
+        }
+        private List<Order> GetDataForReport()
+        {
+            try
+            {
+                SystemArgs.BlankOrders.Clear();
+                SystemArgs.StatusOfOrders.Clear();
+                SystemArgs.BlankOrderOfOrders.Clear();
+
+                SystemArgs.Request.GetAllBlankOrder();
+                SystemArgs.Request.GetAllStatusOfUser();
+                SystemArgs.Request.GetAllBlankOrderofOrders();
+
+                return SystemArgs.Request.GetAllOrdersForReport();
             }
             catch (Exception Ex)
             {

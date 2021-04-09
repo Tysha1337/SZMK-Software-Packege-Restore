@@ -409,7 +409,7 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
 
                 if (!BadStartNumber)
                 {
-                    Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list, Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), WeightDifferent = GetWeightDifferent(_order, _list, _mark, Convert.ToDouble(_subTotalWeight.ToString("F2"))), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details, Revision = GetRevision(assembly) });
+                    Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list, Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), WeightDifferent = GetWeightDifferent(_order, _list, _mark, Convert.ToDouble(_subTotalWeight.ToString("F2"))), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details, Revision = GetRevision(assembly, _list) });
                 }
 
                 return true;
@@ -784,7 +784,7 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
 
             return "";
         }
-        private Shared.Models.Revision GetRevision(Assembly assembly)
+        private Shared.Models.Revision GetRevision(Assembly assembly, string List)
         {
             int _dateCreate = 0;
             string _createdBy = "";
@@ -798,13 +798,15 @@ namespace SZMK.TeklaInteraction.Tekla2018i.Services.Server
             assembly.GetReportProperty("DRAWING.REVISION.DESCRIPTION", ref _description);
             assembly.GetReportProperty("DRAWING.REVISION.LAST_APPROVED_BY", ref _lastApptovedBy);
 
+            RevisionViewModel viewModel = new RevisionViewModel(_dateCreate, _createdBy, _information, _description, _lastApptovedBy, List);
+
             return new Shared.Models.Revision
             {
-                DateCreate = new DateTime(1970, 1, 1).AddSeconds(_dateCreate),
-                CreatedBy = _createdBy,
-                Information = _information,
-                Description = _description,
-                LastApptovedBy = _lastApptovedBy
+                DateCreate = viewModel.DateCreate,
+                CreatedBy = viewModel.CreatedBy,
+                Information = viewModel.Information,
+                Description = viewModel.Description,
+                LastApprovedBy = viewModel.LastApprovedBy
             };
         }
         private double GetWeightDifferent(string Number, string List, string Mark, double Weight)

@@ -115,7 +115,7 @@
             // Data
             // 
             this.Data.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Data.DataPropertyName = "Data";
+            this.Data.DataPropertyName = "InfoView";
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.Data.DefaultCellStyle = dataGridViewCellStyle1;
             this.Data.FillWeight = 40F;

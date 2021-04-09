@@ -17,19 +17,21 @@ namespace SZMK.Desktop.Services.Scan
 
         private String Port;
         private Boolean _Added;
+        private Boolean _BS;
         public delegate void LoadData(List<BlankOrderScanSession> ScanSession);
         public event LoadData LoadResult;
         public delegate void LoadStatus(String QRBlankOrder);
         public event LoadStatus Status;
         private readonly List<BlankOrderScanSession> _Orders;
 
-        public ScannerBlankOrder(Boolean Added)
+        public ScannerBlankOrder(Boolean Added, Boolean BS)
         {
             try
             {
                 connect = false;
 
                 _Added = Added;
+                _BS = BS;
 
                 if (GetPort())
                 {
@@ -86,7 +88,7 @@ namespace SZMK.Desktop.Services.Scan
                 }
                 string code = port.ReadExisting();
 
-                if (SetResult(code, _Added, _Orders))
+                if (SetResult(code, _Added, _BS, _Orders))
                 {
                     Status?.Invoke(code.Replace("\u00a0", "").Replace(" ", ""));
 
@@ -112,6 +114,17 @@ namespace SZMK.Desktop.Services.Scan
             set
             {
                 _Added = value;
+            }
+        }
+        public Boolean BS
+        {
+            get
+            {
+                return _BS;
+            }
+            set
+            {
+                _BS = value;
             }
         }
         public void ClearData()

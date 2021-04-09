@@ -365,6 +365,26 @@ namespace SZMK.Desktop.Views.KB
                                 {
                                     if (SystemArgs.Request.DeleteOrder(Temp))
                                     {
+                                        if (SystemArgs.Request.CheckedNeedRemoveModel(Temp.Model))
+                                        {
+                                            SystemArgs.Request.DeleteModel(Temp.Model);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathDetails(Temp.PathDetails))
+                                        {
+                                            SystemArgs.Request.DeletePathDetails(Temp.PathDetails);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathArhive(Temp.PathArhive))
+                                        {
+                                            SystemArgs.Request.DeletePathArhive(Temp.PathArhive);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemoveRevision(Temp.Revision))
+                                        {
+                                            SystemArgs.Request.DeleteRevision(Temp.Revision);
+                                        }
+
                                         SystemArgs.Orders.Remove(Temp);
                                     }
                                 }
@@ -1382,6 +1402,21 @@ namespace SZMK.Desktop.Views.KB
                 await Task.Run(() => parseXML.Start(FileName, ModelPath, Notify));
 
                 Notify.Hide();
+
+                if (parseXML.WarningOrders.Count != 0)
+                {
+                    ReportWarnings report = new ReportWarnings();
+                    report.Report_DGV.AutoGenerateColumns = false;
+                    report.Report_DGV.DataSource = parseXML.WarningOrders;
+
+                    if (report.ShowDialog() != DialogResult.OK)
+                    {
+                        for (int i = 0; i < parseXML.WarningOrders.Count; i++)
+                        {
+                            parseXML.Orders.RemoveAll(p => p.Number == parseXML.WarningOrders[i].Order && p.List == parseXML.WarningOrders[i].List);
+                        }
+                    }
+                }
 
                 if (parseXML.ErrorOrders.Count != 0)
                 {

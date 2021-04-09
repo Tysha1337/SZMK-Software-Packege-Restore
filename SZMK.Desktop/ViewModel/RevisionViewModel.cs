@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SZMK.TeklaInteraction.Shared.ViewModels
+namespace SZMK.Desktop.ViewModel
 {
     public class RevisionViewModel
     {
@@ -15,19 +15,20 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
         private string _Description;
         private string _LastApprovedBy;
 
-        public RevisionViewModel(int DateCreate, string CreatedBy, string Information, string Description, string LastApprovedBy, string List)
+        public RevisionViewModel(string DateCreate, string CreatedBy, string Information, string Description, string LastApprovedBy, string List)
         {
             string Error = "";
             try
             {
                 if (List.Split('и').Length > 1)
                 {
-                    if (DateCreate != 0)
+                    if (!String.IsNullOrEmpty(DateCreate))
                     {
-                        _DateCreate = new DateTime(1970, 1, 1).AddSeconds(DateCreate);
+                        _DateCreate = Convert.ToDateTime(DateCreate);
                     }
                     else
                     {
+                        DateCreate = "01.01.1970";
                         Error = $"Не заполнено поле \"Дата\" в редакции";
                         throw new Exception();
                     }

@@ -147,6 +147,7 @@
     <Compile Include="Services\Setting\User.cs" />
     <Compile Include="Services\Sleep.cs" />
     <Compile Include="ViewModel\DetailViewModel.cs" />
+    <Compile Include="ViewModel\RevisionViewModel.cs" />
     <Compile Include="Views\Admin\MainSettings\Settings_GeneralConstructor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -648,6 +649,12 @@
     <Compile Include="Views\Shared\ReportUnloadingSpecific.Designer.cs">
       <DependentUpon>ReportUnloadingSpecific.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shared\ReportWarnings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Shared\ReportWarnings.Designer.cs">
+      <DependentUpon>ReportWarnings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Shared\Settings_MobileApp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -911,6 +918,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\ReportUnloadingSpecific.resx">
       <DependentUpon>ReportUnloadingSpecific.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Shared\ReportWarnings.resx">
+      <DependentUpon>ReportWarnings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\Settings_MobileApp.resx">
       <DependentUpon>Settings_MobileApp.cs</DependentUpon>

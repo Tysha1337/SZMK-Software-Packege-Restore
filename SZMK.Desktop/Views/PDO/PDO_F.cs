@@ -165,14 +165,14 @@ namespace SZMK.Desktop.Views.PDO
                         Dialog.MaximumSize = new Size(Dialog.Width, Dialog.Height - 100);
                         Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
                         Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
-                        SystemArgs.ScannerBlankOrder = new ScannerBlankOrder(true);//Сервер мобильного приложения
+                        SystemArgs.ScannerBlankOrder = new ScannerBlankOrder(true, false);//Сервер мобильного приложения
                         if (!SystemArgs.ScannerBlankOrder.Start())
                         {
                             throw new Exception("Ошибка подключения сканера, проверьте порт");
                         }
                         break;
                     case 1:
-                        SystemArgs.WebcamScanBlankOrder = new WebcamScanBlankOrder(true);
+                        SystemArgs.WebcamScanBlankOrder = new WebcamScanBlankOrder(true, false);
                         if (!SystemArgs.WebcamScanBlankOrder.Start())
                         {
                             throw new Exception("Ошибка подключения вебкамеры");
@@ -187,7 +187,7 @@ namespace SZMK.Desktop.Views.PDO
                         Dialog.MaximumSize = new Size(Dialog.Width, Dialog.Height - 100);
                         Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
                         Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
-                        SystemArgs.ServerMobileAppBlankOrder = new ServerMobileAppBlankOrder(true);//Сервер мобильного приложения
+                        SystemArgs.ServerMobileAppBlankOrder = new ServerMobileAppBlankOrder(true, false);//Сервер мобильного приложения
                         if (!SystemArgs.ServerMobileAppBlankOrder.Start())
                         {
                             throw new Exception("Ошибка открытия сервера для получения данных с мобильного приложения");
@@ -434,13 +434,33 @@ namespace SZMK.Desktop.Views.PDO
                                 {
                                     if (SystemArgs.Request.DeleteOrder(Temp))
                                     {
+                                        if (SystemArgs.Request.CheckedNeedRemoveModel(Temp.Model))
+                                        {
+                                            SystemArgs.Request.DeleteModel(Temp.Model);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathDetails(Temp.PathDetails))
+                                        {
+                                            SystemArgs.Request.DeletePathDetails(Temp.PathDetails);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemovePathArhive(Temp.PathArhive))
+                                        {
+                                            SystemArgs.Request.DeletePathArhive(Temp.PathArhive);
+                                        }
+
+                                        if (SystemArgs.Request.CheckedNeedRemoveRevision(Temp.Revision))
+                                        {
+                                            SystemArgs.Request.DeleteRevision(Temp.Revision);
+                                        }
+
                                         SystemArgs.Orders.Remove(Temp);
                                     }
                                 }
                             }
                             catch
                             {
-                                MessageBox.Show("Ошибка удаления чертежа: Номер-" + Temp.Number + " Лист-" + Temp.List, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Ошибка удаления чертежа: Номер-" + Temp.Number + "Лист-" + Temp.List, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
 
                         }

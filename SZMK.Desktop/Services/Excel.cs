@@ -483,13 +483,15 @@ namespace SZMK.Desktop.Services
                 ExcelWorksheet WS = WB.Workbook.Worksheets[1];
                 var rowCntReport = WS.Dimension.End.Row;
 
+                List<Order> AllOrders = SystemArgs.RequestLinq.GetOrdersForReport();
                 var GroupByOrder = Report.GroupBy(p => p.IDOrder);
                 List<TimeOrder> TimeOrdersUnclean = new List<TimeOrder>();
                 List<TimeOrder> TimeOrdersClean = new List<TimeOrder>();
+
                 List<Order> Temp = new List<Order>();
                 foreach (var key in GroupByOrder)
                 {
-                    Temp.Add(SystemArgs.Orders.Where(p => p.ID == key.Key).Single());
+                    Temp.Add(AllOrders.Where(p => p.ID == key.Key).Single());
                 }
 
                 for (int j = 1; j < SystemArgs.Statuses.Count + 1; j++)
