@@ -18,7 +18,7 @@ namespace SZMK.Desktop.Services.Scan
             {
                 _BlankOrders = BlankOrders;
 
-                String Temp = result.Replace("\u00a0", "").Replace(" ", "");
+                String Temp = result.Replace("\u00a0", "").Trim();
                 String[] ValidationDataMatrix = Temp.Split('_');
                 if (ValidationDataMatrix.Length >= 4)
                 {

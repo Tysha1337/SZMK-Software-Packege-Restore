@@ -90,7 +90,7 @@ namespace SZMK.Desktop.Services.Scan
 
                 if (SetResult(code, _Added, _BS, _Orders))
                 {
-                    Status?.Invoke(code.Replace("\u00a0", "").Replace(" ", ""));
+                    Status?.Invoke(code.Replace("\u00a0", "").Trim());
 
                     LoadResult?.Invoke(_Orders);
                 }

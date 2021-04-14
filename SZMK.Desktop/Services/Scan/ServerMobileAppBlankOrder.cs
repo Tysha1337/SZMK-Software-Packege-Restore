@@ -96,7 +96,7 @@ namespace SZMK.Desktop.Services.Scan
         {
             if (SetResult(e.MessageString, Added, BS, _Orders))
             {
-                Status?.Invoke(e.MessageString.Replace("\u00a0", "").Replace(" ", ""));
+                Status?.Invoke(e.MessageString.Replace("\u00a0", "").Trim());
                 Load?.Invoke(_Orders);
             }
         }

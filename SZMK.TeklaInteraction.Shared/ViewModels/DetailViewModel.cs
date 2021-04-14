@@ -47,11 +47,11 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
                 }
                 else
                 {
-                    _Position = Position.Replace(" ", "");
+                    _Position = Position.Trim();
                 }
 
                 Error = $"Позиция {_Position}: Количество деталей должно быть целым числом";
-                _Count = Convert.ToInt32(Count.Replace(" ", ""));
+                _Count = Convert.ToInt32(Count.Trim());
 
                 _Width = Width;
 
@@ -61,7 +61,7 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
 
                 _Height = Height;
 
-                _Diameter = Diameter.Replace(" ", "");
+                _Diameter = Diameter.Trim();
 
                 _SubtotalWeight = _Count * _Weight;
 
@@ -72,10 +72,10 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
                 }
                 else
                 {
-                    _MarkSteel = MarkSteel.Replace(" ", "");
+                    _MarkSteel = MarkSteel.Trim();
                 }
 
-                _Discription = Discription.Replace(" ", "");
+                _Discription = Discription.Trim();
 
                 _GMlenght = GMLenght;
 
@@ -83,16 +83,16 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
 
                 _GMheight = GMHeight;
 
-                _Machining = Machining.Replace(" ", "");
+                _Machining = Machining.Trim();
 
-                _MethodOfPaintingRAL = MethodOfPaintingRAL.Replace(" ", "");
+                _MethodOfPaintingRAL = MethodOfPaintingRAL.Trim();
 
                 _PaintingArea = PaintingArea;
 
                 _GostName = GetGostName(GostName, Profile);
 
-                _FlangeThickness = FlangeThickness.Replace(" ", "");
-                _PlateThickness = PlateThickness.Replace(" ", "");
+                _FlangeThickness = FlangeThickness.Trim();
+                _PlateThickness = PlateThickness.Trim();
 
                 if (String.IsNullOrEmpty(Profile))
                 {
@@ -101,7 +101,7 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
                 }
                 else
                 {
-                    _Profile = GetProfile(Profile.Replace(" ", ""));
+                    _Profile = GetProfile(Profile.Trim());
                 }
 
             }

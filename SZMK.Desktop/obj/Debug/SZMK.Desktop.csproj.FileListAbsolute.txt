@@ -898,5 +898,4 @@ C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\bin\Debug\d
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.DetailedInformaionsOrder.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.ReportUnloadingSpecific.resources
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.ReportPrintSpecific.resources
-C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.csprojAssemblyReference.cache
 C:\Users\thedr\Desktop\Works\SZMK\SZMK-Software-Package\SZMK.Desktop\obj\Debug\SZMK.Desktop.Views.Shared.ReportWarnings.resources

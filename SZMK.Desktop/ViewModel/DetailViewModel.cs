@@ -43,27 +43,27 @@ namespace SZMK.Desktop.ViewModel
                 }
                 else
                 {
-                    _Position = Position.Replace(" ", "");
+                    _Position = Position.Trim();
                 }
 
                 Error = $"Позиция {_Position}: Количество деталей должно быть целым числом";
-                _Count = Convert.ToInt32(Count.Replace(" ", ""));
+                _Count = Convert.ToInt32(Count.Trim());
 
                 Error = $"Позиция {_Position}: Высота детали должна быть целым или вещественным числом";
-                _Width = Convert.ToDouble(Width.Replace(" ", "").Replace(".", ","));
+                _Width = Convert.ToDouble(Width.Trim().Replace(".", ","));
 
                 Error = $"Позиция {_Position}: Длина детали должна быть целым или вещественным числом";
-                _Lenght = Convert.ToDouble(Lenght.Replace(" ", "").Replace(".", ","));
+                _Lenght = Convert.ToDouble(Lenght.Trim().Replace(".", ","));
 
                 Error = $"Позиция {_Position}: Вес детали должна быть целым или вещественным числом";
-                _Weight = Convert.ToDouble(Weight.Replace(" ", "").Replace(".", ","));
+                _Weight = Convert.ToDouble(Weight.Trim().Replace(".", ","));
 
-                _Height = Height.Replace(" ", "").Replace(".", ",");
+                _Height = Height.Trim().Replace(".", ",");
 
-                _Diameter = Diameter.Replace(" ", "").Replace(".", ",");
+                _Diameter = Diameter.Trim().Replace(".", ",");
 
                 Error = $"Позиция {_Position}: Итоговый вес детали должна быть целым или вещественным числом";
-                _SubtotalWeight = Convert.ToDouble(SubtotalWeight.Replace(" ", "").Replace(".", ","));
+                _SubtotalWeight = Convert.ToDouble(SubtotalWeight.Trim().Replace(".", ","));
 
                 if (String.IsNullOrEmpty(MarkSteel))
                 {
@@ -72,17 +72,17 @@ namespace SZMK.Desktop.ViewModel
                 }
                 else
                 {
-                    _MarkSteel = MarkSteel.Replace(" ", "");
+                    _MarkSteel = MarkSteel.Trim();
                 }
 
-                _Discription = Discription.Replace(" ", "");
+                _Discription = Discription.Trim();
 
-                _Machining = Machining.Replace(" ", "");
+                _Machining = Machining.Trim();
 
-                _MethodOfPaintingRAL = MethodOfPaintingRAL.Replace(" ", "");
+                _MethodOfPaintingRAL = MethodOfPaintingRAL.Trim();
 
                 Error = $"Позиция {_Position}: Площадь покраски детали должна быть целым или вещественным числом";
-                _PaintingArea = Convert.ToDouble(PaintingArea.Replace(" ", "").Replace(".", ","));
+                _PaintingArea = Convert.ToDouble(PaintingArea.Trim().Replace(".", ","));
 
                 if (String.IsNullOrEmpty(GostName))
                 {
@@ -91,11 +91,11 @@ namespace SZMK.Desktop.ViewModel
                 }
                 else
                 {
-                    _GostName = GostName.Replace(" ", "");
+                    _GostName = GostName.Trim();
                 }
 
-                _FlangeThickness = FlangeThickness.Replace(" ", "");
-                _PlateThickness = PlateThickness.Replace(" ", "");
+                _FlangeThickness = FlangeThickness.Trim();
+                _PlateThickness = PlateThickness.Trim();
 
                 if (String.IsNullOrEmpty(Profile))
                 {
@@ -104,7 +104,7 @@ namespace SZMK.Desktop.ViewModel
                 }
                 else
                 {
-                    _Profile = GetProfile(Profile.Replace(" ", ""));
+                    _Profile = GetProfile(Profile.Trim());
                 }
 
             }

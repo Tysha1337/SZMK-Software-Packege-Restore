@@ -130,7 +130,7 @@ namespace SZMK.Desktop.Services.Scan
                 {
                     if (SetResult(result.Text, Added, BS, _Orders))
                     {
-                        Status?.Invoke(result.Text.Replace("\u00a0", "").Replace(" ", ""));
+                        Status?.Invoke(result.Text.Replace("\u00a0", "").Trim());
                         LoadResult?.Invoke(_Orders);
                     }
                 }

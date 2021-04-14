@@ -111,19 +111,19 @@ namespace SZMK.Desktop.Services.Scan
                     try
                     {
                         Error = "Заказ";
-                        Number = assembly.Element("Заказ").Value.Replace(" ", "");
+                        Number = assembly.Element("Заказ").Value.Trim();
                         Error = "Лист";
-                        List = assembly.Element("Лист").Value.Replace(" ", "");
+                        List = assembly.Element("Лист").Value.Trim();
                         Error = "Марка";
-                        Mark = assembly.Element("Марка").Value.Replace(" ", "");
+                        Mark = assembly.Element("Марка").Value.Trim();
                         Error = "Разработчик_чертежа";
-                        Executor = assembly.Element("Разработчик_чертежа").Value.Replace(" ", "");
+                        Executor = assembly.Element("Разработчик_чертежа").Value.Trim();
                         Error = "Г.М_длина";
-                        Lenght = assembly.Element("Деталь").Element("Г.М_длина").Value.Replace(" ", "");
+                        Lenght = assembly.Element("Деталь").Element("Г.М_длина").Value.Trim();
                         Error = "Масса_итого";
-                        Weight = assembly.Element("Масса_итого").Value.Replace(" ", "");
+                        Weight = assembly.Element("Масса_итого").Value.Trim();
                         Error = "Кол_во_марок";
-                        CountMarks = assembly.Element("Кол_во_марок").Value.Replace(" ", "");
+                        CountMarks = assembly.Element("Кол_во_марок").Value.Trim();
 
                         Order CheckedOrder = new Order(0, DateTime.Now, Number, Executor, "Исполнитель не определен", List, Mark, Lenght, Weight, GetWeightDifferent(Number, List, Mark, Weight), null, DateTime.Now, null, Model, GetRevision(assembly, Number, List), null, null, false, false, CountMarks, new List<Detail>());
 
@@ -626,10 +626,10 @@ namespace SZMK.Desktop.Services.Scan
 
             if (previosWeight != 0)
             {
-                previosWeight = Convert.ToDouble(Weight.Replace(" ", "").Replace(".", ",")) - previosWeight;
+                previosWeight = Convert.ToDouble(Weight.Trim().Replace(".", ",")) - previosWeight;
             }
 
-            return previosWeight.ToString();
+            return previosWeight.ToString("F2");
         }
     }
 }

@@ -187,7 +187,7 @@ namespace SZMK.Desktop.Services.Scan
                         responseData = completeMessage.ToString();
                         if (_NeedChecked)
                         {
-                            if (AddDecodeSession(responseData.Replace(" ", "")))
+                            if (AddDecodeSession(responseData.Trim()))
                             {
                                 Load?.Invoke(_DecodeSession);
                             }

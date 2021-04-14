@@ -53,8 +53,8 @@ namespace SZMK.Desktop.Views.Shared
                 RevisionInfo_TB.Text = Order.Revision.Information;
                 RevisionDiscription_TB.Text = Order.Revision.Description;
                 RevisionLastApproved_TB.Text = Order.Revision.LastApptovedBy;
-                Weight_TB.Text = Order.Weight.ToString();
-                WeightDifferent_TB.Text = Order.WeightDifferent.ToString();
+                Weight_TB.Text = Order.Weight.ToString("F2");
+                WeightDifferent_TB.Text = Order.WeightDifferent.ToString("F2");
 
                 HistoryOrders = SystemArgs.Request.GetHistoryOrders(Order.Number, Order.List.Split('и')[0]);
 

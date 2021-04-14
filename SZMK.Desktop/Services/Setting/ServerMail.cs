@@ -6,6 +6,7 @@ using System.Net;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SZMK.Desktop.Models;
 
 namespace SZMK.Desktop.Services.Setting
 {
@@ -370,17 +371,18 @@ namespace SZMK.Desktop.Services.Setting
                         if (SystemArgs.UnLoadSpecific.ExecutorMails[i].GetSpecifics().Where(p => !p.Finded).Count() != 0)
                         {
                             m.To.Clear();
-                            //for (int j = 0; j < SystemArgs.Mails.Count; j++)
-                            //{
-                            //    if (SystemArgs.UnLoadSpecific.ExecutorMails[i].Executor.Equals(SystemArgs.Mails[j].Surname.Trim()+ " " + SystemArgs.Mails[j].Name.First() + "." + SystemArgs.Mails[j].MiddleName.First() + "."))
-                            //    {
-                            //        m.To.Add(new MailAddress(SystemArgs.Mails[j].MailAddress));
-                            //    }
-                            //    else if(SystemArgs.UnLoadSpecific.ExecutorMails[i].Executor.Equals(SystemArgs.Mails[j].Surname.Trim() + SystemArgs.Mails[j].Name.First() + "." + SystemArgs.Mails[j].MiddleName.First() + "." ))
-                            //    {
-                            //        m.To.Add(new MailAddress(SystemArgs.Mails[j].MailAddress));
-                            //    }
-                            //}
+                            m.CC.Clear();
+                            for (int j = 0; j < SystemArgs.Mails.Count; j++)
+                            {
+                                if (SystemArgs.UnLoadSpecific.ExecutorMails[i].Executor.Equals(SystemArgs.Mails[j].Surname.Trim() + " " + SystemArgs.Mails[j].Name.First() + "." + SystemArgs.Mails[j].MiddleName.First() + "."))
+                                {
+                                    m.To.Add(new MailAddress(SystemArgs.Mails[j].MailAddress));
+                                }
+                                else if (SystemArgs.UnLoadSpecific.ExecutorMails[i].Executor.Equals(SystemArgs.Mails[j].Surname.Trim() + SystemArgs.Mails[j].Name.First() + "." + SystemArgs.Mails[j].MiddleName.First() + "."))
+                                {
+                                    m.To.Add(new MailAddress(SystemArgs.Mails[j].MailAddress));
+                                }
+                            }
                             //if (m.To.Count() == 0)
                             //{
                             //    throw new Exception($"Email адрес для исполнителя {SystemArgs.UnLoadSpecific.ExecutorMails[i].Executor} не найден");
@@ -390,7 +392,7 @@ namespace SZMK.Desktop.Services.Setting
                             //{
                             //    m.To.Add(new MailAddress(_EmailGeneralConstructor));
                             //}
-                            m.To.Add(new MailAddress("Agafonov.AE@szmk-nk.com"));
+                            m.CC.Add(new MailAddress("Agafonov.AE@szmk-nk.com"));
                             m.Subject = "Деталировка отсутствует от " + DateTime.Now.ToString();
                             m.Body = CreateMessage(SystemArgs.UnLoadSpecific.ExecutorMails[i], Status);
                             m.IsBodyHtml = true;
@@ -426,16 +428,19 @@ namespace SZMK.Desktop.Services.Setting
                                     $"<td> № детали</td>" +
                                     $"<td> Путь папки с деталями</td>" +
                                     $"</tr>";
-                foreach (var Specifics in Executor.GetSpecifics().OrderBy(p=>p.Type).ThenBy(p=>p.Number).ThenBy(p=>p.List))
+
+                List<Specific> Specifics = Executor.GetSpecifics().OrderBy(p => p.Type).ThenBy(p => p.Number).ThenBy(p => p.List).ThenBy(p=>p.NumberSpecific).ToList();
+
+                for (int i = 0; i < Specifics.Count;i++)
                 {
-                    if (!Specifics.Finded)
+                    if (!Specifics[i].Finded)
                     {
                         Message += $"<tr>" +
-                                    $"<td> {Specifics.Number}</td>" +
-                                    $"<td> {Specifics.List.ToString()}</td>" +
+                                    $"<td> {Specifics[i].Number}</td>" +
+                                    $"<td> {Specifics[i].List}</td>" +
                                     $"<td> {Executor.Executor}</td>" +
-                                    $"<td> {Specifics.NumberSpecific.ToString()}</td>" +
-                                    $"<td> <a href=\"{Specifics.PathDetails}\">{Specifics.PathDetails}</a> </td>" +
+                                    $"<td> {Specifics[i].NumberSpecific}</td>" +
+                                    $"<td> <a href=\"{Specifics[i].PathDetails}\">{Specifics[i].PathDetails}</a> </td>" +
                                     $"</tr>";
                     }
                 }

@@ -815,7 +815,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                 previosWeight = Weight - previosWeight;
             }
 
-            return previosWeight;
+            return Convert.ToDouble(previosWeight.ToString("F2"));
         }
     }
 }
