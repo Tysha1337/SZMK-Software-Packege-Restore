@@ -426,6 +426,7 @@ namespace SZMK.Desktop.Services.Setting
                                     $"<td> № листа</td>" +
                                     $"<td> Фамилия разработчика</td>" +
                                     $"<td> № детали</td>" +
+                                    $"<td> Имя детали</td>" +
                                     $"<td> Путь папки с деталями</td>" +
                                     $"</tr>";
 
@@ -440,6 +441,7 @@ namespace SZMK.Desktop.Services.Setting
                                     $"<td> {Specifics[i].List}</td>" +
                                     $"<td> {Executor.Executor}</td>" +
                                     $"<td> {Specifics[i].NumberSpecific}</td>" +
+                                    $"<td> {Specifics[i].NameDetail}</td>" +
                                     $"<td> <a href=\"{Specifics[i].PathDetails}\">{Specifics[i].PathDetails}</a> </td>" +
                                     $"</tr>";
                     }

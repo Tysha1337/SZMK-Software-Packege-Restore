@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SZMK.TeklaInteraction.Shared.Models
 {
     public class Drawing
     {
         public long Id { get; set; }
+        public DateTime DateCreate { get; set; }
         public string Assembly { get; set; }
         public string Order { get; set; }
         public string Place { get; set; }

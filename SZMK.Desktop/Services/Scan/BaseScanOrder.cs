@@ -49,10 +49,10 @@ namespace SZMK.Desktop.Services.Scan
                         Orders.Add(new OrderScanSession(Order, 0, $"Пустое имя исполнителя"));
                         return true;
                     }
-                    else
-                    {
-                        Order.Executor = FormingExecutor(Order.Executor);
-                    }
+                    //else
+                    //{
+                    //    Order.Executor = FormingExecutor(Order.Executor);
+                    //}
 
                     if (SystemArgs.SettingsProgram.CheckMarks)
                     {
@@ -122,19 +122,19 @@ namespace SZMK.Desktop.Services.Scan
                 return false;
             }
         }
-        private string FormingExecutor(string Executor)
-        {
-            try
-            {
-                Executor = Executor.Insert(Executor.IndexOf('.') - 1, " ");
+        //private string FormingExecutor(string Executor)
+        //{
+        //    try
+        //    {
+        //        Executor = Executor.Insert(Executor.IndexOf('.') - 1, " ");
 
-                return Executor;
-            }
-            catch
-            {
-                throw new Exception("Имя исполнителя должно быть в формате: Иванов И.И.");
-            }
-        }
+        //        return Executor;
+        //    }
+        //    catch
+        //    {
+        //        throw new Exception("Имя исполнителя должно быть в формате: Иванов И.И.");
+        //    }
+        //}
         private bool CheckedExecutor(string Executor)
         {
             try
@@ -166,7 +166,7 @@ namespace SZMK.Desktop.Services.Scan
         readonly List<Order> UniqueList = new List<Order>();
         private bool CheckedUniqueList(Order Order)
         {
-            if (UniqueList.FindAll(p => p.Number == Order.Number && p.List == Order.List && p.Mark == Order.Mark).Count != 0)
+            if (UniqueList.FindAll(p => p.Number == Order.Number && p.List == Order.List).Count != 0)
             {
                 return false;
             }

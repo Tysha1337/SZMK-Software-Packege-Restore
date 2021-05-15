@@ -113,7 +113,7 @@ namespace SZMK.Desktop.Services
                     {
                         if (item.GetSpecifics().FindAll(p => p.Number == Number && p.NumberSpecific == Detail.Position && p.Type == Type).Count == 0)
                         {
-                            item.GetSpecifics().Add(new Specific(Number, List, Type, Detail.Position, PathDetails, Finded));
+                            item.GetSpecifics().Add(new Specific(Number, List, Type, Detail.Position, Detail.Name, PathDetails, Finded));
                         }
                     }
                 }
@@ -121,7 +121,7 @@ namespace SZMK.Desktop.Services
             else
             {
                 ExecutorMails.Add(new ExecutorMail(Executor));
-                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, Type, Detail.Position, PathDetails, Finded));
+                ExecutorMails[ExecutorMails.Count() - 1].GetSpecifics().Add(new Specific(Number, List, Type, Detail.Position, Detail.Name, PathDetails, Finded));
             }
         }
         private bool CheckedDetailDWG(string pathDetails, Detail detail)

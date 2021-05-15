@@ -55,6 +55,12 @@ namespace SZMK.Desktop.ViewModel
                 Error = $"Позиция {_Position}: Длина детали должна быть целым или вещественным числом";
                 _Lenght = Convert.ToDouble(Lenght.Trim().Replace(".", ","));
 
+                if (_Lenght == 0)
+                {
+                    Error = $"Позиция {_Position}: Длина детали не может быть равна 0";
+                    throw new Exception();
+                }
+
                 Error = $"Позиция {_Position}: Вес детали должна быть целым или вещественным числом";
                 _Weight = Convert.ToDouble(Weight.Trim().Replace(".", ","));
 

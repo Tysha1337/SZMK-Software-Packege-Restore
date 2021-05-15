@@ -55,7 +55,15 @@ namespace SZMK.TeklaInteraction.Shared.ViewModels
 
                 _Width = Width;
 
-                _Lenght = Lenght;
+                if (Lenght == 0)
+                {
+                    Error = $"Позиция {_Position}: Длина детали не может быть равна 0";
+                    throw new Exception();
+                }
+                else
+                {
+                    _Lenght = Lenght;
+                }
 
                 _Weight = Weight;
 

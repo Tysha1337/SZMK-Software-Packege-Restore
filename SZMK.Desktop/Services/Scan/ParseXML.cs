@@ -116,6 +116,10 @@ namespace SZMK.Desktop.Services.Scan
                         List = assembly.Element("Лист").Value.Trim();
                         Error = "Марка";
                         Mark = assembly.Element("Марка").Value.Trim();
+                        if (CheckMark(Mark))
+                        {
+                            throw new Exception(@"В написании марки нельзя использовать / \ * : ? | "" < > _ ");
+                        }
                         Error = "Разработчик_чертежа";
                         Executor = assembly.Element("Разработчик_чертежа").Value.Trim();
                         Error = "Г.М_длина";
@@ -398,6 +402,20 @@ namespace SZMK.Desktop.Services.Scan
                 return false;
             }
         }
+        private bool CheckMark(string Mark)
+        {
+            char[] nonchars = new char[] { '/', '\\', '*', ':', '?', '|', '"', '<', '>', '_' };
+
+            for (int i = 0; i < nonchars.Length; i++)
+            {
+                if (Mark.IndexOf(nonchars[i]) != -1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         private String GetNameDetail(XElement assembly, XElement detail)
         {
             string _name = assembly.Element("ADVANCED_OPTION.XS_DRAWING_PLOT_FILE_NAME_W").Value.Trim();
@@ -575,20 +593,55 @@ namespace SZMK.Desktop.Services.Scan
 
             try
             {
-                Error = "Не найдено поле \"DRAWING.REVISION.DATE_CREATE\"";
-                _dateCreate = assembly.Element("DRAWING.REVISION.DATE_CREATE").Value.Trim();
+                try
+                {
+                    Error = "Не найдено поле \"DRAWING.REVISION.DATE_CREATE\"";
+                    _dateCreate = assembly.Element("DRAWING.REVISION.DATE_CREATE").Value.Trim();
+                }
+                catch
+                {
+                    _dateCreate = "01.01.1970";
+                }
 
-                Error = "Не найдено поле \"DRAWING.REVISION.CREATED_BY\"";
-                _createdBy = assembly.Element("DRAWING.REVISION.CREATED_BY").Value.Trim();
+                try
+                {
+                    Error = "Не найдено поле \"DRAWING.REVISION.CREATED_BY\"";
+                    _createdBy = assembly.Element("DRAWING.REVISION.CREATED_BY").Value.Trim();
+                }
+                catch
+                {
+                    _createdBy = "Исполнитель не найден";
+                }
 
-                Error = "Не найдено поле \"DRAWING.REVISION.INFO2\"";
-                _information = assembly.Element("DRAWING.REVISION.INFO2").Value.Trim();
+                try
+                {
+                    Error = "Не найдено поле \"DRAWING.REVISION.INFO2\"";
+                    _information = assembly.Element("DRAWING.REVISION.INFO2").Value.Trim();
+                }
+                catch
+                {
+                    _information = "Информация не найдена";
+                }
 
-                Error = "Не найдено поле \"DRAWING.REVISION.DESCRIPTION\"";
-                _description = assembly.Element("DRAWING.REVISION.DESCRIPTION").Value.Trim();
+                try
+                {
+                    Error = "Не найдено поле \"DRAWING.REVISION.DESCRIPTION\"";
+                    _description = assembly.Element("DRAWING.REVISION.DESCRIPTION").Value.Trim();
+                }
+                catch
+                {
+                    _description = "Описание не найдено";
+                }
 
-                Error = "Не найдено поле \"DRAWING.REVISION.LAST_APPROVED_BY\"";
-                _lastApptovedBy = assembly.Element("DRAWING.REVISION.LAST_APPROVED_BY").Value.Trim();
+                try
+                {
+                    Error = "Не найдено поле \"DRAWING.REVISION.LAST_APPROVED_BY\"";
+                    _lastApptovedBy = assembly.Element("DRAWING.REVISION.LAST_APPROVED_BY").Value.Trim();
+                }
+                catch
+                {
+                    _lastApptovedBy = "Основание не найдено";
+                }
 
                 RevisionViewModel viewModel = new RevisionViewModel(_dateCreate, _createdBy, _information, _description, _lastApptovedBy, List);
 
@@ -601,10 +654,10 @@ namespace SZMK.Desktop.Services.Scan
                     LastApptovedBy = viewModel.LastApprovedBy
                 };
             }
-            catch (NullReferenceException Ex)
-            {
-                throw new Exception(Error, Ex);
-            }
+            //catch (NullReferenceException Ex)
+            //{
+            //    throw new Exception(Error, Ex);
+            //}
             catch (Exception Ex)
             {
                 WarningOrders.Add(new StringErrorBindingModels { Order = Number, List = List, Error = Ex.Message });

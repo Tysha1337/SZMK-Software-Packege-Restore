@@ -194,7 +194,7 @@ namespace SZMK.Desktop.Views.OPP
                         Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
                         Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
                         SystemArgs.ScannerBlankOrder = new ScannerBlankOrder(false, false);//Сервер мобильного приложения
-                        if (!SystemArgs.ScannerOrder.Start())
+                        if (!SystemArgs.ScannerBlankOrder.Start())
                         {
                             throw new Exception("Ошибка подключения сканера, проверьте порт");
                         }
@@ -897,8 +897,6 @@ namespace SZMK.Desktop.Views.OPP
                 DeleteOrder_TSB.Visible = true;
                 ChangeOrder_TSM.Visible = true;
                 DeleteOrder_TSM.Visible = true;
-                SelectionReport_TSM.Visible = true;
-                ViewSelected_B.Visible = true;
             }
             else
             {
@@ -907,8 +905,6 @@ namespace SZMK.Desktop.Views.OPP
                 DeleteOrder_TSB.Visible = false;
                 ChangeOrder_TSM.Visible = false;
                 DeleteOrder_TSM.Visible = false;
-                SelectionReport_TSM.Visible = false;
-                ViewSelected_B.Visible = false;
             }
         }
         private void Selection(Order Temp, bool flag)

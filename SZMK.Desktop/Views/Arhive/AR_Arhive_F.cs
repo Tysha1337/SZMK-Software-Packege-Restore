@@ -774,8 +774,6 @@ namespace SZMK.Desktop.Views.Arhive
                 ChangeOrder_TSM.Visible = true;
                 DeleteOrder_TSM.Visible = true;
                 CanceledOrder_TSB.Visible = true;
-                SelectionReport_TSM.Visible = true;
-                ViewSelected_B.Visible = true;
             }
             else
             {
@@ -784,8 +782,6 @@ namespace SZMK.Desktop.Views.Arhive
                 ChangeOrder_TSM.Visible = false;
                 DeleteOrder_TSM.Visible = false;
                 CanceledOrder_TSB.Visible = false;
-                SelectionReport_TSM.Visible = false;
-                ViewSelected_B.Visible = false;
             }
         }
 

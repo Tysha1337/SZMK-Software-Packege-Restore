@@ -830,8 +830,6 @@ namespace SZMK.Desktop.Views.PDO
                 DeleteOrder_TSB.Visible = true;
                 ChangeOrder_TSM.Visible = true;
                 DeleteOrder_TSM.Visible = true;
-                SelectionReport_TSM.Visible = true;
-                ViewSelected_B.Visible = true;
             }
             else
             {
@@ -839,8 +837,6 @@ namespace SZMK.Desktop.Views.PDO
                 DeleteOrder_TSB.Visible = false;
                 ChangeOrder_TSM.Visible = false;
                 DeleteOrder_TSM.Visible = false;
-                SelectionReport_TSM.Visible = false;
-                ViewSelected_B.Visible = false;
             }
         }
         private void Selection(Order Temp, bool flag)

@@ -13,10 +13,11 @@ namespace SZMK.Desktop.Models
         private String _List;
         private string _Type;
         private string _NumberSpecific;
+        private string _NameDetail;
         private string _PathDetails;
         private long _Count;
         private Boolean _Finded;
-        public Specific(String Number, String List, string Type, string NumberSpecific, string PathDetails, Boolean Finded)
+        public Specific(String Number, String List, string Type, string NumberSpecific, string NameDetail, string PathDetails, Boolean Finded)
         {
             if (!String.IsNullOrEmpty(Number))
             {
@@ -50,6 +51,9 @@ namespace SZMK.Desktop.Models
             {
                 throw new Exception("Номер детали не заполнен");
             }
+
+            _NameDetail = NameDetail;
+
             if (!String.IsNullOrEmpty(PathDetails))
             {
                 _PathDetails = PathDetails;
@@ -78,6 +82,7 @@ namespace SZMK.Desktop.Models
             {
                 throw new Exception("Номер детали не заполнен");
             }
+
             if (!String.IsNullOrEmpty(PathDetails))
             {
                 _PathDetails = PathDetails;
@@ -142,6 +147,20 @@ namespace SZMK.Desktop.Models
                 if (!String.IsNullOrEmpty(value))
                 {
                     _NumberSpecific = value;
+                }
+            }
+        }
+        public string NameDetail
+        {
+            get
+            {
+                return _NameDetail;
+            }
+            set
+            {
+                if (!String.IsNullOrEmpty(value))
+                {
+                    _NameDetail = value;
                 }
             }
         }

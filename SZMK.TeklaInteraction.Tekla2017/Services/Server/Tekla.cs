@@ -174,7 +174,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                 MessageBox.Show("Ошибка операции", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private List<Shared.Models.Detail> AddMainDetailDrawingObjects(AssemblyDrawing parentDrawing)
+        private List<Shared.Models.Detail> AddMainDetailDrawingObjects(AssemblyDrawing parentDrawing, int CountMark)
         {
             try
             {
@@ -186,7 +186,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
 
                 Details.Add(GetDetailAttribute(assembly, modelObject, 1));
 
-                AddsSecondariesDrawingObjectsToTreeNode(assembly, Details);
+                AddsSecondariesDrawingObjectsToTreeNode(assembly, Details, CountMark);
 
                 return Details;
             }
@@ -195,7 +195,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                 throw new Exception(E.Message, E);
             }
         }
-        private void AddsSecondariesDrawingObjectsToTreeNode(Assembly assembly, List<SZMK.TeklaInteraction.Shared.Models.Detail> Details)
+        private void AddsSecondariesDrawingObjectsToTreeNode(Assembly assembly, List<SZMK.TeklaInteraction.Shared.Models.Detail> Details, int CountMarks)
         {
             string Error = "Ошибка написания позиции детали";
 
@@ -356,6 +356,12 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                 }
 
                 assembly.GetReportProperty("ASSEMBLY_POS", ref _mark);
+
+                if (CheckMark(_mark))
+                {
+                    throw new Exception(@"В написании марки нельзя использовать / \ * : ? | "" < > _ ");
+                }
+
                 assembly.GetReportProperty("DRAWING.USERDEFINED.ru_11_fam_dop", ref _executor);
 
                 if (!CheckedExecutor(_executor))
@@ -385,7 +391,7 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                     throw new Exception($"Чертеж с Номером:{_order},Листом:{_list}, Маркой:{_mark} уже существует");
                 }
 
-                List<Shared.Models.Detail> Details = AddMainDetailDrawingObjects(parentDrawing);
+                List<Shared.Models.Detail> Details = AddMainDetailDrawingObjects(parentDrawing, _countMark);
 
                 _countDetail = Details.Sum(p => p.Count);
 
@@ -396,17 +402,17 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
                     if (Details[i].StartNumber.ToString()[0] == '9')
                     {
                         BadStartNumber = true;
-                        DetailsErrors.Add(new StringErrorBindingModel { Order = _order.Replace(" ", ""), List = _list, Error = $"В детали с позицией {Details[i].Position} начальный номер равен {Details[i].StartNumber}" });
+                        DetailsErrors.Add(new StringErrorBindingModel { Order = _order.Replace(" ", ""), List = _list.Trim(), Error = $"В детали с позицией {Details[i].Position} начальный номер равен {Details[i].StartNumber}" });
                     }
                     else if (Details[i].StartNumber != 1)
                     {
-                        DetailsWarnings.Add(new StringErrorBindingModel { Order = _order.Replace(" ", ""), List = _list, Error = $"В детали с позицией {Details[i].Position} начальный номер равен {Details[i].StartNumber}" });
+                        DetailsWarnings.Add(new StringErrorBindingModel { Order = _order.Replace(" ", ""), List = _list.Trim(), Error = $"В детали с позицией {Details[i].Position} начальный номер равен {Details[i].StartNumber}" });
                     }
                 }
 
                 if (!BadStartNumber)
                 {
-                    Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list, Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), WeightDifferent = GetWeightDifferent(_order, _list, _mark, Convert.ToDouble(_subTotalWeight.ToString("F2"))), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details, Revision = GetRevision(assembly, _list) });
+                    Drawings.Add(new Shared.Models.Drawing { Assembly = _assembly, Order = _order.Replace(" ", ""), Place = _place, List = _list.Trim(), Mark = _mark, Executor = _executor, WeightMark = Convert.ToDouble(_weightMark.ToString("F2")), CountMark = _countMark, SubTotalWeight = Convert.ToDouble(_subTotalWeight.ToString("F2")), WeightDifferent = GetWeightDifferent(_order, _list, _mark, Convert.ToDouble(_subTotalWeight.ToString("F2"))), SubTotalLenght = Convert.ToDouble(_subTotallenght.ToString("F2")), CountDetail = _countDetail, Details = Details, Revision = GetRevision(assembly, _list) });
                 }
 
                 return true;
@@ -491,6 +497,20 @@ namespace SZMK.TeklaInteraction.Tekla2017.Services.Server
             {
                 throw new Exception(E.Message, E);
             }
+        }
+        private bool CheckMark(string Mark)
+        {
+            char[] nonchars = new char[] { '/', '\\', '*', ':', '?', '|', '"', '<', '>', '_' };
+
+            for (int i = 0; i < nonchars.Length; i++)
+            {
+                if (Mark.IndexOf(nonchars[i]) != -1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
         private String GetDiscriptrion(ModelObject modelObject)
         {

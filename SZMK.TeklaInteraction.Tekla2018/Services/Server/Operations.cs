@@ -338,6 +338,8 @@ namespace SZMK.TeklaInteraction.Tekla2018.Services.Server
 
                             Session[i].Drawing.Id = request.GetAutoIDDrawing() + 1;
 
+                            Session[i].Drawing.DateCreate = DateTime.Now;
+
                             Session[i].Drawing.TypeAdd = request.GetTypeAdd("Tekla Interaction");
 
                             if (!request.ModelExist(Session[i].Drawing.Model))
@@ -366,7 +368,6 @@ namespace SZMK.TeklaInteraction.Tekla2018.Services.Server
                                 for (int j = 0; j < Session[i].Drawing.Details.Count; j++)
                                 {
                                     Session[i].Drawing.Details[j].ID = request.GetAutoIDDetail() + 1;
-                                    Session[i].Drawing.Details[j].Count = Session[i].Drawing.Details[j].Count * Session[i].Drawing.CountMark;
                                     request.InsertDetail(Session[i].Drawing.Details[j]);
                                     request.InsertAddDetail(Session[i].Drawing, Session[i].Drawing.Details[j]);
                                 }
@@ -378,14 +379,64 @@ namespace SZMK.TeklaInteraction.Tekla2018.Services.Server
                             }
                             else
                             {
-                                MessageBox.Show("Ошибка при добавлении в базу данных DataMatrix: " + Session[i].Drawing.ToString(), "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                throw new Exception("Ошибка при добавлении в базу данных чертежа: " + Session[i].Drawing.ToString());
                             }
 
                         }
                         else if (Session[i].Unique == 1)
                         {
-                            request.UpdateDrawing(Session[i].Drawing);
-                            request.DownGradeStatus(Session[i].Drawing, user);
+                            DateTime DateCreate = request.GetDateCreateDrawing(Session[i].Drawing);
+                            request.DeleteDrawing(Session[i].Drawing);
+
+                            IndexOrder = request.GetAutoIDDrawing();
+
+                            Status TempStatus = user.StatusesUser.First();
+
+                            Session[i].Drawing.Id = request.GetAutoIDDrawing() + 1;
+
+                            Session[i].Drawing.DateCreate = DateCreate;
+
+                            Session[i].Drawing.TypeAdd = request.GetTypeAdd("Tekla Interaction");
+
+                            if (!request.ModelExist(Session[i].Drawing.Model))
+                            {
+                                request.InsertModel(Session[i].Drawing.Model);
+                            }
+
+                            Session[i].Drawing.Model = request.GetModel(Session[i].Drawing.Model);
+
+                            if (!request.ExistPathDetails(Session[i].Drawing.PathDetails))
+                            {
+                                request.InsertPathDetails(Session[i].Drawing.PathDetails);
+                            }
+
+                            Session[i].Drawing.PathDetails = request.GetPathDetails(Session[i].Drawing.PathDetails);
+
+                            if (!request.ExistRevision(Session[i].Drawing.Revision))
+                            {
+                                request.InsertRevision(Session[i].Drawing.Revision);
+                            }
+
+                            Session[i].Drawing.Revision = request.GetRevision(Session[i].Drawing.Revision);
+
+                            if (request.InsertDrawing(Session[i].Drawing))
+                            {
+                                for (int j = 0; j < Session[i].Drawing.Details.Count; j++)
+                                {
+                                    Session[i].Drawing.Details[j].ID = request.GetAutoIDDetail() + 1;
+                                    request.InsertDetail(Session[i].Drawing.Details[j]);
+                                    request.InsertAddDetail(Session[i].Drawing, Session[i].Drawing.Details[j]);
+                                }
+
+                                if (!request.StatusExist(Session[i].Drawing, user))
+                                {
+                                    request.InsertStatus(Session[i].Drawing, user);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Ошибка при добавлении в базу данных чертежа: " + Session[i].Drawing.ToString());
+                            }
                         }
                     }
                     catch (Exception E)

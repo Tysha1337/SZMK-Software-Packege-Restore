@@ -770,8 +770,6 @@ namespace SZMK.Desktop.Views.KB
                 ChangeOrder_TSM.Visible = true;
                 DeleteOrder_TSM.Visible = true;
                 CanceledOrder_TSB.Visible = true;
-                SelectionReport_TSM.Visible = true;
-                ViewSelected_B.Visible = true;
 
             }
             else
@@ -781,8 +779,6 @@ namespace SZMK.Desktop.Views.KB
                 ChangeOrder_TSM.Visible = false;
                 DeleteOrder_TSM.Visible = false;
                 CanceledOrder_TSB.Visible = false;
-                SelectionReport_TSM.Visible = false;
-                ViewSelected_B.Visible = false;
             }
         }
         private void Selection(Order Temp, bool flag)
@@ -1533,7 +1529,6 @@ namespace SZMK.Desktop.Views.KB
                                 for (int j = 0; j < Session[i].Order.Details.Count; j++)
                                 {
                                     Session[i].Order.Details[j].ID = SystemArgs.Request.GetAutoIDDetail() + 1;
-
                                     SystemArgs.Request.InsertDetail(Session[i].Order.Details[j]);
                                     SystemArgs.Request.InsertAddDetail(Session[i].Order, Session[i].Order.Details[j]);
                                 }

@@ -50,6 +50,7 @@ namespace SZMK.Desktop.Views.Chief_PDO
                 SystemArgs.Excel = new Excel();
                 SystemArgs.Template = new Template();
                 SystemArgs.SelectedColumn = new SelectedColumn();
+                SystemArgs.UnLoadSpecific = new UnLoadSpecific();
 
                 ItemsFilter();
                 SelectedColumnDGV();
@@ -828,7 +829,6 @@ namespace SZMK.Desktop.Views.Chief_PDO
                 DeleteOrder_TSB.Visible = true;
                 CanceledOrder_TSB.Visible = true;
                 SelectionReport_TSM.Visible = true;
-                ViewSelected_B.Visible = true;
             }
             else
             {
@@ -836,7 +836,6 @@ namespace SZMK.Desktop.Views.Chief_PDO
                 DeleteOrder_TSB.Visible = false;
                 CanceledOrder_TSB.Visible = false;
                 SelectionReport_TSM.Visible = false;
-                ViewSelected_B.Visible = false;
             }
         }
 

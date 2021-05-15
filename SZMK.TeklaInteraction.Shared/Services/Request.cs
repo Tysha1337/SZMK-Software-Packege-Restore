@@ -211,7 +211,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
 
                 return true;
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 return false;
             }
@@ -283,7 +283,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
                                         flag = 0;
                                     }
                                 }
-                                else if (CheckedDataMatrixUpdate(Drawing))
+                                else if (CheckedDataMatrixUpdate(Drawing) || CheckedDetailsUpdate(Drawing))
                                 {
                                     flag = 3;
                                 }
@@ -349,6 +349,72 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 Connect.Close();
             }
             return flag;
+        }
+        public bool CheckedDetailsUpdate(Drawing drawing)
+        {
+            bool flag = false;
+            Int64 IdDrawing = GetIDDrawing(drawing.Order, drawing.List);
+            using (var Connect = new NpgsqlConnection(db.ToString()))
+            {
+                Connect.Open();
+                using (var Command = new NpgsqlCommand($"SELECT COUNT(\"DetailID\") FROM public.\"AddDetail\" WHERE \"OrderID\"='{IdDrawing}';", Connect))
+                {
+                    using (var Reader = Command.ExecuteReader())
+                    {
+                        while (Reader.Read())
+                        {
+                            if (Reader.GetInt64(0) == drawing.Details.Count)
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+                }
+                Connect.Close();
+            }
+
+            if (flag)
+            {
+                List<long> temps = new List<long>();
+
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+                    using (var Command = new NpgsqlCommand($"SELECT \"DetailID\" FROM public.\"AddDetail\" WHERE \"OrderID\"='{IdDrawing}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                temps.Add(Reader.GetInt64(0));
+                            }
+                        }
+                    }
+                    Connect.Close();
+                }
+                for (int i = 0; i < temps.Count && flag; i++)
+                {
+                    using (var Connect = new NpgsqlConnection(db.ToString()))
+                    {
+                        Connect.Open();
+                        using (var Command = new NpgsqlCommand($"SELECT \"Position\" FROM public.\"Detail\" WHERE \"ID\"='{temps[i]}' Order;", Connect))
+                        {
+                            using (var Reader = Command.ExecuteReader())
+                            {
+                                while (Reader.Read())
+                                {
+                                    if (drawing.Details.FirstOrDefault(p => p.Position == Reader.GetString(0)) == null)
+                                    {
+                                        flag = false;
+                                    }
+                                }
+                            }
+                        }
+                        Connect.Close();
+                    }
+                }
+            }
+            return !flag;
         }
         public String GetDataMatrix(String Number, String List)
         {
@@ -482,7 +548,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
 
                     using (var Command = new NpgsqlCommand($"INSERT INTO public.\"Orders\"(" +
                                                             "\"DateCreate\", \"Executor\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\",\"WeightDifferent\", \"Canceled\",\"ID_TypeAdd\",\"ID_Model\",\"ID_PathDetails\",\"ID_Revision\" )" +
-                                                            $"VALUES('{DateTime.Now}', '{Drawing.Executor}', '{Drawing.Order}', '{Drawing.List}', '{Drawing.Mark}', '{Drawing.SubTotalLenght}','{Drawing.SubTotalWeight}', '{Drawing.WeightDifferent}', {false},'{Drawing.TypeAdd.Id}','{Drawing.Model.Id}','{Drawing.PathDetails.Id}','{Drawing.Revision.Id}');", Connect))
+                                                            $"VALUES('{Drawing.DateCreate}', '{Drawing.Executor}', '{Drawing.Order}', '{Drawing.List}', '{Drawing.Mark}', '{Drawing.SubTotalLenght}','{Drawing.SubTotalWeight}', '{Drawing.WeightDifferent}', {false},'{Drawing.TypeAdd.Id}','{Drawing.Model.Id}','{Drawing.PathDetails.Id}','{Drawing.Revision.Id}');", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -625,44 +691,74 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 throw new Exception(E.Message, E);
             }
         }
-        public bool DownGradeStatus(Drawing Drawing, User User)
+        public bool DeleteDetails(Int64 IDOrder)
         {
             try
             {
-                Int64 ID = GetIDDrawing(Drawing.Order, Drawing.List);
-
+                List<Int64> IDDetails = new List<Int64>();
                 using (var Connect = new NpgsqlConnection(db.ToString()))
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"AddStatus\" WHERE \"ID_Order\"='{ID}' AND \"ID_Status\">='{1}';", Connect))
+                    using (var Command = new NpgsqlCommand($"SELECT \"DetailID\" FROM public.\"AddDetail\" WHERE \"OrderID\"='{IDOrder}';", Connect))
                     {
-                        Command.ExecuteNonQuery();
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                IDDetails.Add(Reader.GetInt64(0));
+                            }
+                        }
                     }
-
-                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"AddStatus\" (\"DateCreate\", \"ID_Status\", \"ID_Order\", \"ID_User\") VALUES('{DateTime.Now}', '{1}', '{ID}', '{User.ID}'); ", Connect))
+                    for (int i = 0; i < IDDetails.Count; i++)
                     {
-                        Command.ExecuteNonQuery();
+                        using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Detail\" WHERE \"ID\"='{IDDetails[i]}';", Connect))
+                        {
+                            Command.ExecuteNonQuery();
+                        }
                     }
                     Connect.Close();
                 }
-
                 return true;
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message, E);
+                throw new Exception(e.ToString());
             }
         }
-        public bool UpdateDrawing(Drawing Drawing)
+        public bool DeleteDrawing(Drawing Drawing)
         {
             try
             {
+                Int64 IDDrawing = GetIDDrawing(Drawing.Order, Drawing.List);
+
+                DeleteDetails(IDDrawing);
+
+                if (CheckedNeedRemoveModel(IDDrawing))
+                {
+                    DeleteModel(IDDrawing);
+                }
+
+                if (CheckedNeedRemovePathDetails(IDDrawing))
+                {
+                    DeletePathDetails(IDDrawing);
+                }
+
+                if (CheckedNeedRemovePathArhive(IDDrawing))
+                {
+                    DeletePathArhive(IDDrawing);
+                }
+
+                if (CheckedNeedRemoveRevision(IDDrawing))
+                {
+                    DeleteRevision(IDDrawing);
+                }
+
                 using (var Connect = new NpgsqlConnection(db.ToString()))
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"UPDATE public.\"Orders\" SET \"Executor\" = '{Drawing.Executor}', \"Number\" = '{Drawing.Order}', \"List\" = '{Drawing.List}', \"Mark\" = '{Drawing.Mark}', \"Lenght\" = '{Drawing.SubTotalLenght}', \"Weight\" = '{Drawing.SubTotalWeight}' WHERE \"ID\" = '{GetIDDrawing(Drawing.Order, Drawing.List)}'; ", Connect))
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Orders\" WHERE \"ID\" = '{IDDrawing}'; ", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -703,6 +799,34 @@ namespace SZMK.TeklaInteraction.Shared.Services
             catch
             {
                 return -1;
+            }
+        }
+        public DateTime GetDateCreateDrawing(Drawing drawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"DateCreate\" FROM public.\"Orders\" WHERE \"List\" = '{drawing.List}' AND \"Number\"='{drawing.Order}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                return Reader.GetDateTime(0);
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return DateTime.Now;
+            }
+            catch(Exception Ex)
+            {
+                throw new Exception(Ex.Message, Ex);
             }
         }
         public Model GetModel(Model Model)
@@ -983,6 +1107,338 @@ namespace SZMK.TeklaInteraction.Shared.Services
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+        public Int64 GetIDModelDrawing(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID_Model\" FROM public.\"Orders\" WHERE \"ID\" = '{IDDrawing}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                return Reader.GetInt64(0);
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return -1;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+        public bool CheckedNeedRemoveModel(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT COUNT(\"ID\") FROM public.\"Orders\" WHERE \"ID_Model\" = '{GetIDModelDrawing(IDDrawing)}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                if (Reader.GetInt64(0) == 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DeleteModel(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Model\"" +
+                                                           $"WHERE \"ID\" = {GetIDModelDrawing(IDDrawing)}; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public Int64 GetIDPathDetailsDrawing(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID_PathDetails\" FROM public.\"Orders\" WHERE \"ID\" = '{IDDrawing}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                return Reader.GetInt64(0);
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return -1;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+        public bool CheckedNeedRemovePathDetails(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT COUNT(\"ID\") FROM public.\"Orders\" WHERE \"ID_PathDetails\" = '{GetIDPathDetailsDrawing(IDDrawing)}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                if (Reader.GetInt64(0) == 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DeletePathDetails(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"PathDetails\"" +
+                                                           $"WHERE \"ID\" = {GetIDPathDetailsDrawing(IDDrawing)}; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public Int64 GetIDPathArhiveDrawing(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID_PathArhive\" FROM public.\"Orders\" WHERE \"ID\" = '{IDDrawing}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                return Reader.GetInt64(0);
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return -1;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+        public bool CheckedNeedRemovePathArhive(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT COUNT(\"ID\") FROM public.\"Orders\" WHERE \"ID_PathArhive\" = '{GetIDPathArhiveDrawing(IDDrawing)}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                if (Reader.GetInt64(0) == 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DeletePathArhive(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"PathArhive\"" +
+                                                           $"WHERE \"ID\" = {GetIDPathArhiveDrawing(IDDrawing)}; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public Int64 GetIDRevisionDrawing(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID_Revision\" FROM public.\"Orders\" WHERE \"ID\" = '{IDDrawing}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                return Reader.GetInt64(0);
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return -1;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+        public bool CheckedNeedRemoveRevision(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT COUNT(\"ID\") FROM public.\"Orders\" WHERE \"ID_Revision\" = '{GetIDRevisionDrawing(IDDrawing)}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                if (Reader.GetInt64(0) == 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DeleteRevision(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Revision\"" +
+                                                           $"WHERE \"ID\" = {GetIDRevisionDrawing(IDDrawing)}; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
