@@ -93,12 +93,38 @@ namespace SZMK.Desktop.Services.Scan
                             Orders.Add(new OrderScanSession(Order, 2, "-"));
                             break;
                         case 4:
-                            ALL_UpdateOrder_F Update = new ALL_UpdateOrder_F();
+                            Order OldOrder = SystemArgs.Request.GetOrder(Order.List, Order.Number);
 
-                            Update.NewOrder_TB.Text = Order.ToString();
-                            Update.OldOrder_TB.Text = SystemArgs.Request.GetOrder(Order.List, Order.Number).ToString();
+                            ALL_UpdateOrder_F UpdateOrder = new ALL_UpdateOrder_F();
 
-                            if (Update.ShowDialog() == DialogResult.OK)
+                            UpdateOrder.Height = 358;
+
+                            UpdateOrder.NewList_TB.Text = Order.List;
+                            UpdateOrder.NewMark_TB.Text = Order.Mark;
+                            UpdateOrder.NewExecutor_TB.Text = Order.Executor;
+                            UpdateOrder.NewWeight_TB.Text = Order.Weight.ToString();
+                            UpdateOrder.NewDetails_DGV.Visible = false;
+                            UpdateOrder.NewDetails_L.Visible = false;
+
+                            UpdateOrder.OldList_TB.Text = OldOrder.List;
+                            UpdateOrder.OldMark_TB.Text = OldOrder.Mark;
+                            UpdateOrder.OldExecutor_TB.Text = OldOrder.Executor;
+                            UpdateOrder.OldWeight_TB.Text = OldOrder.Weight.ToString();
+                            UpdateOrder.OldDetails_DGV.Visible = false;
+                            UpdateOrder.OldDetails_L.Visible = false;
+
+                            string statusForOrder = SystemArgs.Statuses.Find(p => p.ID == SystemArgs.Request.GetIdStatusOrder(OldOrder.ID)).Name;
+
+                            if (statusForOrder != "Добавлен инженером конструктором")
+                            {
+                                UpdateOrder.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{statusForOrder}\".\n\r Необходимо передать чертёж на дальнейшее сканирование.";
+                            }
+                            else
+                            {
+                                UpdateOrder.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{statusForOrder}\".";
+                            }
+
+                            if (UpdateOrder.ShowDialog() == DialogResult.OK)
                             {
                                 Orders.Add(new OrderScanSession(Order, 3, "-"));
                             }
@@ -106,6 +132,49 @@ namespace SZMK.Desktop.Services.Scan
                             {
                                 Orders.Add(new OrderScanSession(Order, 0, $"В заказе {Order.Number}, номер листа {Order.List} уже существует."));
                             }
+                            break;
+                        case 5:
+                            Order OldOrderDetails = SystemArgs.Request.GetOrder(Order.List, Order.Number);
+
+                            ALL_UpdateOrder_F UpdateDetails = new ALL_UpdateOrder_F();
+
+                            UpdateDetails.NewDetails_DGV.AutoGenerateColumns = false;
+                            UpdateDetails.NewList_TB.Text = Order.List;
+                            UpdateDetails.NewMark_TB.Text = Order.Mark;
+                            UpdateDetails.NewExecutor_TB.Text = Order.Executor;
+                            UpdateDetails.NewWeight_TB.Text = Order.Weight.ToString();
+                            UpdateDetails.NewDetails_DGV.DataSource = Order.Details;
+
+                            UpdateDetails.OldDetails_DGV.AutoGenerateColumns = false;
+                            UpdateDetails.OldList_TB.Text = OldOrderDetails.List;
+                            UpdateDetails.OldMark_TB.Text = OldOrderDetails.Mark;
+                            UpdateDetails.OldExecutor_TB.Text = OldOrderDetails.Executor;
+                            UpdateDetails.OldWeight_TB.Text = OldOrderDetails.Weight.ToString();
+                            UpdateDetails.OldDetails_DGV.DataSource = SystemArgs.Request.GetDetails(OldOrderDetails.ID);
+
+                            string statusForDetails = SystemArgs.Statuses.Find(p => p.ID == SystemArgs.Request.GetIdStatusOrder(OldOrderDetails.ID)).Name;
+
+                            if (statusForDetails != "Добавлен инженером конструктором")
+                            {
+                                UpdateDetails.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{statusForDetails}\".\n\r Необходимо передать чертёж на дальнейшее сканирование.";
+                            }
+                            else
+                            {
+                                UpdateDetails.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{statusForDetails}\".";
+                            }
+
+                            if (UpdateDetails.ShowDialog() == DialogResult.OK)
+                            {
+                                Orders.Add(new OrderScanSession(Order, 3, "-"));
+                            }
+                            else
+                            {
+                                Orders.Add(new OrderScanSession(Order, 0, $"В заказе {Order.Number}, номер листа {Order.List} уже существует."));
+                            }
+                            break;
+                        case 6:
+                            Order OLDOrder = SystemArgs.Request.GetOrder(Order.List, Order.Number);
+                            Orders.Add(new OrderScanSession(Order, 0, $"Чертёж находится на статусе \"{OLDOrder.Status.Name}\", необходимо выдать изменённый чертёж"));
                             break;
                         default:
                             Orders.Add(new OrderScanSession(Order, 0, "Ошибка добавления чертежа"));
@@ -172,7 +241,7 @@ namespace SZMK.Desktop.Services.Scan
             }
             else
             {
-                UniqueList.Add(new Order(Order.ID, Order.DateCreate, Order.Number, Order.Executor, Order.ExecutorWork, Order.List, Order.Mark, Order.Lenght, Order.Weight, Order.WeightDifferent, Order.Status, Order.StatusDate, Order.TypeAdd, Order.Model, Order.PathDetails, Order.PathArhive, Order.Revision, Order.User, Order.BlankOrder, Order.Canceled, Order.Finished));
+                UniqueList.Add(new Order(Order.ID, Order.DateCreate, Order.Number, Order.Executor, Order.ExecutorWork, Order.List, Order.Mark, Order.Lenght, Order.Weight, Order.WeightDifferent, Order.Status, Order.StatusDate, Order.TypeAdd, Order.Model, Order.PathDetails, Order.PathArhive, Order.Revision, Order.Comment, Order.User, Order.BlankOrder, Order.Hide, Order.Canceled, Order.Finished));
                 return true;
             }
         }
@@ -185,7 +254,7 @@ namespace SZMK.Desktop.Services.Scan
                 throw new Exception($"В DataMatrix менее 6 полей");
             }
 
-            return new Order(0, DateTime.Now, ValidationDataMatrix[0], ValidationDataMatrix[3], "Исполнитель не определен", ValidationDataMatrix[1], ValidationDataMatrix[2], Convert.ToDouble(ValidationDataMatrix[4].Replace(".", ",")), Convert.ToDouble(ValidationDataMatrix[5].Replace(".", ",")), 0, null, DateTime.Now, null, null, null, null, null, null, new BlankOrder(), false, false);
+            return new Order(0, DateTime.Now, ValidationDataMatrix[0], ValidationDataMatrix[3], "Исполнитель не определен", ValidationDataMatrix[1], ValidationDataMatrix[2], Convert.ToDouble(ValidationDataMatrix[4].Replace(".", ",")), Convert.ToDouble(ValidationDataMatrix[5].Replace(".", ",")), 0, null, DateTime.Now, null, null, null, null, null, null, null, new BlankOrder(), false, false, false);
         }
     }
 }

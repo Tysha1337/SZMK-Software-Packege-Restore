@@ -44,12 +44,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KB_F));
             this.добавлениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.XML_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.AddOrder_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.ChangeOrder_TSM = new System.Windows.Forms.ToolStripMenuItem();
-            this.DeleteOrder_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.Report_TSM = new System.Windows.Forms.ToolStripMenuItem();
             this.поЧертежамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +78,6 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.AddOrder_TSB = new System.Windows.Forms.ToolStripButton();
             this.ChangeOrder_TSB = new System.Windows.Forms.ToolStripButton();
-            this.DeleteOrder_TSB = new System.Windows.Forms.ToolStripButton();
             this.AdvancedSearch_TSB = new System.Windows.Forms.ToolStripButton();
             this.Reset_TSB = new System.Windows.Forms.ToolStripButton();
             this.Search_TSB = new System.Windows.Forms.ToolStripButton();
@@ -86,8 +86,11 @@
             this.FilterCB_TSB = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.CanceledOrder_TSB = new System.Windows.Forms.ToolStripButton();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.Order_DGV = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.Hide_TB = new System.Windows.Forms.TextBox();
             this.ViewSelected_B = new System.Windows.Forms.Button();
             this.Executor_TB = new System.Windows.Forms.TextBox();
             this.DateCreate_TB = new System.Windows.Forms.TextBox();
@@ -119,8 +122,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.Finished_TB = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.Order_DGV = new System.Windows.Forms.DataGridView();
+            this.label17 = new System.Windows.Forms.Label();
             this.DataMatrix = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateCreate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -135,14 +137,14 @@
             this.NumberBlankOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cancelled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StatusDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Finished = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
+            this.Hide = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Order_DGV)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // добавлениеToolStripMenuItem
@@ -150,8 +152,7 @@
             this.добавлениеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.XML_TSM,
             this.AddOrder_TSM,
-            this.ChangeOrder_TSM,
-            this.DeleteOrder_TSM});
+            this.ChangeOrder_TSM});
             this.добавлениеToolStripMenuItem.Name = "добавлениеToolStripMenuItem";
             this.добавлениеToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.добавлениеToolStripMenuItem.Text = "Добавление";
@@ -176,13 +177,6 @@
             this.ChangeOrder_TSM.Size = new System.Drawing.Size(145, 22);
             this.ChangeOrder_TSM.Text = "Изменить";
             this.ChangeOrder_TSM.Click += new System.EventHandler(this.ChangeOrder_TSM_Click);
-            // 
-            // DeleteOrder_TSM
-            // 
-            this.DeleteOrder_TSM.Name = "DeleteOrder_TSM";
-            this.DeleteOrder_TSM.Size = new System.Drawing.Size(145, 22);
-            this.DeleteOrder_TSM.Text = "Удалить";
-            this.DeleteOrder_TSM.Click += new System.EventHandler(this.DeleteOrder_TSM_Click);
             // 
             // menuStrip1
             // 
@@ -389,7 +383,6 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddOrder_TSB,
             this.ChangeOrder_TSB,
-            this.DeleteOrder_TSB,
             this.AdvancedSearch_TSB,
             this.Reset_TSB,
             this.Search_TSB,
@@ -426,16 +419,6 @@
             this.ChangeOrder_TSB.Size = new System.Drawing.Size(95, 34);
             this.ChangeOrder_TSB.Text = "Изменить";
             this.ChangeOrder_TSB.Click += new System.EventHandler(this.ChangeOrder_TSB_Click);
-            // 
-            // DeleteOrder_TSB
-            // 
-            this.DeleteOrder_TSB.Image = global::SZMK.Desktop.Properties.Resources.icons8_мусор_40;
-            this.DeleteOrder_TSB.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.DeleteOrder_TSB.Margin = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.DeleteOrder_TSB.Name = "DeleteOrder_TSB";
-            this.DeleteOrder_TSB.Size = new System.Drawing.Size(85, 34);
-            this.DeleteOrder_TSB.Text = "Удалить";
-            this.DeleteOrder_TSB.Click += new System.EventHandler(this.DeleteOrder_TSB_Click);
             // 
             // AdvancedSearch_TSB
             // 
@@ -516,22 +499,93 @@
             this.CanceledOrder_TSB.Text = "Аннулировать";
             this.CanceledOrder_TSB.Click += new System.EventHandler(this.CanceledOrder_TSB_Click);
             // 
-            // panel2
+            // tableLayoutPanel1
             // 
-            this.panel2.Controls.Add(this.tableLayoutPanel2);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(890, 62);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(394, 699);
-            this.panel2.TabIndex = 21;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.Order_DGV, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 62);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(890, 699);
+            this.tableLayoutPanel1.TabIndex = 24;
+            // 
+            // Order_DGV
+            // 
+            this.Order_DGV.AllowUserToAddRows = false;
+            this.Order_DGV.AllowUserToDeleteRows = false;
+            this.Order_DGV.AllowUserToOrderColumns = true;
+            this.Order_DGV.AllowUserToResizeRows = false;
+            this.Order_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.Order_DGV.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Order_DGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.Order_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.Order_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DataMatrix,
+            this.DateCreate,
+            this.Number,
+            this.Executor,
+            this.ExecutorWork,
+            this.List,
+            this.Mark,
+            this.Lenght,
+            this.Weight,
+            this.Status,
+            this.User,
+            this.NumberBlankOrder,
+            this.Cancelled,
+            this.StatusDate,
+            this.Comment,
+            this.Finished,
+            this.Hide});
+            this.Order_DGV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Order_DGV.Location = new System.Drawing.Point(5, 55);
+            this.Order_DGV.Margin = new System.Windows.Forms.Padding(5, 0, 3, 5);
+            this.Order_DGV.Name = "Order_DGV";
+            this.Order_DGV.ReadOnly = true;
+            this.Order_DGV.RowHeadersVisible = false;
+            this.Order_DGV.Size = new System.Drawing.Size(882, 639);
+            this.Order_DGV.TabIndex = 3;
+            this.Order_DGV.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.Order_DGV_CellFormatting);
+            this.Order_DGV.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Order_DGV_CellMouseDoubleClick);
+            this.Order_DGV.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Order_DGV_ColumnHeaderMouseClick);
+            this.Order_DGV.SelectionChanged += new System.EventHandler(this.Order_DGV_SelectionChanged);
+            this.Order_DGV.Sorted += new System.EventHandler(this.Order_DGV_Sorted);
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(228)))), ((int)(((byte)(213)))));
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label1.Location = new System.Drawing.Point(5, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(5, 10, 3, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(882, 35);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Список чертежей";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.72588F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.72589F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.78173F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.49238F));
-            this.tableLayoutPanel2.Controls.Add(this.ViewSelected_B, 0, 17);
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.49239F));
+            this.tableLayoutPanel2.Controls.Add(this.Hide_TB, 1, 11);
+            this.tableLayoutPanel2.Controls.Add(this.ViewSelected_B, 0, 18);
             this.tableLayoutPanel2.Controls.Add(this.Executor_TB, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.DateCreate_TB, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 0);
@@ -551,22 +605,24 @@
             this.tableLayoutPanel2.Controls.Add(this.label5, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.label14, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.ExecutorWork_TB, 1, 3);
-            this.tableLayoutPanel2.Controls.Add(this.RefreshStatus_B, 0, 19);
-            this.tableLayoutPanel2.Controls.Add(this.SelectedOrder_TB, 0, 16);
-            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 15);
-            this.tableLayoutPanel2.Controls.Add(this.CountOrder_TB, 2, 16);
-            this.tableLayoutPanel2.Controls.Add(this.label15, 2, 15);
-            this.tableLayoutPanel2.Controls.Add(this.Status_TB, 0, 14);
-            this.tableLayoutPanel2.Controls.Add(this.label11, 0, 13);
-            this.tableLayoutPanel2.Controls.Add(this.BlankOrder_TB, 0, 12);
-            this.tableLayoutPanel2.Controls.Add(this.label10, 0, 11);
+            this.tableLayoutPanel2.Controls.Add(this.RefreshStatus_B, 0, 20);
+            this.tableLayoutPanel2.Controls.Add(this.SelectedOrder_TB, 0, 17);
+            this.tableLayoutPanel2.Controls.Add(this.label12, 0, 16);
+            this.tableLayoutPanel2.Controls.Add(this.CountOrder_TB, 2, 17);
+            this.tableLayoutPanel2.Controls.Add(this.label15, 2, 16);
+            this.tableLayoutPanel2.Controls.Add(this.Status_TB, 0, 15);
+            this.tableLayoutPanel2.Controls.Add(this.label11, 0, 14);
+            this.tableLayoutPanel2.Controls.Add(this.BlankOrder_TB, 0, 13);
+            this.tableLayoutPanel2.Controls.Add(this.label10, 0, 12);
             this.tableLayoutPanel2.Controls.Add(this.Finished_TB, 1, 10);
             this.tableLayoutPanel2.Controls.Add(this.label16, 0, 10);
+            this.tableLayoutPanel2.Controls.Add(this.label17, 0, 11);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(890, 62);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 20;
+            this.tableLayoutPanel2.RowCount = 21;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -587,7 +643,20 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(394, 699);
-            this.tableLayoutPanel2.TabIndex = 25;
+            this.tableLayoutPanel2.TabIndex = 26;
+            // 
+            // Hide_TB
+            // 
+            this.Hide_TB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
+            this.tableLayoutPanel2.SetColumnSpan(this.Hide_TB, 2);
+            this.Hide_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Hide_TB.Location = new System.Drawing.Point(126, 297);
+            this.Hide_TB.Margin = new System.Windows.Forms.Padding(2, 2, 5, 2);
+            this.Hide_TB.Name = "Hide_TB";
+            this.Hide_TB.ReadOnly = true;
+            this.Hide_TB.Size = new System.Drawing.Size(263, 20);
+            this.Hide_TB.TabIndex = 70;
+            this.Hide_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ViewSelected_B
             // 
@@ -599,7 +668,7 @@
             this.ViewSelected_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ViewSelected_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ViewSelected_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ViewSelected_B.Location = new System.Drawing.Point(3, 539);
+            this.ViewSelected_B.Location = new System.Drawing.Point(3, 563);
             this.ViewSelected_B.Margin = new System.Windows.Forms.Padding(3, 7, 5, 7);
             this.ViewSelected_B.Name = "ViewSelected_B";
             this.ViewSelected_B.Size = new System.Drawing.Size(386, 33);
@@ -661,6 +730,7 @@
             this.label3.Size = new System.Drawing.Size(119, 24);
             this.label3.TabIndex = 1;
             this.label3.Text = "Дата создания";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label4
             // 
@@ -672,6 +742,7 @@
             this.label4.Size = new System.Drawing.Size(119, 24);
             this.label4.TabIndex = 2;
             this.label4.Text = "Исполнитель";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Canceled_TB
             // 
@@ -761,6 +832,7 @@
             this.label9.Size = new System.Drawing.Size(119, 24);
             this.label9.TabIndex = 7;
             this.label9.Text = "Аннулирован";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label8
             // 
@@ -772,6 +844,7 @@
             this.label8.Size = new System.Drawing.Size(119, 24);
             this.label8.TabIndex = 6;
             this.label8.Text = "Вес";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label13
             // 
@@ -783,6 +856,7 @@
             this.label13.Size = new System.Drawing.Size(119, 24);
             this.label13.TabIndex = 59;
             this.label13.Text = "Длина";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label7
             // 
@@ -794,6 +868,7 @@
             this.label7.Size = new System.Drawing.Size(119, 24);
             this.label7.TabIndex = 5;
             this.label7.Text = "Марка";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label6
             // 
@@ -805,6 +880,7 @@
             this.label6.Size = new System.Drawing.Size(119, 24);
             this.label6.TabIndex = 4;
             this.label6.Text = "Лист";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label5
             // 
@@ -816,6 +892,7 @@
             this.label5.Size = new System.Drawing.Size(119, 24);
             this.label5.TabIndex = 3;
             this.label5.Text = "Номер заказа";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label14
             // 
@@ -827,6 +904,7 @@
             this.label14.Size = new System.Drawing.Size(119, 24);
             this.label14.TabIndex = 62;
             this.label14.Text = "Исполнитель работ";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ExecutorWork_TB
             // 
@@ -865,7 +943,7 @@
             this.SelectedOrder_TB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel2.SetColumnSpan(this.SelectedOrder_TB, 2);
             this.SelectedOrder_TB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SelectedOrder_TB.Location = new System.Drawing.Point(3, 510);
+            this.SelectedOrder_TB.Location = new System.Drawing.Point(3, 534);
             this.SelectedOrder_TB.Margin = new System.Windows.Forms.Padding(3, 2, 5, 2);
             this.SelectedOrder_TB.Name = "SelectedOrder_TB";
             this.SelectedOrder_TB.ReadOnly = true;
@@ -882,7 +960,7 @@
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label12.Location = new System.Drawing.Point(3, 463);
+            this.label12.Location = new System.Drawing.Point(3, 487);
             this.label12.Margin = new System.Windows.Forms.Padding(3, 10, 5, 10);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(190, 35);
@@ -894,7 +972,7 @@
             // 
             this.CountOrder_TB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.CountOrder_TB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CountOrder_TB.Location = new System.Drawing.Point(201, 510);
+            this.CountOrder_TB.Location = new System.Drawing.Point(201, 534);
             this.CountOrder_TB.Margin = new System.Windows.Forms.Padding(3, 2, 5, 2);
             this.CountOrder_TB.Name = "CountOrder_TB";
             this.CountOrder_TB.ReadOnly = true;
@@ -910,7 +988,7 @@
             this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label15.Location = new System.Drawing.Point(201, 463);
+            this.label15.Location = new System.Drawing.Point(201, 487);
             this.label15.Margin = new System.Windows.Forms.Padding(3, 10, 5, 10);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(188, 35);
@@ -923,7 +1001,7 @@
             this.Status_TB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel2.SetColumnSpan(this.Status_TB, 3);
             this.Status_TB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Status_TB.Location = new System.Drawing.Point(3, 431);
+            this.Status_TB.Location = new System.Drawing.Point(3, 455);
             this.Status_TB.Margin = new System.Windows.Forms.Padding(3, 2, 5, 2);
             this.Status_TB.Name = "Status_TB";
             this.Status_TB.ReadOnly = true;
@@ -940,7 +1018,7 @@
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label11.Location = new System.Drawing.Point(3, 384);
+            this.label11.Location = new System.Drawing.Point(3, 408);
             this.label11.Margin = new System.Windows.Forms.Padding(3, 10, 5, 10);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(386, 35);
@@ -953,7 +1031,7 @@
             this.BlankOrder_TB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel2.SetColumnSpan(this.BlankOrder_TB, 3);
             this.BlankOrder_TB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BlankOrder_TB.Location = new System.Drawing.Point(3, 352);
+            this.BlankOrder_TB.Location = new System.Drawing.Point(3, 376);
             this.BlankOrder_TB.Margin = new System.Windows.Forms.Padding(3, 2, 5, 2);
             this.BlankOrder_TB.Name = "BlankOrder_TB";
             this.BlankOrder_TB.ReadOnly = true;
@@ -970,7 +1048,7 @@
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label10.Location = new System.Drawing.Point(3, 305);
+            this.label10.Location = new System.Drawing.Point(3, 329);
             this.label10.Margin = new System.Windows.Forms.Padding(3, 10, 5, 10);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(386, 35);
@@ -1001,70 +1079,18 @@
             this.label16.Size = new System.Drawing.Size(119, 24);
             this.label16.TabIndex = 67;
             this.label16.Text = "Завершен";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tableLayoutPanel1
+            // label17
             // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.Order_DGV, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 62);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(890, 699);
-            this.tableLayoutPanel1.TabIndex = 24;
-            // 
-            // Order_DGV
-            // 
-            this.Order_DGV.AllowUserToAddRows = false;
-            this.Order_DGV.AllowUserToDeleteRows = false;
-            this.Order_DGV.AllowUserToOrderColumns = true;
-            this.Order_DGV.AllowUserToResizeRows = false;
-            this.Order_DGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.Order_DGV.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Order_DGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.Order_DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.Order_DGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.DataMatrix,
-            this.DateCreate,
-            this.Number,
-            this.Executor,
-            this.ExecutorWork,
-            this.List,
-            this.Mark,
-            this.Lenght,
-            this.Weight,
-            this.Status,
-            this.User,
-            this.NumberBlankOrder,
-            this.Cancelled,
-            this.StatusDate,
-            this.Finished});
-            this.Order_DGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Order_DGV.Location = new System.Drawing.Point(5, 55);
-            this.Order_DGV.Margin = new System.Windows.Forms.Padding(5, 0, 3, 5);
-            this.Order_DGV.Name = "Order_DGV";
-            this.Order_DGV.ReadOnly = true;
-            this.Order_DGV.RowHeadersVisible = false;
-            this.Order_DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Order_DGV.Size = new System.Drawing.Size(882, 639);
-            this.Order_DGV.TabIndex = 2;
-            this.Order_DGV.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.Order_DGV_CellFormatting);
-            this.Order_DGV.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Order_DGV_CellMouseDoubleClick);
-            this.Order_DGV.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.Order_DGV_ColumnHeaderMouseClick);
-            this.Order_DGV.SelectionChanged += new System.EventHandler(this.Order_DGV_SelectionChanged);
-            this.Order_DGV.Sorted += new System.EventHandler(this.Order_DGV_Sorted);
+            this.label17.AutoSize = true;
+            this.label17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label17.Location = new System.Drawing.Point(3, 295);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(118, 24);
+            this.label17.TabIndex = 69;
+            this.label17.Text = "Скрытый";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DataMatrix
             // 
@@ -1128,7 +1154,6 @@
             this.List.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.List.DataPropertyName = "List";
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.NullValue = null;
             this.List.DefaultCellStyle = dataGridViewCellStyle7;
             this.List.FillWeight = 10F;
             this.List.HeaderText = "Лист";
@@ -1225,29 +1250,35 @@
             this.StatusDate.Name = "StatusDate";
             this.StatusDate.ReadOnly = true;
             // 
+            // Comment
+            // 
+            this.Comment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Comment.DataPropertyName = "CommentView";
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Comment.DefaultCellStyle = dataGridViewCellStyle16;
+            this.Comment.HeaderText = "Комментарий";
+            this.Comment.Name = "Comment";
+            this.Comment.ReadOnly = true;
+            // 
             // Finished
             // 
             this.Finished.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Finished.DataPropertyName = "FinishedView";
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Finished.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Finished.DefaultCellStyle = dataGridViewCellStyle17;
             this.Finished.HeaderText = "Завершен";
             this.Finished.Name = "Finished";
             this.Finished.ReadOnly = true;
             // 
-            // label1
+            // Hide
             // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(228)))), ((int)(((byte)(213)))));
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label1.Location = new System.Drawing.Point(5, 10);
-            this.label1.Margin = new System.Windows.Forms.Padding(5, 10, 3, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(882, 35);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Список чертежей";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Hide.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Hide.DataPropertyName = "HideView";
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Hide.DefaultCellStyle = dataGridViewCellStyle18;
+            this.Hide.HeaderText = "Скрытый";
+            this.Hide.Name = "Hide";
+            this.Hide.ReadOnly = true;
             // 
             // KB_F
             // 
@@ -1256,7 +1287,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1284, 761);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1270,11 +1301,10 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Order_DGV)).EndInit();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1287,15 +1317,12 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton AddOrder_TSB;
         private System.Windows.Forms.ToolStripButton ChangeOrder_TSB;
-        private System.Windows.Forms.ToolStripButton DeleteOrder_TSB;
         private System.Windows.Forms.ToolStripButton AdvancedSearch_TSB;
         private System.Windows.Forms.ToolStripButton Reset_TSB;
         private System.Windows.Forms.ToolStripButton Search_TSB;
         private System.Windows.Forms.ToolStripTextBox Search_TSTB;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripMenuItem ChangeOrder_TSM;
-        private System.Windows.Forms.ToolStripMenuItem DeleteOrder_TSM;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ToolStripComboBox FilterCB_TSB;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripButton CanceledOrder_TSB;
@@ -1312,7 +1339,23 @@
         private System.Windows.Forms.ToolStripMenuItem AboutProgram_TSM;
         private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SettingColumn_TSM;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem SettingWebcam_TSM;
+        private System.Windows.Forms.ToolStripMenuItem SettingConfig_TSM;
+        private System.Windows.Forms.ToolStripMenuItem SettingMobileApplication_TSM;
+        private System.Windows.Forms.ToolStripMenuItem Steel_TSM;
+        private System.Windows.Forms.ToolStripMenuItem SettingScanner_TSM;
+        private System.Windows.Forms.ToolStripMenuItem XML_TSM;
+        private System.Windows.Forms.ToolStripMenuItem CompleteStatusReport_TSM;
+        private System.Windows.Forms.ToolStripMenuItem ReportSteelStandart_TSB;
+        private System.Windows.Forms.ToolStripMenuItem ReportSteelMark_TSB;
+        private System.Windows.Forms.ToolStripMenuItem чертежиToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CheckDetails_TSMI;
+        private System.Windows.Forms.DataGridView Order_DGV;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TextBox Hide_TB;
+        public System.Windows.Forms.Button ViewSelected_B;
         private System.Windows.Forms.TextBox Executor_TB;
         private System.Windows.Forms.TextBox DateCreate_TB;
         private System.Windows.Forms.Label label2;
@@ -1343,17 +1386,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox Finished_TB;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.DataGridView Order_DGV;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolStripMenuItem SettingWebcam_TSM;
-        private System.Windows.Forms.ToolStripMenuItem SettingConfig_TSM;
-        private System.Windows.Forms.ToolStripMenuItem SettingMobileApplication_TSM;
-        private System.Windows.Forms.ToolStripMenuItem Steel_TSM;
-        private System.Windows.Forms.ToolStripMenuItem SettingScanner_TSM;
-        private System.Windows.Forms.ToolStripMenuItem XML_TSM;
-        private System.Windows.Forms.ToolStripMenuItem CompleteStatusReport_TSM;
-        public System.Windows.Forms.Button ViewSelected_B;
+        private System.Windows.Forms.Label label17;
         private System.Windows.Forms.DataGridViewTextBoxColumn DataMatrix;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateCreate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Number;
@@ -1368,10 +1401,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NumberBlankOrder;
         private System.Windows.Forms.DataGridViewTextBoxColumn Cancelled;
         private System.Windows.Forms.DataGridViewTextBoxColumn StatusDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
         private System.Windows.Forms.DataGridViewTextBoxColumn Finished;
-        private System.Windows.Forms.ToolStripMenuItem ReportSteelStandart_TSB;
-        private System.Windows.Forms.ToolStripMenuItem ReportSteelMark_TSB;
-        private System.Windows.Forms.ToolStripMenuItem чертежиToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem CheckDetails_TSMI;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Hide;
     }
 }

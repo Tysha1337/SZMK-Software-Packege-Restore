@@ -127,6 +127,7 @@
     <Compile Include="BindingModels\OrderPathDetailsBindingModel.cs" />
     <Compile Include="BindingModels\OrdersGetting.cs" />
     <Compile Include="BindingModels\StringErrorBindingModels.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\PathArhive.cs" />
     <Compile Include="Models\PathDetails.cs" />
     <Compile Include="Models\Revision.cs" />

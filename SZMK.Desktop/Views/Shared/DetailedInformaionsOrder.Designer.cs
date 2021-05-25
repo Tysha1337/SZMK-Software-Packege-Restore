@@ -76,6 +76,14 @@ namespace SZMK.Desktop.Views.Shared
             this.WeightDifferent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label13 = new System.Windows.Forms.Label();
             this.RevisionCreatedBy_TB = new System.Windows.Forms.TextBox();
+            this.CommentPage = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.CommentDateCreate_TB = new System.Windows.Forms.TextBox();
+            this.CommentUser_TB = new System.Windows.Forms.TextBox();
+            this.CommentText_TB = new System.Windows.Forms.TextBox();
             this.ListStatuses_TP.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -85,6 +93,8 @@ namespace SZMK.Desktop.Views.Shared
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.History_DGV)).BeginInit();
+            this.CommentPage.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // ListStatuses_TP
@@ -127,6 +137,7 @@ namespace SZMK.Desktop.Views.Shared
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.Locations_TP);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.CommentPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -209,7 +220,7 @@ namespace SZMK.Desktop.Views.Shared
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 122F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
             this.tableLayoutPanel1.Controls.Add(this.PathArhive_TB, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.PathDWG_L, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.PathPDF_L, 0, 1);
@@ -244,7 +255,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathArhive_TB.BackColor = System.Drawing.Color.White;
             this.PathArhive_TB.Location = new System.Drawing.Point(103, 151);
             this.PathArhive_TB.Name = "PathArhive_TB";
-            this.PathArhive_TB.Size = new System.Drawing.Size(436, 22);
+            this.PathArhive_TB.Size = new System.Drawing.Size(434, 22);
             this.PathArhive_TB.TabIndex = 71;
             // 
             // PathDWG_L
@@ -316,10 +327,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsDWG_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsDWG_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsDWG_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsDWG_B.Location = new System.Drawing.Point(548, 6);
+            this.ChangePathDetailsDWG_B.Location = new System.Drawing.Point(546, 6);
             this.ChangePathDetailsDWG_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsDWG_B.Name = "ChangePathDetailsDWG_B";
-            this.ChangePathDetailsDWG_B.Size = new System.Drawing.Size(112, 25);
+            this.ChangePathDetailsDWG_B.Size = new System.Drawing.Size(114, 25);
             this.ChangePathDetailsDWG_B.TabIndex = 62;
             this.ChangePathDetailsDWG_B.Text = "Изменить";
             this.ChangePathDetailsDWG_B.UseVisualStyleBackColor = false;
@@ -334,10 +345,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsPDF_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsPDF_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsPDF_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsPDF_B.Location = new System.Drawing.Point(548, 42);
+            this.ChangePathDetailsPDF_B.Location = new System.Drawing.Point(546, 42);
             this.ChangePathDetailsPDF_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsPDF_B.Name = "ChangePathDetailsPDF_B";
-            this.ChangePathDetailsPDF_B.Size = new System.Drawing.Size(112, 25);
+            this.ChangePathDetailsPDF_B.Size = new System.Drawing.Size(114, 25);
             this.ChangePathDetailsPDF_B.TabIndex = 63;
             this.ChangePathDetailsPDF_B.Text = "Изменить";
             this.ChangePathDetailsPDF_B.UseVisualStyleBackColor = false;
@@ -352,10 +363,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathDetailsDXF_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathDetailsDXF_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathDetailsDXF_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathDetailsDXF_B.Location = new System.Drawing.Point(548, 78);
+            this.ChangePathDetailsDXF_B.Location = new System.Drawing.Point(546, 78);
             this.ChangePathDetailsDXF_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathDetailsDXF_B.Name = "ChangePathDetailsDXF_B";
-            this.ChangePathDetailsDXF_B.Size = new System.Drawing.Size(112, 25);
+            this.ChangePathDetailsDXF_B.Size = new System.Drawing.Size(114, 25);
             this.ChangePathDetailsDXF_B.TabIndex = 64;
             this.ChangePathDetailsDXF_B.Text = "Изменить";
             this.ChangePathDetailsDXF_B.UseVisualStyleBackColor = false;
@@ -370,10 +381,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathModel_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathModel_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathModel_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathModel_B.Location = new System.Drawing.Point(548, 114);
+            this.ChangePathModel_B.Location = new System.Drawing.Point(546, 114);
             this.ChangePathModel_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathModel_B.Name = "ChangePathModel_B";
-            this.ChangePathModel_B.Size = new System.Drawing.Size(112, 25);
+            this.ChangePathModel_B.Size = new System.Drawing.Size(114, 25);
             this.ChangePathModel_B.TabIndex = 65;
             this.ChangePathModel_B.Text = "Изменить";
             this.ChangePathModel_B.UseVisualStyleBackColor = false;
@@ -388,10 +399,10 @@ namespace SZMK.Desktop.Views.Shared
             this.ChangePathArhive_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.ChangePathArhive_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ChangePathArhive_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.ChangePathArhive_B.Location = new System.Drawing.Point(548, 150);
+            this.ChangePathArhive_B.Location = new System.Drawing.Point(546, 150);
             this.ChangePathArhive_B.Margin = new System.Windows.Forms.Padding(5);
             this.ChangePathArhive_B.Name = "ChangePathArhive_B";
-            this.ChangePathArhive_B.Size = new System.Drawing.Size(112, 25);
+            this.ChangePathArhive_B.Size = new System.Drawing.Size(114, 25);
             this.ChangePathArhive_B.TabIndex = 66;
             this.ChangePathArhive_B.Text = "Изменить";
             this.ChangePathArhive_B.UseVisualStyleBackColor = false;
@@ -403,7 +414,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsPDF_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsPDF_TB.Location = new System.Drawing.Point(103, 43);
             this.PathDetailsPDF_TB.Name = "PathDetailsPDF_TB";
-            this.PathDetailsPDF_TB.Size = new System.Drawing.Size(436, 22);
+            this.PathDetailsPDF_TB.Size = new System.Drawing.Size(434, 22);
             this.PathDetailsPDF_TB.TabIndex = 67;
             // 
             // PathDetailsDWG_TB
@@ -412,7 +423,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsDWG_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsDWG_TB.Location = new System.Drawing.Point(103, 7);
             this.PathDetailsDWG_TB.Name = "PathDetailsDWG_TB";
-            this.PathDetailsDWG_TB.Size = new System.Drawing.Size(436, 22);
+            this.PathDetailsDWG_TB.Size = new System.Drawing.Size(434, 22);
             this.PathDetailsDWG_TB.TabIndex = 68;
             // 
             // PathDetailsDXF_TB
@@ -421,7 +432,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathDetailsDXF_TB.BackColor = System.Drawing.Color.White;
             this.PathDetailsDXF_TB.Location = new System.Drawing.Point(103, 79);
             this.PathDetailsDXF_TB.Name = "PathDetailsDXF_TB";
-            this.PathDetailsDXF_TB.Size = new System.Drawing.Size(436, 22);
+            this.PathDetailsDXF_TB.Size = new System.Drawing.Size(434, 22);
             this.PathDetailsDXF_TB.TabIndex = 69;
             // 
             // PathModel_TB
@@ -430,7 +441,7 @@ namespace SZMK.Desktop.Views.Shared
             this.PathModel_TB.BackColor = System.Drawing.Color.White;
             this.PathModel_TB.Location = new System.Drawing.Point(103, 115);
             this.PathModel_TB.Name = "PathModel_TB";
-            this.PathModel_TB.Size = new System.Drawing.Size(436, 22);
+            this.PathModel_TB.Size = new System.Drawing.Size(434, 22);
             this.PathModel_TB.TabIndex = 70;
             // 
             // tabPage2
@@ -586,9 +597,9 @@ namespace SZMK.Desktop.Views.Shared
             // 
             this.label10.AutoSize = true;
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label10.Location = new System.Drawing.Point(124, 112);
+            this.label10.Location = new System.Drawing.Point(125, 112);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 28);
+            this.label10.Size = new System.Drawing.Size(58, 28);
             this.label10.TabIndex = 8;
             this.label10.Text = "Вес";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -721,6 +732,116 @@ namespace SZMK.Desktop.Views.Shared
             this.RevisionCreatedBy_TB.Size = new System.Drawing.Size(189, 22);
             this.RevisionCreatedBy_TB.TabIndex = 15;
             // 
+            // CommentPage
+            // 
+            this.CommentPage.Controls.Add(this.tableLayoutPanel3);
+            this.CommentPage.Location = new System.Drawing.Point(4, 25);
+            this.CommentPage.Name = "CommentPage";
+            this.CommentPage.Padding = new System.Windows.Forms.Padding(3);
+            this.CommentPage.Size = new System.Drawing.Size(666, 343);
+            this.CommentPage.TabIndex = 3;
+            this.CommentPage.Text = "Комментарий";
+            this.CommentPage.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.CommentDateCreate_TB, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.CommentUser_TB, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.CommentText_TB, 0, 3);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 5;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(660, 337);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(5, 5);
+            this.label1.Margin = new System.Windows.Forms.Padding(5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(105, 22);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Дата создания";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Location = new System.Drawing.Point(5, 37);
+            this.label2.Margin = new System.Windows.Forms.Padding(5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(105, 22);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Пользователь";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.tableLayoutPanel3.SetColumnSpan(this.label3, 2);
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(5, 69);
+            this.label3.Margin = new System.Windows.Forms.Padding(5);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(650, 30);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Комментарий";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // CommentDateCreate_TB
+            // 
+            this.CommentDateCreate_TB.BackColor = System.Drawing.Color.White;
+            this.CommentDateCreate_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CommentDateCreate_TB.Location = new System.Drawing.Point(120, 5);
+            this.CommentDateCreate_TB.Margin = new System.Windows.Forms.Padding(5);
+            this.CommentDateCreate_TB.Name = "CommentDateCreate_TB";
+            this.CommentDateCreate_TB.ReadOnly = true;
+            this.CommentDateCreate_TB.Size = new System.Drawing.Size(535, 22);
+            this.CommentDateCreate_TB.TabIndex = 4;
+            this.CommentDateCreate_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // CommentUser_TB
+            // 
+            this.CommentUser_TB.BackColor = System.Drawing.Color.White;
+            this.CommentUser_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CommentUser_TB.Location = new System.Drawing.Point(120, 37);
+            this.CommentUser_TB.Margin = new System.Windows.Forms.Padding(5);
+            this.CommentUser_TB.Name = "CommentUser_TB";
+            this.CommentUser_TB.ReadOnly = true;
+            this.CommentUser_TB.Size = new System.Drawing.Size(535, 22);
+            this.CommentUser_TB.TabIndex = 5;
+            this.CommentUser_TB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // CommentText_TB
+            // 
+            this.CommentText_TB.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel3.SetColumnSpan(this.CommentText_TB, 2);
+            this.CommentText_TB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CommentText_TB.Location = new System.Drawing.Point(5, 109);
+            this.CommentText_TB.Margin = new System.Windows.Forms.Padding(5);
+            this.CommentText_TB.Multiline = true;
+            this.CommentText_TB.Name = "CommentText_TB";
+            this.CommentText_TB.ReadOnly = true;
+            this.CommentText_TB.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.CommentText_TB.Size = new System.Drawing.Size(650, 138);
+            this.CommentText_TB.TabIndex = 6;
+            // 
             // DetailedInformaionsOrder
             // 
             this.AcceptButton = this.OK_B;
@@ -750,6 +871,9 @@ namespace SZMK.Desktop.Views.Shared
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.History_DGV)).EndInit();
+            this.CommentPage.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -803,5 +927,13 @@ namespace SZMK.Desktop.Views.Shared
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn WeightDifferent;
+        private System.Windows.Forms.TabPage CommentPage;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox CommentDateCreate_TB;
+        private System.Windows.Forms.TextBox CommentUser_TB;
+        private System.Windows.Forms.TextBox CommentText_TB;
     }
 }

@@ -173,12 +173,39 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                                 }
                                 break;
                             case 3:
-                                Views.Main.Update Update = new Views.Main.Update();
+                                long ID = request.GetIDDrawing(Model.Drawings[i].Order, Model.Drawings[i].List);
+                                Views.Main.Update UpdateDrawing = new Views.Main.Update();
 
-                                Update.NewOrder_TB.Text = Model.Drawings[i].ToString();
-                                Update.OldOrder_TB.Text = request.GetDataMatrix(Model.Drawings[i].Order, Model.Drawings[i].List);
+                                UpdateDrawing.Height = 358;
 
-                                if (Update.ShowDialog() == DialogResult.OK)
+                                UpdateDrawing.NewList_TB.Text = Model.Drawings[i].List;
+                                UpdateDrawing.NewMark_TB.Text = Model.Drawings[i].Mark;
+                                UpdateDrawing.NewExecutor_TB.Text = Model.Drawings[i].Executor;
+                                UpdateDrawing.NewWeight_TB.Text = Model.Drawings[i].SubTotalWeight.ToString();
+                                UpdateDrawing.NewDetails_DGV.Visible=false;
+                                UpdateDrawing.NewDetails_L.Visible = false;
+
+                                string[] OldDataDrawing = request.GetDataMatrix(Model.Drawings[i].Order, Model.Drawings[i].List).Split('_');
+                                UpdateDrawing.OldList_TB.Text = OldDataDrawing[1];
+                                UpdateDrawing.OldMark_TB.Text = OldDataDrawing[2];
+                                UpdateDrawing.OldExecutor_TB.Text = OldDataDrawing[3];
+                                UpdateDrawing.OldWeight_TB.Text = OldDataDrawing[5];
+                                UpdateDrawing.OldDetails_DGV.Visible = false;
+                                UpdateDrawing.OldDetails_L.Visible = false;
+
+                                string status = request.GetStatusName(ID);
+
+                                if (status != "Добавлен инженером конструктором")
+                                {
+                                    UpdateDrawing.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{status}\".\n\r Необходимо передать чертёж на дальнейшее сканирование.";
+                                }
+                                else
+                                {
+                                    UpdateDrawing.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{status}\".";
+                                }
+
+
+                                if (UpdateDrawing.ShowDialog() == DialogResult.OK)
                                 {
                                     session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 1, Discription = "-" });
                                 }
@@ -187,6 +214,50 @@ namespace SZMK.TeklaInteraction.Tekla21_1.Services.Server
                                     session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, номер листа {Model.Drawings[i].List} уже существует." });
                                 }
 
+                                break;
+                            case 4:
+                                long IDforDetails = request.GetIDDrawing(Model.Drawings[i].Order, Model.Drawings[i].List);
+                                Views.Main.Update UpdateDetails = new Views.Main.Update();
+
+                                UpdateDetails.NewDetails_DGV.AutoGenerateColumns = false;
+                                UpdateDetails.NewList_TB.Text = Model.Drawings[i].List;
+                                UpdateDetails.NewMark_TB.Text = Model.Drawings[i].Mark;
+                                UpdateDetails.NewExecutor_TB.Text = Model.Drawings[i].Executor;
+                                UpdateDetails.NewWeight_TB.Text = Model.Drawings[i].SubTotalWeight.ToString();
+                                UpdateDetails.NewDetails_DGV.DataSource = Model.Drawings[i].Details;
+
+                                UpdateDetails.OldDetails_DGV.AutoGenerateColumns = false;
+                                string[] OldDataDrawingForDetails = request.GetDataMatrix(Model.Drawings[i].Order, Model.Drawings[i].List).Split('_');
+                                UpdateDetails.OldList_TB.Text = OldDataDrawingForDetails[1];
+                                UpdateDetails.OldMark_TB.Text = OldDataDrawingForDetails[2];
+                                UpdateDetails.OldExecutor_TB.Text = OldDataDrawingForDetails[3];
+                                UpdateDetails.OldWeight_TB.Text = OldDataDrawingForDetails[5];
+                                UpdateDetails.OldDetails_DGV.DataSource = request.GetDetails(IDforDetails);
+
+                                string statusForDetails = request.GetStatusName(IDforDetails);
+
+                                if (statusForDetails != "Добавлен инженером конструктором")
+                                {
+                                    UpdateDetails.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{statusForDetails}\".\n\r Необходимо передать чертёж на дальнейшее сканирование.";
+                                }
+                                else
+                                {
+                                    UpdateDetails.OldStatus_TB.Text = $"Чертёж будет обновлён. Чертёж находится на статусе \"{statusForDetails}\".";
+                                }
+
+
+                                if (UpdateDetails.ShowDialog() == DialogResult.OK)
+                                {
+                                    session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 1, Discription = "-" });
+                                }
+                                else
+                                {
+                                    session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"В заказе {Model.Drawings[i].Order}, номер листа {Model.Drawings[i].List} уже существует." });
+                                }
+
+                                break;
+                            case 5:
+                                session.Add(new SessionAdded { Drawing = Model.Drawings[i], Unique = 0, Discription = $"Чертёж находится на статусе \"{request.GetStatusName(request.GetIDDrawing(Model.Drawings[i].Order, Model.Drawings[i].List))}\", необходимо выдать изменённый чертёж" });
                                 break;
                         }
                     }

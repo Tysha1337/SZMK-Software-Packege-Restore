@@ -67,10 +67,14 @@ namespace SZMK.Desktop.Views.Chief_PDO
 
         private void ChangeOrder_TSB_Click(object sender, EventArgs e)
         {
+            LockedButtonForLoadData(false);
+
             if (ChangeOrder())
             {
-                Display(SystemArgs.Orders);
+                RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
             }
+
+            LockedButtonForLoadData(true);
         }
 
         private void DeleteOrder_TSB_Click(object sender, EventArgs e)
@@ -209,6 +213,8 @@ namespace SZMK.Desktop.Views.Chief_PDO
                         Dialog.Number_TB.Enabled = false;
                         Dialog.ExecutorWork_TB.Enabled = false;
                         Dialog.Finished_CB.Enabled = false;
+                        Dialog.Comment_TB.Enabled = false;
+                        Dialog.Hide_CB.Enabled = false;
                         List<Status> TempStatuses = new List<Status>
                         {
                             new Status(999,999,"Не изменять статусы")
@@ -239,6 +245,13 @@ namespace SZMK.Desktop.Views.Chief_PDO
                         Dialog.Weight_TB.Text = Temp.Weight.ToString();
                         Dialog.Weight_TB.Enabled = false;
                         Dialog.Status_CB.DataSource = TempStatuses;
+                        if (Temp.Comment != null)
+                        {
+                            Dialog.Comment_TB.Text = Temp.Comment.ToString();
+                        }
+                        Dialog.Hide_CB.Checked = Temp.Hide;
+                        Dialog.Comment_TB.Enabled = false;
+                        Dialog.Hide_CB.Enabled = false;
                     }
                     if (Dialog.ShowDialog() == DialogResult.OK)
                     {
@@ -278,6 +291,23 @@ namespace SZMK.Desktop.Views.Chief_PDO
                             {
                                 ChangedOrder.Finished = Dialog.Finished_CB.Checked;
                             }
+                            if (Dialog.Comment_CB.Checked)
+                            {
+                                ChangedOrder.Comment = new Comment { DateCreate = DateTime.Now, User = SystemArgs.User, Text = Dialog.Comment_TB.Text.Trim() };
+
+                                if (!SystemArgs.Request.CommentExist(ChangedOrder.Comment))
+                                {
+                                    SystemArgs.Request.InsertComment(ChangedOrder.Comment);
+                                }
+
+                                ChangedOrder.Comment = SystemArgs.Request.GetComment(ChangedOrder.Comment);
+
+                                SystemArgs.Request.SetCommentOrder(ChangedOrder);
+                            }
+                            if (Dialog.HideRewrite_CB.Checked)
+                            {
+                                ChangedOrder.Hide = Dialog.Hide_CB.Checked;
+                            }
                             if (Dialog.Status_CB.SelectedIndex != 0)
                             {
                                 ChangedOrder.Status = (Status)Dialog.Status_CB.SelectedItem;
@@ -285,35 +315,73 @@ namespace SZMK.Desktop.Views.Chief_PDO
                                 ChangedOrder.User = SystemArgs.User;
                             }
 
-                            if (SystemArgs.Request.UpdateOrder(ChangedOrder))
+                            if (ChangedOrder.Hide)
                             {
-                                if (Dialog.Status_CB.SelectedIndex != 0)
+                                if (ChangedOrder.Comment != null)
                                 {
-                                    if (Temp.ID > SystemArgs.Statuses.Where(p => p == (Status)Dialog.Status_CB.SelectedItem).Single().ID)
+                                    if (SystemArgs.Request.UpdateOrder(ChangedOrder))
                                     {
-                                        SystemArgs.Request.DownGradeStatus(ChangedOrder);
+                                        if (Dialog.Status_CB.SelectedIndex != 0)
+                                        {
+                                            if (Temp.ID > SystemArgs.Statuses.Where(p => p == (Status)Dialog.Status_CB.SelectedItem).Single().ID)
+                                            {
+                                                SystemArgs.Request.DownGradeStatus(ChangedOrder);
+                                            }
+                                            else
+                                            {
+                                                int NewStatus = (int)ChangedOrder.Status.ID;
+                                                for (int j = (int)Temp.ID + 1; j <= NewStatus; j++)
+                                                {
+                                                    ChangedOrder.Status = SystemArgs.Statuses.Where(p => p.ID == j).Single();
+                                                    if (!SystemArgs.Request.StatusExist(ChangedOrder.ID, ChangedOrder.Status.ID))
+                                                    {
+                                                        SystemArgs.Request.InsertStatus(ChangedOrder.Number, ChangedOrder.List, ChangedOrder.Status.ID, SystemArgs.User);
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                     else
                                     {
-                                        int NewStatus = (int)ChangedOrder.Status.ID;
-                                        for (int j = (int)Temp.ID + 1; j <= NewStatus; j++)
+                                        throw new Exception($"Ошибка обновления данных чертежа\n\rЗаказ:{ChangedOrder.Number} Лист:{ChangedOrder.List}");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception($"Не заполнен комментарий чертежа\n\rЗаказ:{ChangedOrder.Number} Лист:{ChangedOrder.List}");
+                                }
+                            }
+                            else
+                            {
+                                if (SystemArgs.Request.UpdateOrder(ChangedOrder))
+                                {
+                                    if (Dialog.Status_CB.SelectedIndex != 0)
+                                    {
+                                        if (Temp.ID > SystemArgs.Statuses.Where(p => p == (Status)Dialog.Status_CB.SelectedItem).Single().ID)
                                         {
-                                            ChangedOrder.Status = SystemArgs.Statuses.Where(p => p.ID == j).Single();
-                                            if (!SystemArgs.Request.StatusExist(ChangedOrder.ID, ChangedOrder.Status.ID))
+                                            SystemArgs.Request.DownGradeStatus(ChangedOrder);
+                                        }
+                                        else
+                                        {
+                                            int NewStatus = (int)ChangedOrder.Status.ID;
+                                            for (int j = (int)Temp.ID + 1; j <= NewStatus; j++)
                                             {
-                                                SystemArgs.Request.InsertStatus(ChangedOrder.Number, ChangedOrder.List, ChangedOrder.Status.ID, SystemArgs.User);
+                                                ChangedOrder.Status = SystemArgs.Statuses.Where(p => p.ID == j).Single();
+                                                if (!SystemArgs.Request.StatusExist(ChangedOrder.ID, ChangedOrder.Status.ID))
+                                                {
+                                                    SystemArgs.Request.InsertStatus(ChangedOrder.Number, ChangedOrder.List, ChangedOrder.Status.ID, SystemArgs.User);
+                                                }
                                             }
                                         }
                                     }
                                 }
-                                SystemArgs.Orders.Remove((Order)(View[Order_DGV.SelectedRows[i].Index]));
-                                SystemArgs.Orders.Add(ChangedOrder);
-                            }
-                            else
-                            {
-                                throw new Exception("Ошибка обновления данных черетежа");
+                                else
+                                {
+                                    throw new Exception($"Ошибка обновления данных чертежа\n\rЗаказ:{ChangedOrder.Number} Лист:{ChangedOrder.List}");
+                                }
                             }
                         }
+
                         MessageBox.Show("Чертеж(ы) успешно изменены", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return true;
                     }
@@ -371,6 +439,14 @@ namespace SZMK.Desktop.Views.Chief_PDO
                                         if (SystemArgs.Request.CheckedNeedRemoveRevision(Temp.Revision))
                                         {
                                             SystemArgs.Request.DeleteRevision(Temp.Revision);
+                                        }
+
+                                        if (Temp.Comment != null)
+                                        {
+                                            if (SystemArgs.Request.CheckedNeedRemoveComment(Temp.Comment))
+                                            {
+                                                SystemArgs.Request.DeleteComment(Temp.Comment);
+                                            }
                                         }
 
                                         SystemArgs.Orders.Remove(Temp);
@@ -433,6 +509,16 @@ namespace SZMK.Desktop.Views.Chief_PDO
                     Finished_TB.BackColor = Color.Lime;
                     Finished_TB.Text = "Нет";
                 }
+                if (Temp.Hide)
+                {
+                    Hide_TB.BackColor = Color.Orange;
+                    Hide_TB.Text = "Да";
+                }
+                else
+                {
+                    Hide_TB.BackColor = Color.Lime;
+                    Hide_TB.Text = "Нет";
+                }
                 BlankOrder_TB.Text = Temp.BlankOrder.QR;
                 Status_TB.Text = Temp.Status.Name;
                 SelectedOrder_TB.Text = Order_DGV.SelectedRows.Count.ToString();
@@ -451,6 +537,8 @@ namespace SZMK.Desktop.Views.Chief_PDO
                 Canceled_TB.Text = String.Empty;
                 Finished_TB.BackColor = Color.FromArgb(233, 245, 255);
                 Finished_TB.Text = String.Empty;
+                Hide_TB.BackColor = Color.FromArgb(233, 245, 255);
+                Hide_TB.Text = String.Empty;
                 BlankOrder_TB.Text = String.Empty;
                 Status_TB.Text = String.Empty;
                 SelectedOrder_TB.Text = "0";
@@ -593,7 +681,7 @@ namespace SZMK.Desktop.Views.Chief_PDO
 
             RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
         }
-        private void GetDataForSearch(ForLongOperations_F Load, bool Finished)
+        private void GetDataForSearch(ForLongOperations_F Load, bool Finished, bool Hide)
         {
             try
             {
@@ -602,7 +690,7 @@ namespace SZMK.Desktop.Views.Chief_PDO
                 SystemArgs.StatusOfOrders.Clear();
                 SystemArgs.BlankOrderOfOrders.Clear();
 
-                SystemArgs.RequestLinq.GetOrdersForSearch(Load, Finished);
+                SystemArgs.RequestLinq.GetOrdersForSearch(Load, Finished, Hide);
             }
             catch (Exception Ex)
             {
@@ -626,6 +714,7 @@ namespace SZMK.Desktop.Views.Chief_PDO
                 if (Dialog.ShowDialog() == DialogResult.OK)
                 {
                     bool Finished = true;
+                    bool Hide = Dialog.Hide_CB.Checked;
 
                     if (Dialog.Finished_CB.Checked && Dialog.Number_TB.Text == String.Empty && Dialog.List_TB.Text == String.Empty)
                     {
@@ -647,7 +736,7 @@ namespace SZMK.Desktop.Views.Chief_PDO
 
                     LockedButtonForLoadData(false);
 
-                    await Task.Run(() => GetDataForSearch(Load, Finished));
+                    await Task.Run(() => GetDataForSearch(Load, Finished, Hide));
 
                     LockedButtonForLoadData(true);
 
@@ -1067,7 +1156,9 @@ namespace SZMK.Desktop.Views.Chief_PDO
                 Dialog.BlankOrder_CB.Checked = SystemArgs.SelectedColumn[11].Visible;
                 Dialog.Cancelled_CB.Checked = SystemArgs.SelectedColumn[12].Visible;
                 Dialog.StatusDate_CB.Checked = SystemArgs.SelectedColumn[13].Visible;
-                Dialog.Finished_CB.Checked = SystemArgs.SelectedColumn[14].Visible;
+                Dialog.Comment_CB.Checked = SystemArgs.SelectedColumn[14].Visible;
+                Dialog.Finished_CB.Checked = SystemArgs.SelectedColumn[15].Visible;
+                Dialog.Hide_CB.Checked = SystemArgs.SelectedColumn[16].Visible;
 
                 if (Dialog.ShowDialog() == DialogResult.OK)
                 {
@@ -1085,8 +1176,11 @@ namespace SZMK.Desktop.Views.Chief_PDO
                     SystemArgs.SelectedColumn[11].Visible = Dialog.BlankOrder_CB.Checked;
                     SystemArgs.SelectedColumn[12].Visible = Dialog.Cancelled_CB.Checked;
                     SystemArgs.SelectedColumn[13].Visible = Dialog.StatusDate_CB.Checked;
-                    SystemArgs.SelectedColumn[14].Visible = Dialog.Finished_CB.Checked;
+                    SystemArgs.SelectedColumn[14].Visible = Dialog.Comment_CB.Checked;
+                    SystemArgs.SelectedColumn[15].Visible = Dialog.Finished_CB.Checked;
+                    SystemArgs.SelectedColumn[16].Visible = Dialog.Hide_CB.Checked;
                     SystemArgs.SelectedColumn.SetParametrColumnVisible();
+                    SystemArgs.SelectedColumn.GetParametrColumn();
                     MessageBox.Show("Настройки успешно сохранены", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     SelectedColumnDGV();
                 }

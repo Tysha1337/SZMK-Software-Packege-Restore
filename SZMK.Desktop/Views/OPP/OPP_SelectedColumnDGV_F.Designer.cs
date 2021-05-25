@@ -60,8 +60,12 @@
             this.OK_B = new System.Windows.Forms.Button();
             this.StatusDate_CB = new System.Windows.Forms.CheckBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.Finished_CB = new System.Windows.Forms.CheckBox();
+            this.Comment_CB = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Hide_CB = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,17 +101,23 @@
             this.tableLayoutPanel1.Controls.Add(this.Cancelled_CB, 1, 14);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.Cancel_B, 0, 18);
-            this.tableLayoutPanel1.Controls.Add(this.OK_B, 0, 17);
+            this.tableLayoutPanel1.Controls.Add(this.Cancel_B, 0, 20);
+            this.tableLayoutPanel1.Controls.Add(this.OK_B, 0, 19);
             this.tableLayoutPanel1.Controls.Add(this.StatusDate_CB, 1, 15);
             this.tableLayoutPanel1.Controls.Add(this.label17, 0, 15);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 16);
-            this.tableLayoutPanel1.Controls.Add(this.Finished_CB, 1, 16);
+            this.tableLayoutPanel1.Controls.Add(this.label18, 0, 18);
+            this.tableLayoutPanel1.Controls.Add(this.Finished_CB, 1, 17);
+            this.tableLayoutPanel1.Controls.Add(this.Comment_CB, 1, 16);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 17);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 16);
+            this.tableLayoutPanel1.Controls.Add(this.Hide_CB, 1, 18);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 20;
+            this.tableLayoutPanel1.RowCount = 22;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -127,8 +137,8 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(326, 504);
-            this.tableLayoutPanel1.TabIndex = 1;
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(326, 552);
+            this.tableLayoutPanel1.TabIndex = 3;
             // 
             // label4
             // 
@@ -443,7 +453,7 @@
             this.Cancel_B.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(217)))), ((int)(((byte)(254)))));
             this.Cancel_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.Cancel_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Cancel_B.Location = new System.Drawing.Point(5, 467);
+            this.Cancel_B.Location = new System.Drawing.Point(5, 515);
             this.Cancel_B.Margin = new System.Windows.Forms.Padding(5);
             this.Cancel_B.Name = "Cancel_B";
             this.Cancel_B.Size = new System.Drawing.Size(316, 31);
@@ -461,7 +471,7 @@
             this.OK_B.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(217)))), ((int)(((byte)(254)))));
             this.OK_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(237)))), ((int)(((byte)(253)))));
             this.OK_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OK_B.Location = new System.Drawing.Point(5, 421);
+            this.OK_B.Location = new System.Drawing.Point(5, 469);
             this.OK_B.Margin = new System.Windows.Forms.Padding(5, 7, 5, 7);
             this.OK_B.Name = "OK_B";
             this.OK_B.Size = new System.Drawing.Size(316, 34);
@@ -489,40 +499,84 @@
             this.label17.TabIndex = 31;
             this.label17.Text = "Дата обновления";
             // 
-            // label1
+            // label18
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(50, 395);
-            this.label1.Margin = new System.Windows.Forms.Padding(50, 5, 5, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(169, 14);
-            this.label1.TabIndex = 35;
-            this.label1.Text = "Завершен";
+            this.label18.AutoSize = true;
+            this.label18.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label18.Location = new System.Drawing.Point(50, 443);
+            this.label18.Margin = new System.Windows.Forms.Padding(50, 5, 5, 5);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(169, 14);
+            this.label18.TabIndex = 39;
+            this.label18.Text = "Скрытый";
             // 
             // Finished_CB
             // 
             this.Finished_CB.AutoSize = true;
             this.Finished_CB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Finished_CB.Location = new System.Drawing.Point(244, 395);
+            this.Finished_CB.Location = new System.Drawing.Point(244, 419);
             this.Finished_CB.Margin = new System.Windows.Forms.Padding(20, 5, 3, 5);
             this.Finished_CB.Name = "Finished_CB";
             this.Finished_CB.Size = new System.Drawing.Size(79, 14);
             this.Finished_CB.TabIndex = 36;
             this.Finished_CB.UseVisualStyleBackColor = true;
             // 
+            // Comment_CB
+            // 
+            this.Comment_CB.AutoSize = true;
+            this.Comment_CB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Comment_CB.Location = new System.Drawing.Point(244, 395);
+            this.Comment_CB.Margin = new System.Windows.Forms.Padding(20, 5, 3, 5);
+            this.Comment_CB.Name = "Comment_CB";
+            this.Comment_CB.Size = new System.Drawing.Size(79, 14);
+            this.Comment_CB.TabIndex = 38;
+            this.Comment_CB.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(50, 419);
+            this.label1.Margin = new System.Windows.Forms.Padding(50, 5, 5, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(169, 14);
+            this.label1.TabIndex = 35;
+            this.label1.Text = "Завершен";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(50, 395);
+            this.label5.Margin = new System.Windows.Forms.Padding(50, 5, 5, 5);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(169, 14);
+            this.label5.TabIndex = 37;
+            this.label5.Text = "Комментарий";
+            // 
+            // Hide_CB
+            // 
+            this.Hide_CB.AutoSize = true;
+            this.Hide_CB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Hide_CB.Location = new System.Drawing.Point(244, 443);
+            this.Hide_CB.Margin = new System.Windows.Forms.Padding(20, 5, 3, 5);
+            this.Hide_CB.Name = "Hide_CB";
+            this.Hide_CB.Size = new System.Drawing.Size(79, 14);
+            this.Hide_CB.TabIndex = 40;
+            this.Hide_CB.UseVisualStyleBackColor = true;
+            // 
             // OPP_SelectedColumnDGV_F
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(326, 504);
+            this.ClientSize = new System.Drawing.Size(326, 552);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(342, 543);
+            this.MaximumSize = new System.Drawing.Size(342, 591);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(342, 543);
+            this.MinimumSize = new System.Drawing.Size(342, 591);
             this.Name = "OPP_SelectedColumnDGV_F";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Выбор отображаемых столбцов";
@@ -567,7 +621,11 @@
         private System.Windows.Forms.Button OK_B;
         public System.Windows.Forms.CheckBox StatusDate_CB;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label18;
         public System.Windows.Forms.CheckBox Finished_CB;
+        public System.Windows.Forms.CheckBox Comment_CB;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label5;
+        public System.Windows.Forms.CheckBox Hide_CB;
     }
 }

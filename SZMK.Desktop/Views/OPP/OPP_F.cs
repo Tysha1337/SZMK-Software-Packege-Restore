@@ -88,18 +88,14 @@ namespace SZMK.Desktop.Views.OPP
 
         private void ChangeOrder_TSB_Click(object sender, EventArgs e)
         {
+            LockedButtonForLoadData(false);
+
             if (ChangeOrder())
             {
-                Display(SystemArgs.Orders);
+                RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
             }
-        }
 
-        private void DeleteOrder_TSB_Click(object sender, EventArgs e)
-        {
-            if (DeleteOrder())
-            {
-                Display(SystemArgs.Orders);
-            }
+            LockedButtonForLoadData(true);
         }
 
         private void AddOrder_TSM_Click(object sender, EventArgs e)
@@ -116,18 +112,14 @@ namespace SZMK.Desktop.Views.OPP
 
         private void ChangeOrder_TSM_Click(object sender, EventArgs e)
         {
+            LockedButtonForLoadData(false);
+
             if (ChangeOrder())
             {
-                Display(SystemArgs.Orders);
+                RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
             }
-        }
 
-        private void DeleteOrder_TSM_Click(object sender, EventArgs e)
-        {
-            if (DeleteOrder())
-            {
-                Display(SystemArgs.Orders);
-            }
+            LockedButtonForLoadData(true);
         }
 
         private void ReportDate_TSM_Click(object sender, EventArgs e)
@@ -323,7 +315,7 @@ namespace SZMK.Desktop.Views.OPP
                         Dialog.Scan_DGV.Height = Dialog.Scan_DGV.Height - 100;
                         Dialog.Status_TB.Height = Dialog.Status_TB.Height - 100;
                         SystemArgs.ScannerBlankOrder = new ScannerBlankOrder(false, true);//Сервер мобильного приложения
-                        if (!SystemArgs.ScannerOrder.Start())
+                        if (!SystemArgs.ScannerBlankOrder.Start())
                         {
                             throw new Exception("Ошибка подключения сканера, проверьте порт");
                         }
@@ -406,6 +398,8 @@ namespace SZMK.Desktop.Views.OPP
                                         MessageBox.Show("Ошибка добавления в базу данных, обновление статуса " + ScanSession[i].QRBlankOrder + " не будет произведено", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     }
 
+                                    SystemArgs.Request.FinishedOrder(true, SystemArgs.Request.GetIDOrder(NumberAndList.Number, NumberAndList.List));
+
                                     SystemArgs.UnLoadSpecific.ChekedUnloading(NumberAndList.Number, NumberAndList.List, SystemArgs.Request.GetExecutor(NumberAndList.Number, NumberAndList.List));
                                 }
                             }
@@ -439,118 +433,71 @@ namespace SZMK.Desktop.Views.OPP
         {
             try
             {
-                if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex >= 0 && Order_DGV.SelectedRows.Count == 1)
+                if (Order_DGV.CurrentCell != null && Order_DGV.CurrentCell.RowIndex >= 0)
                 {
-                    Order Temp = (Order)View[Order_DGV.CurrentCell.RowIndex];
-
-                    OPP_ChangeOrder_F Dialog = new OPP_ChangeOrder_F(Temp);
-
-                    Dialog.Executor_TB.Text = Temp.Executor;
-                    Dialog.Number_TB.Text = Temp.Number;
-                    Dialog.List_TB.Text = Temp.List.ToString();
-                    Dialog.Mark_TB.Text = Temp.Mark;
-                    Dialog.Lenght_TB.Text = Temp.Lenght.ToString();
-
-                    List<Status> TempStatuses = new List<Status>();
-                    TempStatuses.Add(Temp.Status);
-
-                    Dialog.Weight_TB.Text = Temp.Weight.ToString();
-
-                    if (Temp.Status.ID != SystemArgs.Statuses.Min(p => p.ID))
+                    OPP_ChangeOrder_F Dialog = new OPP_ChangeOrder_F();
+                    if (Order_DGV.SelectedRows.Count > 1)
                     {
-                        TempStatuses.Add(SystemArgs.Statuses.Where(p => p.ID == Temp.Status.ID - 1).Single());
-                    }
-
-                    Dialog.Status_CB.DataSource = TempStatuses;
-
-                    if (Dialog.ShowDialog() == DialogResult.OK)
-                    {
-                        String NewDataMatrix = Dialog.Number_TB.Text + "_" + Dialog.List_TB.Text + "_" + Dialog.Mark_TB.Text + "_" + Dialog.Executor_TB.Text + "_" + Dialog.Lenght_TB.Text + "_" + Dialog.Weight_TB.Text;
-                        List<DateTime> StatusDate = SystemArgs.StatusOfOrders.Where(p => p.IDOrder == Temp.ID && p.IDStatus == SystemArgs.Statuses.Where(j => j == (Status)Dialog.Status_CB.SelectedItem).Single().ID).Select(p => p.DateCreate).ToList();
-                        Order NewOrder = new Order(Temp.ID, Temp.DateCreate, Dialog.Number_TB.Text, Temp.ExecutorWork, Dialog.Executor_TB.Text, Dialog.List_TB.Text, Dialog.Mark_TB.Text, Convert.ToDouble(Dialog.Lenght_TB.Text), Convert.ToDouble(Dialog.Weight_TB.Text), Temp.WeightDifferent, SystemArgs.Statuses.Where(p => p == (Status)Dialog.Status_CB.SelectedItem).Single(), StatusDate[0], Temp.TypeAdd, Temp.Model, Temp.PathDetails, Temp.PathArhive, Temp.Revision, Temp.User, Temp.BlankOrder, Temp.Canceled, Temp.Finished);
-
-                        if (SystemArgs.Request.UpdateOrder(NewOrder))
-                        {
-                            if (Dialog.Status_CB.SelectedIndex != 0)
-                            {
-                                SystemArgs.Request.DeleteStatus(Temp);
-                            }
-
-                            SystemArgs.Orders.Remove(Temp);
-                            SystemArgs.Orders.Add(NewOrder);
-
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                        Dialog.Comment_TB.Enabled = false;
+                        Dialog.Hide_CB.Enabled = false;
                     }
                     else
                     {
-                        return false;
+                        Order Temp = (Order)View[Order_DGV.CurrentCell.RowIndex];
+                        if (Temp.Comment != null)
+                        {
+                            Dialog.Comment_TB.Text = Temp.Comment.ToString();
+                        }
+                        Dialog.Hide_CB.Checked = Temp.Hide;
+                        Dialog.Comment_TB.Enabled = false;
+                        Dialog.Hide_CB.Enabled = false;
                     }
-                }
-                else
-                {
-                    throw new Exception("Необходимо выбрать один объект");
-                }
-            }
-            catch (Exception E)
-            {
-                MessageBox.Show(E.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-        }
-        private bool DeleteOrder()
-        {
-            try
-            {
-                if (Order_DGV.CurrentCell.RowIndex >= 0 && Order_DGV.SelectedRows.Count >= 0)
-                {
-
-                    if (MessageBox.Show("Вы действительно хотите удалить чертеж(ы)?", "Внимание", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    if (Dialog.ShowDialog() == DialogResult.OK)
                     {
                         for (int i = 0; i < Order_DGV.SelectedRows.Count; i++)
                         {
-                            Order Temp = (Order)(View[Order_DGV.SelectedRows[i].Index]);
-
-                            try
+                            Order ChangedOrder = (Order)(View[Order_DGV.SelectedRows[i].Index]);
+                            if (Dialog.Comment_CB.Checked)
                             {
-                                if (SystemArgs.Request.DeleteDetails(Temp.ID))
+                                ChangedOrder.Comment = new Comment { DateCreate = DateTime.Now, User = SystemArgs.User, Text = Dialog.Comment_TB.Text.Trim() };
+
+                                if (!SystemArgs.Request.CommentExist(ChangedOrder.Comment))
                                 {
-                                    if (SystemArgs.Request.DeleteOrder(Temp))
+                                    SystemArgs.Request.InsertComment(ChangedOrder.Comment);
+                                }
+
+                                ChangedOrder.Comment = SystemArgs.Request.GetComment(ChangedOrder.Comment);
+
+                                SystemArgs.Request.SetCommentOrder(ChangedOrder);
+                            }
+                            if (Dialog.HideRewrite_CB.Checked)
+                            {
+                                ChangedOrder.Hide = Dialog.Hide_CB.Checked;
+
+                                if (ChangedOrder.Hide)
+                                {
+                                    if (ChangedOrder.Comment != null)
                                     {
-                                        if (SystemArgs.Request.CheckedNeedRemoveModel(Temp.Model))
+                                        if (!SystemArgs.Request.UpdateOrder(ChangedOrder))
                                         {
-                                            SystemArgs.Request.DeleteModel(Temp.Model);
+                                            throw new Exception($"Ошибка обновления данных чертежа\n\rЗаказ:{ChangedOrder.Number} Лист:{ChangedOrder.List}");
                                         }
-
-                                        if (SystemArgs.Request.CheckedNeedRemovePathDetails(Temp.PathDetails))
-                                        {
-                                            SystemArgs.Request.DeletePathDetails(Temp.PathDetails);
-                                        }
-
-                                        if (SystemArgs.Request.CheckedNeedRemovePathArhive(Temp.PathArhive))
-                                        {
-                                            SystemArgs.Request.DeletePathArhive(Temp.PathArhive);
-                                        }
-
-                                        if (SystemArgs.Request.CheckedNeedRemoveRevision(Temp.Revision))
-                                        {
-                                            SystemArgs.Request.DeleteRevision(Temp.Revision);
-                                        }
-
-                                        SystemArgs.Orders.Remove(Temp);
+                                    }
+                                    else
+                                    {
+                                        throw new Exception($"Не заполнен комментарий чертежа\n\rЗаказ:{ChangedOrder.Number} Лист:{ChangedOrder.List}");
+                                    }
+                                }
+                                else
+                                {
+                                    if (!SystemArgs.Request.UpdateOrder(ChangedOrder))
+                                    {
+                                        throw new Exception($"Ошибка обновления данных чертежа\n\rЗаказ:{ChangedOrder.Number} Лист:{ChangedOrder.List}");
                                     }
                                 }
                             }
-                            catch
-                            {
-                                MessageBox.Show("Ошибка удаления чертежа: Номер-" + Temp.Number + "Лист-" + Temp.List, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-
                         }
+                        MessageBox.Show("Чертеж(ы) успешно изменены", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return true;
                     }
                     else
@@ -560,12 +507,13 @@ namespace SZMK.Desktop.Views.OPP
                 }
                 else
                 {
-                    throw new Exception("Необходимо выбрать объект(ы)");
+                    return false;
                 }
             }
+
             catch (Exception E)
             {
-                MessageBox.Show(E.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(E.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
         }
@@ -724,7 +672,7 @@ namespace SZMK.Desktop.Views.OPP
 
             RefreshOrderAsync(FilterCB_TSB.SelectedIndex);
         }
-        private void GetDataForSearch(ForLongOperations_F Load, bool Finished)
+        private void GetDataForSearch(ForLongOperations_F Load, bool Finished, bool Hide)
         {
             try
             {
@@ -733,7 +681,7 @@ namespace SZMK.Desktop.Views.OPP
                 SystemArgs.StatusOfOrders.Clear();
                 SystemArgs.BlankOrderOfOrders.Clear();
 
-                SystemArgs.RequestLinq.GetOrdersForSearch(Load, Finished);
+                SystemArgs.RequestLinq.GetOrdersForSearch(Load, Finished, Hide);
             }
             catch (Exception Ex)
             {
@@ -756,6 +704,7 @@ namespace SZMK.Desktop.Views.OPP
                 if (Dialog.ShowDialog() == DialogResult.OK)
                 {
                     bool Finished = true;
+                    bool Hide = Dialog.Hide_CB.Checked;
 
                     if (Dialog.Finished_CB.Checked && Dialog.Number_TB.Text == String.Empty && Dialog.List_TB.Text == String.Empty)
                     {
@@ -777,7 +726,7 @@ namespace SZMK.Desktop.Views.OPP
 
                     LockedButtonForLoadData(false);
 
-                    await Task.Run(() => GetDataForSearch(Load, Finished));
+                    await Task.Run(() => GetDataForSearch(Load, Finished, Hide));
 
                     LockedButtonForLoadData(true);
 
@@ -892,19 +841,13 @@ namespace SZMK.Desktop.Views.OPP
         {
             if (Enable)
             {
-                MoveToWorkShop_TSM.Visible = true;
                 ChangeOrder_TSB.Visible = true;
-                DeleteOrder_TSB.Visible = true;
                 ChangeOrder_TSM.Visible = true;
-                DeleteOrder_TSM.Visible = true;
             }
             else
             {
-                MoveToWorkShop_TSM.Visible = false;
                 ChangeOrder_TSB.Visible = false;
-                DeleteOrder_TSB.Visible = false;
                 ChangeOrder_TSM.Visible = false;
-                DeleteOrder_TSM.Visible = false;
             }
         }
         private void Selection(Order Temp, bool flag)
@@ -939,6 +882,16 @@ namespace SZMK.Desktop.Views.OPP
                     Finished_TB.BackColor = Color.Lime;
                     Finished_TB.Text = "Нет";
                 }
+                if (Temp.Hide)
+                {
+                    Hide_TB.BackColor = Color.Orange;
+                    Hide_TB.Text = "Да";
+                }
+                else
+                {
+                    Hide_TB.BackColor = Color.Lime;
+                    Hide_TB.Text = "Нет";
+                }
                 BlankOrder_TB.Text = Temp.BlankOrder.QR;
                 Status_TB.Text = Temp.Status.Name;
                 SelectedOrder_TB.Text = Order_DGV.SelectedRows.Count.ToString();
@@ -958,6 +911,8 @@ namespace SZMK.Desktop.Views.OPP
                 Canceled_TB.Text = String.Empty;
                 Finished_TB.BackColor = Color.FromArgb(233, 245, 255);
                 Finished_TB.Text = String.Empty;
+                Hide_TB.BackColor = Color.FromArgb(233, 245, 255);
+                Hide_TB.Text = String.Empty;
                 BlankOrder_TB.Text = String.Empty;
                 Status_TB.Text = String.Empty;
                 SelectedOrder_TB.Text = "0";
@@ -1006,8 +961,6 @@ namespace SZMK.Desktop.Views.OPP
             AddOrder_TSM.Enabled = flag;
             ChangeOrder_TSB.Enabled = flag;
             ChangeOrder_TSM.Enabled = flag;
-            DeleteOrder_TSB.Enabled = flag;
-            DeleteOrder_TSM.Enabled = flag;
             Search_TSB.Enabled = flag;
             Reset_TSB.Enabled = flag;
             AdvancedSearch_TSB.Enabled = flag;
@@ -1330,7 +1283,9 @@ namespace SZMK.Desktop.Views.OPP
                 Dialog.BlankOrder_CB.Checked = SystemArgs.SelectedColumn[11].Visible;
                 Dialog.Cancelled_CB.Checked = SystemArgs.SelectedColumn[12].Visible;
                 Dialog.StatusDate_CB.Checked = SystemArgs.SelectedColumn[13].Visible;
-                Dialog.Finished_CB.Checked = SystemArgs.SelectedColumn[14].Visible;
+                Dialog.Comment_CB.Checked = SystemArgs.SelectedColumn[14].Visible;
+                Dialog.Finished_CB.Checked = SystemArgs.SelectedColumn[15].Visible;
+                Dialog.Hide_CB.Checked = SystemArgs.SelectedColumn[16].Visible;
 
                 if (Dialog.ShowDialog() == DialogResult.OK)
                 {
@@ -1348,8 +1303,11 @@ namespace SZMK.Desktop.Views.OPP
                     SystemArgs.SelectedColumn[11].Visible = Dialog.BlankOrder_CB.Checked;
                     SystemArgs.SelectedColumn[12].Visible = Dialog.Cancelled_CB.Checked;
                     SystemArgs.SelectedColumn[13].Visible = Dialog.StatusDate_CB.Checked;
-                    SystemArgs.SelectedColumn[14].Visible = Dialog.Finished_CB.Checked;
+                    SystemArgs.SelectedColumn[14].Visible = Dialog.Comment_CB.Checked;
+                    SystemArgs.SelectedColumn[15].Visible = Dialog.Finished_CB.Checked;
+                    SystemArgs.SelectedColumn[16].Visible = Dialog.Hide_CB.Checked;
                     SystemArgs.SelectedColumn.SetParametrColumnVisible();
+                    SystemArgs.SelectedColumn.GetParametrColumn();
                     MessageBox.Show("Настройки успешно сохранены", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     SelectedColumnDGV();
                 }

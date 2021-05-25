@@ -684,7 +684,7 @@ namespace SZMK.Desktop.Services
                         {
                             WS.Cells[rowCntReport + 1, 4].Value = "Гост не найден";
                         }
-                        WS.Cells[rowCntReport + 1, 5].Value = GroupByOrder[i].Profile[j].Sum(p => p.SubtotalWeight);
+                        WS.Cells[rowCntReport + 1, 5].Value = GroupByOrder[i].Profile[j].Sum(p => p.Weight*p.Count);
                     }
                 }
 
@@ -693,7 +693,7 @@ namespace SZMK.Desktop.Services
                 int last = WS.Dimension.End.Row;
 
                 WS.Cells[last + 1, 4].Value = "Итого";
-                WS.Cells[last + 1, 5].Value = details.Sum(p => Convert.ToDouble(p.SubtotalWeight));
+                WS.Cells[last + 1, 5].Value = details.Sum(p => p.Weight * p.Count);
 
                 last = WS.Dimension.End.Row;
 
@@ -926,7 +926,7 @@ namespace SZMK.Desktop.Services
                             {
                                 WS.Cells[rowCntReport + 1, 7].Value = "Гост не найден";
                             }
-                            WS.Cells[rowCntReport + 1, 8].Value = GroupByOrder[g].Profile[j].Sum(p => p.SubtotalWeight);
+                            WS.Cells[rowCntReport + 1, 8].Value = GroupByOrder[g].Profile[j].Sum(p => p.Weight * p.Count);
                         }
                     }
                 }

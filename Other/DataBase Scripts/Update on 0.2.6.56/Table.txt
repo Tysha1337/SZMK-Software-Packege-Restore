@@ -1,0 +1,27 @@
+CREATE TABLE public."Comment"
+(
+    "ID" bigint NOT NULL,
+    "DateCreate" timestamp without time zone NOT NULL,
+    "ID_User" bigint NOT NULL,
+    "Text" character varying NOT NULL,
+    PRIMARY KEY ("ID")
+);
+
+ALTER TABLE public."Comment"
+    OWNER to postgres;
+
+CREATE SEQUENCE public."Comment_ID_seq"
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public."Comment_ID_seq"
+    OWNER TO postgres;
+
+ALTER TABLE public."Comment"
+    ALTER COLUMN "ID" SET DEFAULT nextval('"Comment_ID_seq"'::regclass);
+
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_fk0" FOREIGN KEY ("ID_User") REFERENCES "User"("ID") ON DELETE CASCADE;
+

@@ -815,11 +815,13 @@ namespace SZMK.Desktop.Services
                 SystemArgs.PathDetails.Clear();
                 SystemArgs.PathArhives.Clear();
                 SystemArgs.Revisions.Clear();
+                SystemArgs.Comments.Clear();
 
                 GetAllModels();
                 GetAllPathDetails();
                 GetAllPathArhive();
                 GetAllRevision();
+                GetAllComment();
 
                 List<Order> HistoryOrders = new List<Order>();
 
@@ -827,7 +829,7 @@ namespace SZMK.Desktop.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\",\"ID_PathArhive\",\"ID_Revision\"" +
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\",\"Hide\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\",\"ID_PathArhive\",\"ID_Revision\",\"ID_Comment\"" +
                                                             $" FROM public.\"Orders\" WHERE \"Number\"='{Number}' AND (\"List\" LIKE '{List + "и"}%' OR \"List\"='{List}');", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
@@ -836,40 +838,47 @@ namespace SZMK.Desktop.Services
                             {
                                 TypeAdd TempTypeAdd = null;
 
-                                if (!Reader.IsDBNull(12))
+                                if (!Reader.IsDBNull(13))
                                 {
-                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(12)).FirstOrDefault();
+                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
                                 }
 
                                 Model TempModel = null;
 
-                                if (!Reader.IsDBNull(13))
+                                if (!Reader.IsDBNull(14))
                                 {
-                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
+                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
                                 }
 
                                 PathDetails TempPathDetails = null;
 
-                                if (!Reader.IsDBNull(14))
+                                if (!Reader.IsDBNull(15))
                                 {
-                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
+                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
                                 }
 
                                 PathArhive TempPathArhive = null;
 
-                                if (!Reader.IsDBNull(15))
+                                if (!Reader.IsDBNull(16))
                                 {
-                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
+                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
                                 }
 
                                 Revision TempRevision = null;
 
-                                if (!Reader.IsDBNull(16))
+                                if (!Reader.IsDBNull(17))
                                 {
-                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
+                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(17)).FirstOrDefault();
                                 }
 
-                                HistoryOrders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11)));
+                                Comment TempComment = null;
+
+                                if (!Reader.IsDBNull(18))
+                                {
+                                    TempComment = SystemArgs.Comments.FindAll(p => p.ID == Reader.GetInt64(18)).FirstOrDefault();
+                                }
+
+                                HistoryOrders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, TempComment, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11), Reader.GetBoolean(12)));
                             }
                         }
                     }
@@ -1126,7 +1135,7 @@ namespace SZMK.Desktop.Services
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"UPDATE public.\"Orders\" SET \"Executor\" = '{Order.Executor}',\"ExecutorWork\" = '{Order.ExecutorWork}', \"Number\" = '{Order.Number}', \"List\" = '{Order.List}', \"Mark\" = '{Order.Mark}', \"Lenght\" = '{Order.Lenght}', \"Weight\" = '{Order.Weight}', \"Canceled\" = '{Order.Canceled}',\"Finished\" = '{Order.Finished}' WHERE \"ID\" = '{Order.ID}'; ", Connect))
+                    using (var Command = new NpgsqlCommand($"UPDATE public.\"Orders\" SET \"Executor\" = '{Order.Executor}',\"ExecutorWork\" = '{Order.ExecutorWork}', \"Number\" = '{Order.Number}', \"List\" = '{Order.List}', \"Mark\" = '{Order.Mark}', \"Lenght\" = '{Order.Lenght}', \"Weight\" = '{Order.Weight}', \"Hide\" = '{Order.Hide}', \"Canceled\" = '{Order.Canceled}',\"Finished\" = '{Order.Finished}' WHERE \"ID\" = '{Order.ID}'; ", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }
@@ -1207,17 +1216,19 @@ namespace SZMK.Desktop.Services
                 SystemArgs.PathDetails.Clear();
                 SystemArgs.PathArhives.Clear();
                 SystemArgs.Revisions.Clear();
+                SystemArgs.Comments.Clear();
 
                 GetAllModels();
                 GetAllPathDetails();
                 GetAllPathArhive();
                 GetAllRevision();
+                GetAllComment();
 
                 using (var Connect = new NpgsqlConnection(_ConnectString))
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\",\"ID_PathArhive\",\"ID_Revision\"" +
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\", \"Hide\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\", \"ID_PathArhive\", \"ID_Revision\", \"ID_Comment\"" +
                                                             $" FROM public.\"Orders\";", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
@@ -1226,40 +1237,47 @@ namespace SZMK.Desktop.Services
                             {
                                 TypeAdd TempTypeAdd = null;
 
-                                if (!Reader.IsDBNull(12))
+                                if (!Reader.IsDBNull(13))
                                 {
-                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(12)).FirstOrDefault();
+                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
                                 }
 
                                 Model TempModel = null;
 
-                                if (!Reader.IsDBNull(13))
+                                if (!Reader.IsDBNull(14))
                                 {
-                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
+                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
                                 }
 
                                 PathDetails TempPathDetails = null;
 
-                                if (!Reader.IsDBNull(14))
+                                if (!Reader.IsDBNull(15))
                                 {
-                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
+                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
                                 }
 
                                 PathArhive TempPathArhive = null;
 
-                                if (!Reader.IsDBNull(15))
+                                if (!Reader.IsDBNull(16))
                                 {
-                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
+                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
                                 }
 
                                 Revision TempRevision = null;
 
-                                if (!Reader.IsDBNull(16))
+                                if (!Reader.IsDBNull(17))
                                 {
-                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
+                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(17)).FirstOrDefault();
                                 }
 
-                                SystemArgs.Orders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11)));
+                                Comment TempComment = null;
+
+                                if (!Reader.IsDBNull(18))
+                                {
+                                    TempComment = SystemArgs.Comments.FindAll(p => p.ID == Reader.GetInt64(18)).FirstOrDefault();
+                                }
+
+                                SystemArgs.Orders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, TempComment, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11), Reader.GetBoolean(12)));
                             }
                         }
                     }
@@ -1283,17 +1301,19 @@ namespace SZMK.Desktop.Services
                 SystemArgs.PathDetails.Clear();
                 SystemArgs.PathArhives.Clear();
                 SystemArgs.Revisions.Clear();
+                SystemArgs.Comments.Clear();
 
                 GetAllModels();
                 GetAllPathDetails();
                 GetAllPathArhive();
                 GetAllRevision();
+                GetAllComment();
 
                 using (var Connect = new NpgsqlConnection(_ConnectString))
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\",\"ID_PathArhive\",\"ID_Revision\"" +
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\", \"Hide\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\", \"ID_PathArhive\", \"ID_Revision\", \"ID_Comment\"" +
                                                             $" FROM public.\"Orders\";", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
@@ -1302,40 +1322,47 @@ namespace SZMK.Desktop.Services
                             {
                                 TypeAdd TempTypeAdd = null;
 
-                                if (!Reader.IsDBNull(12))
+                                if (!Reader.IsDBNull(13))
                                 {
-                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(12)).FirstOrDefault();
+                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
                                 }
 
                                 Model TempModel = null;
 
-                                if (!Reader.IsDBNull(13))
+                                if (!Reader.IsDBNull(14))
                                 {
-                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
+                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
                                 }
 
                                 PathDetails TempPathDetails = null;
 
-                                if (!Reader.IsDBNull(14))
+                                if (!Reader.IsDBNull(15))
                                 {
-                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
+                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
                                 }
 
                                 PathArhive TempPathArhive = null;
 
-                                if (!Reader.IsDBNull(15))
+                                if (!Reader.IsDBNull(16))
                                 {
-                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
+                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
                                 }
 
                                 Revision TempRevision = null;
 
-                                if (!Reader.IsDBNull(16))
+                                if (!Reader.IsDBNull(17))
                                 {
-                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
+                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(17)).FirstOrDefault();
                                 }
 
-                                orders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11)));
+                                Comment TempComment = null;
+
+                                if (!Reader.IsDBNull(18))
+                                {
+                                    TempComment = SystemArgs.Comments.FindAll(p => p.ID == Reader.GetInt64(18)).FirstOrDefault();
+                                }
+
+                                orders.Add(new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, TempComment, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11), Reader.GetBoolean(12)));
                             }
                         }
                     }
@@ -1427,13 +1454,17 @@ namespace SZMK.Desktop.Services
 
                 GetAllRevision();
 
+                SystemArgs.Comments.Clear();
+
+                GetAllComment();
+
                 Order Temp = null;
 
                 using (var Connect = new NpgsqlConnection(_ConnectString))
                 {
                     Connect.Open();
 
-                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\",\"ID_PathArhive\",\"ID_Revision\"" +
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"Executor\",\"ExecutorWork\", \"Number\", \"List\", \"Mark\", \"Lenght\", \"Weight\", \"WeightDifferent\", \"Hide\", \"Canceled\",\"Finished\",\"ID_TypeAdd\", \"ID_Model\", \"ID_PathDetails\", \"ID_PathArhive\", \"ID_Revision\", \"ID_Comment\"" +
                                                             $" FROM public.\"Orders\" WHERE \"Number\"='{Number}' AND \"List\"='{List}';", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
@@ -1442,40 +1473,47 @@ namespace SZMK.Desktop.Services
                             {
                                 TypeAdd TempTypeAdd = null;
 
-                                if (!Reader.IsDBNull(12))
+                                if (!Reader.IsDBNull(13))
                                 {
-                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(12)).FirstOrDefault();
+                                    TempTypeAdd = SystemArgs.TypesAdds.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
                                 }
 
                                 Model TempModel = null;
 
-                                if (!Reader.IsDBNull(13))
+                                if (!Reader.IsDBNull(14))
                                 {
-                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(13)).FirstOrDefault();
+                                    TempModel = SystemArgs.Models.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
                                 }
 
                                 PathDetails TempPathDetails = null;
 
-                                if (!Reader.IsDBNull(14))
+                                if (!Reader.IsDBNull(15))
                                 {
-                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(14)).FirstOrDefault();
+                                    TempPathDetails = SystemArgs.PathDetails.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
                                 }
 
                                 PathArhive TempPathArhive = null;
 
-                                if (!Reader.IsDBNull(15))
+                                if (!Reader.IsDBNull(16))
                                 {
-                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(15)).FirstOrDefault();
+                                    TempPathArhive = SystemArgs.PathArhives.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
                                 }
 
                                 Revision TempRevision = null;
 
-                                if (!Reader.IsDBNull(16))
+                                if (!Reader.IsDBNull(17))
                                 {
-                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(16)).FirstOrDefault();
+                                    TempRevision = SystemArgs.Revisions.FindAll(p => p.ID == Reader.GetInt64(17)).FirstOrDefault();
                                 }
 
-                                Temp = new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11));
+                                Comment TempComment = null;
+
+                                if (!Reader.IsDBNull(18))
+                                {
+                                    TempComment = SystemArgs.Comments.FindAll(p => p.ID == Reader.GetInt64(18)).FirstOrDefault();
+                                }
+
+                                Temp = new Order(Reader.GetInt64(0), Reader.GetDateTime(1), Reader.GetString(4), Reader.GetString(2), Reader.GetString(3), Reader.GetString(5), Reader.GetString(6), Convert.ToDouble(Reader.GetString(7)), Convert.ToDouble(Reader.GetString(8)), Convert.ToDouble(Reader.GetString(9)), null, DateTime.Now, TempTypeAdd, TempModel, TempPathDetails, TempPathArhive, TempRevision, TempComment, null, new BlankOrder(), Reader.GetBoolean(10), Reader.GetBoolean(11), Reader.GetBoolean(12));
                             }
                         }
                     }
@@ -1643,7 +1681,29 @@ namespace SZMK.Desktop.Services
                                 }
                                 else if (CheckedDataMatrixUpdate(order) && XML)
                                 {
-                                    flag = 4;
+                                    Order OldOrder = GetOrder(order.List, order.Number);
+
+                                    if (GetIdStatusOrder(OldOrder.ID) >= 3)
+                                    {
+                                        flag = 6;
+                                    }
+                                    else
+                                    {
+                                        flag = 4;
+                                    }
+                                }
+                                else if (CheckedDetailsUpdate(order) && XML)
+                                {
+                                    Order OldOrder = GetOrder(order.List, order.Number);
+
+                                    if (GetIdStatusOrder(OldOrder.ID) >= 3)
+                                    {
+                                        flag = 6;
+                                    }
+                                    else
+                                    {
+                                        flag = 5;
+                                    }
                                 }
                                 else if ((CheckedStatusOrderDB(order.Number, order.List) != -1) && (CheckedStatusOrderDB(order.Number, order.List) == SystemArgs.User.StatusesUser.First().ID - 1))
                                 {
@@ -1689,6 +1749,37 @@ namespace SZMK.Desktop.Services
                 Connect.Close();
             }
             return flag;
+        }
+        public bool CheckedDetailsUpdate(Order order)
+        {
+            bool flag = false;
+            Order OldOrder = GetOrder(order.List, order.Number);
+            List<Detail> OldDetails = GetDetails(OldOrder.ID);
+
+            if (OldDetails.Count == order.Details.Count)
+            {
+                flag = true;
+            }
+
+            if (flag)
+            {
+
+                for (int i = 0; i < OldDetails.Count && flag; i++)
+                {
+                    if (order.Details.FirstOrDefault(p => p.Position == OldDetails[i].Position) == null)
+                    {
+                        flag = false;
+                    }
+                    else
+                    {
+                        if (order.Details.FirstOrDefault(p => p.Position == OldDetails[i].Position).MarkSteel != OldDetails[i].MarkSteel)
+                        {
+                            flag = false;
+                        }
+                    }
+                }
+            }
+            return !flag;
         }
         private bool CheckedFirstCancelledOrder(String Number, String List)
         {
@@ -1803,6 +1894,26 @@ namespace SZMK.Desktop.Services
             {
                 throw new Exception(E.ToString());
             }
+        }
+        public long GetIdStatusOrder(long IDOrder)
+        {
+            using (var Connect = new NpgsqlConnection(_ConnectString))
+            {
+                Connect.Open();
+                using (var Command = new NpgsqlCommand($"SELECT LAST_VALUE(\"ID_Status\") OVER(ORDER BY \"DateCreate\" RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) result FROM public.\"AddStatus\" WHERE \"ID_Order\"='{IDOrder}' LIMIT 1;", Connect))
+                {
+                    using (var Reader = Command.ExecuteReader())
+                    {
+                        while (Reader.Read())
+                        {
+                            return Reader.GetInt64(0);
+                        }
+                    }
+                }
+                Connect.Close();
+            }
+
+            return -1;
         }
         public Int64 GetAutoIDDetail()
         {
@@ -2822,6 +2933,200 @@ namespace SZMK.Desktop.Services
 
                     using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Revision\"" +
                                                            $"WHERE \"ID\" = {Revision.ID}; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool GetAllComment()
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"ID_User\", \"Text\"" +
+                                        $" FROM public.\"Comment\";", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                User TempUser = SystemArgs.Users.FindAll(p => p.ID == Reader.GetInt64(2)).FirstOrDefault();
+
+                                SystemArgs.Comments.Add(new Comment { ID = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), User = TempUser, Text = Reader.GetString(3) });
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return true;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.ToString());
+            }
+        }
+        public bool InsertComment(Comment Comment)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"INSERT INTO public.\"Comment\"(\"DateCreate\", \"ID_User\", \"Text\") VALUES('{Comment.DateCreate}', '{Comment.User.ID}', '{Comment.Text}'); ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public bool CommentExist(Comment Comment)
+        {
+            Boolean flag = false;
+            try
+            {
+
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"ID_User\", \"Text\" FROM public.\"Comment\" WHERE \"DateCreate\"='{Comment.DateCreate}' AND \"ID_User\"='{Comment.User.ID}' AND \"Text\"='{Comment.Text}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return flag;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public Comment GetComment(Comment Comment)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID\", \"DateCreate\", \"ID_User\", \"Text\" FROM public.\"Comment\" WHERE \"DateCreate\"='{Comment.DateCreate}' AND \"ID_User\"='{Comment.User.ID}' AND \"Text\"='{Comment.Text}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                User TempUser = SystemArgs.Users.FindAll(p => p.ID == Reader.GetInt64(2)).FirstOrDefault();
+
+                                Comment = new Comment { ID = Reader.GetInt64(0), DateCreate = Reader.GetDateTime(1), User = TempUser, Text = Reader.GetString(3) };
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+
+                return Comment;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.ToString());
+            }
+        }
+        public bool SetCommentOrder(Order Order)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"UPDATE public.\"Orders\" SET \"ID_Comment\" = '{Order.Comment.ID}' WHERE \"ID\" = '{Order.ID}'; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool CheckedNeedRemoveComment(Comment Comment)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT COUNT(\"ID\") FROM public.\"Orders\" WHERE \"ID_Comment\" = '{Comment.ID}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                if (Reader.GetInt64(0) == 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DeleteComment(Comment Comment)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(_ConnectString))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Comment\"" +
+                                                           $"WHERE \"ID\" = {Comment.ID}; ", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }

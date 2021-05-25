@@ -60,6 +60,17 @@ namespace SZMK.Desktop.Views.Shared
 
                 History_DGV.AutoGenerateColumns = false;
                 History_DGV.DataSource = HistoryOrders;
+
+                if (Order.Comment != null)
+                {
+                    CommentDateCreate_TB.Text = Order.Comment.DateCreate.ToString();
+                    CommentUser_TB.Text = $"{Order.Comment.User.Surname} {Order.Comment.User.Name} {Order.Comment.User.MiddleName}";
+                    CommentText_TB.Text = Order.Comment.Text;
+                }
+                else
+                {
+                    tabControl1.TabPages.Remove(CommentPage);
+                }
             }
             catch (Exception E)
             {

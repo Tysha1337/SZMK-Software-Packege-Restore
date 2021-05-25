@@ -96,6 +96,14 @@ namespace SZMK.Desktop.Views.Chief_PDO
                             throw new Exception("Необходимо указать исполнителя работ");
                         }
                     }
+                    if (Comment_CB.Checked)
+                    {
+                        if (String.IsNullOrWhiteSpace(Comment_TB.Text))
+                        {
+                            Comment_TB.Focus();
+                            throw new Exception("Необходимо указать комментарий");
+                        }
+                    }
                 }
                 catch (FormatException)
                 {
@@ -108,11 +116,6 @@ namespace SZMK.Desktop.Views.Chief_PDO
                     e.Cancel = true;
                 }
             }
-        }
-
-        private void Chief_PDO_ChangeOrder_F_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void Executor_CB_CheckedChanged(object sender, EventArgs e)
@@ -208,6 +211,29 @@ namespace SZMK.Desktop.Views.Chief_PDO
             else
             {
                 Finished_CB.Enabled = true;
+            }
+        }
+        private void Comment_CB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!Comment_CB.Checked)
+            {
+                Comment_TB.Enabled = false;
+            }
+            else
+            {
+                Comment_TB.Enabled = true;
+            }
+        }
+
+        private void HideRewrite_CB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!HideRewrite_CB.Checked)
+            {
+                Hide_CB.Enabled = false;
+            }
+            else
+            {
+                Hide_CB.Enabled = true;
             }
         }
     }

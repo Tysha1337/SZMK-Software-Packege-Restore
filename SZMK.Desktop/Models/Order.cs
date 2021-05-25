@@ -31,13 +31,15 @@ namespace SZMK.Desktop.Models
         private PathDetails _PathDetails;
         private PathArhive _PathArhive;
         private Revision _Revision;
+        private Comment _Comment;
         private List<Detail> _Details;
         private User _User;
+        private Boolean _Hide;
         private Boolean _Canceled;
         private Boolean _Finished;
 
 
-        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, Double Lenght, Double Weight, Double WeightDifferent, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, PathDetails PathDetails, PathArhive PathArhive, Revision Revision, User User, BlankOrder BlankOrder, Boolean Canceled, Boolean Finished)
+        public Order(Int64 ID, DateTime DateCreate, String Number, String Executor, String ExecutorWork, String List, String Mark, Double Lenght, Double Weight, Double WeightDifferent, Status Status, DateTime StatusDate, TypeAdd TypeAdd, Model Model, PathDetails PathDetails, PathArhive PathArhive, Revision Revision, Comment Comment, User User, BlankOrder BlankOrder, Boolean Hide, Boolean Canceled, Boolean Finished)
         {
             if (ID >= 0)
             {
@@ -160,6 +162,8 @@ namespace SZMK.Desktop.Models
                 _Revision = new Revision { ID = 0, DateCreate = new DateTime(1970, 1, 1), CreatedBy = "Исполнитель не найден", Information = "Информация не найдена", Description = "Описание не найдено", LastApptovedBy = "Основание не найдено" };
             }
 
+            _Comment = Comment;
+
             _Details = new List<Detail>();
 
             if (StatusDate != null)
@@ -174,6 +178,8 @@ namespace SZMK.Desktop.Models
             this.Status = Status;
             this.User = User;
             this.BlankOrder = BlankOrder;
+
+            _Hide = Hide;
 
             _Canceled = Canceled;
 
@@ -330,10 +336,12 @@ namespace SZMK.Desktop.Models
                 _PathDetails = Order.PathDetails;
                 _PathArhive = Order.PathArhive;
                 _Revision = Order.Revision;
+                _Comment = Order.Comment;
                 _User = Order.User;
                 _BlankOrder = Order.BlankOrder;
                 _Finished = Order.Finished;
                 _Canceled = Order.Canceled;
+                _Hide = Order.Hide;
                 _CountMarks = Order.CountMarks;
                 _Details = Details;
             }
@@ -343,7 +351,7 @@ namespace SZMK.Desktop.Models
             }
         }
 
-        public Order() : this(-1, DateTime.Now, "Нет номера заказа", "Нет исполнителя", "Нет исполнителя работ", "Нет листа", "Нет марки", -1, -1, -1, null, DateTime.Now, null, null, null, null, null, null, null, false, false) { }
+        public Order() : this(-1, DateTime.Now, "Нет номера заказа", "Нет исполнителя", "Нет исполнителя работ", "Нет листа", "Нет марки", -1, -1, -1, null, DateTime.Now, null, null, null, null, null, null, null, null, false, false, false) { }
 
         public Int64 ID
         {
@@ -593,6 +601,34 @@ namespace SZMK.Desktop.Models
                 }
             }
         }
+        public Comment Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _Comment = value;
+                }
+            }
+        }
+        public string CommentView
+        {
+            get
+            {
+                if (_Comment != null)
+                {
+                    return _Comment.Text;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
         public List<Detail> Details
         {
             get
@@ -665,7 +701,31 @@ namespace SZMK.Desktop.Models
                 }
             }
         }
-
+        public Boolean Hide
+        {
+            get
+            {
+                return _Hide;
+            }
+            set
+            {
+                _Hide = value;
+            }
+        }
+        public String HideView
+        {
+            get
+            {
+                if (_Hide)
+                {
+                    return "Да";
+                }
+                else
+                {
+                    return "Нет";
+                }
+            }
+        }
         public Boolean Canceled
         {
             get

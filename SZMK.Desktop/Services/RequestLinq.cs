@@ -88,7 +88,7 @@ namespace SZMK.Desktop.Services
 
                     notifier.Notify(60, "Отбор полученных данных");
                     List<Order> Temp = new List<Order>();
-                    SystemArgs.Orders = SystemArgs.Orders.FindAll(p => !p.Canceled && !p.Finished);
+                    SystemArgs.Orders = SystemArgs.Orders.FindAll(p => !p.Canceled && !p.Finished && !p.Hide);
 
                     notifier.Notify(75, "Сопоставление данных");
                     for (int i = 0; i < Orders.Count(); i++)
@@ -133,7 +133,7 @@ namespace SZMK.Desktop.Services
                     notifier.Notify(45, "Отбор полученных данных");
                     List<Order> Temp = new List<Order>();
 
-                    SystemArgs.Orders = SystemArgs.Orders.FindAll(p => !p.Canceled && !p.Finished);
+                    SystemArgs.Orders = SystemArgs.Orders.FindAll(p => !p.Canceled && !p.Finished && !p.Hide);
 
                     notifier.Notify(75, "Сопоставление данных");
                     for (int i = 0; i < SystemArgs.Orders.Count(); i++)
@@ -249,7 +249,7 @@ namespace SZMK.Desktop.Services
                 throw new Exception(Ex.Message, Ex);
             }
         }
-        public void GetOrdersForSearch(INotifyProcess notifier, bool Finished)
+        public void GetOrdersForSearch(INotifyProcess notifier, bool Finished, bool Hide)
         {
             try
             {
@@ -271,6 +271,11 @@ namespace SZMK.Desktop.Services
                     if (!Finished)
                     {
                         SystemArgs.Orders = SystemArgs.Orders.FindAll(p => !p.Finished);
+                    }
+
+                    if (!Hide)
+                    {
+                        SystemArgs.Orders = SystemArgs.Orders.FindAll(p => !p.Hide);
                     }
 
                     notifier.Notify(75, "Сопоставление данных");

@@ -54,6 +54,7 @@ namespace SZMK.Desktop
         static public List<Models.PathDetails> PathDetails; //Общий список путей до деталей
         static public List<Models.PathArhive> PathArhives; //Общий список путей до архива
         static public List<Models.Revision> Revisions; //Общий список ревизий чертежей
+        static public List<Models.Comment> Comments; //Общий список ревизий чертежей
 
         public static void PrintLog(String Message)
         {

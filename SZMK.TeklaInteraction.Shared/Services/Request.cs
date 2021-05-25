@@ -283,9 +283,27 @@ namespace SZMK.TeklaInteraction.Shared.Services
                                         flag = 0;
                                     }
                                 }
-                                else if (CheckedDataMatrixUpdate(Drawing) || CheckedDetailsUpdate(Drawing))
+                                else if (CheckedDataMatrixUpdate(Drawing))
                                 {
-                                    flag = 3;
+                                    if (GetIdStatusDrawing(GetIDDrawing(Drawing.Order, Drawing.List)) >= 3)
+                                    {
+                                        flag = 5;
+                                    }
+                                    else
+                                    {
+                                        flag = 3;
+                                    }
+                                }
+                                else if (CheckedDetailsUpdate(Drawing))
+                                {
+                                    if (GetIdStatusDrawing(GetIDDrawing(Drawing.Order, Drawing.List)) >= 3)
+                                    {
+                                        flag = 5;
+                                    }
+                                    else
+                                    {
+                                        flag = 4;
+                                    }
                                 }
                                 else
                                 {
@@ -375,46 +393,149 @@ namespace SZMK.TeklaInteraction.Shared.Services
 
             if (flag)
             {
-                List<long> temps = new List<long>();
+                List<Detail> OldDetails = GetDetails(IdDrawing);
 
+                for (int i = 0; i < OldDetails.Count && flag; i++)
+                {
+                    if (drawing.Details.FirstOrDefault(p => p.Position == OldDetails[i].Position) == null)
+                    {
+                        flag = false;
+                    }
+                    else
+                    {
+                        if (drawing.Details.FirstOrDefault(p => p.Position == OldDetails[i].Position).MarkSteel != OldDetails[i].MarkSteel)
+                        {
+                            flag = false;
+                        }
+                    }
+                }
+            }
+            return !flag;
+        }
+        public long GetIdStatusDrawing(long IDDrawing)
+        {
+            using (var Connect = new NpgsqlConnection(db.ToString()))
+            {
+                Connect.Open();
+                using (var Command = new NpgsqlCommand($"SELECT LAST_VALUE(\"ID_Status\") OVER(ORDER BY \"DateCreate\" RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) result FROM public.\"AddStatus\" WHERE \"ID_Order\"='{IDDrawing}' LIMIT 1;", Connect))
+                {
+                    using (var Reader = Command.ExecuteReader())
+                    {
+                        while (Reader.Read())
+                        {
+                            return Reader.GetInt64(0);
+                        }
+                    }
+                }
+                Connect.Close();
+            }
+
+            return -1;
+        }
+        public string GetStatusName(long IDDrawing)
+        {
+            using (var Connect = new NpgsqlConnection(db.ToString()))
+            {
+                Connect.Open();
+                using (var Command = new NpgsqlCommand($"SELECT \"Name\" FROM public.\"Status\" WHERE \"ID\"='{GetIdStatusDrawing(IDDrawing)}';", Connect))
+                {
+                    using (var Reader = Command.ExecuteReader())
+                    {
+                        while (Reader.Read())
+                        {
+                            return Reader.GetString(0);
+                        }
+                    }
+                }
+                Connect.Close();
+            }
+
+            return null;
+        }
+        public List<long> GetIdsDetailsDrawing(long IDDrawing)
+        {
+            List<long> temps = new List<long>();
+
+            using (var Connect = new NpgsqlConnection(db.ToString()))
+            {
+                Connect.Open();
+                using (var Command = new NpgsqlCommand($"SELECT \"DetailID\" FROM public.\"AddDetail\" WHERE \"OrderID\"='{IDDrawing}';", Connect))
+                {
+                    using (var Reader = Command.ExecuteReader())
+                    {
+                        while (Reader.Read())
+                        {
+                            temps.Add(Reader.GetInt64(0));
+                        }
+                    }
+                }
+                Connect.Close();
+            }
+
+            return temps;
+        }
+        public List<Detail> GetDetails(Int64 IDDrawing)
+        {
+            try
+            {
+                List<Detail> details = new List<Detail>();
+                List<Int64> IDDetails = new List<Int64>();
                 using (var Connect = new NpgsqlConnection(db.ToString()))
                 {
                     Connect.Open();
-                    using (var Command = new NpgsqlCommand($"SELECT \"DetailID\" FROM public.\"AddDetail\" WHERE \"OrderID\"='{IdDrawing}';", Connect))
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"DetailID\" FROM public.\"AddDetail\" WHERE \"OrderID\"='{IDDrawing}';", Connect))
                     {
                         using (var Reader = Command.ExecuteReader())
                         {
                             while (Reader.Read())
                             {
-                                temps.Add(Reader.GetInt64(0));
+                                IDDetails.Add(Reader.GetInt64(0));
                             }
                         }
                     }
-                    Connect.Close();
-                }
-                for (int i = 0; i < temps.Count && flag; i++)
-                {
-                    using (var Connect = new NpgsqlConnection(db.ToString()))
+                    for (int i = 0; i < IDDetails.Count; i++)
                     {
-                        Connect.Open();
-                        using (var Command = new NpgsqlCommand($"SELECT \"Position\" FROM public.\"Detail\" WHERE \"ID\"='{temps[i]}' Order;", Connect))
+                        using (var Command = new NpgsqlCommand($"SELECT \"ID\",\"Name\",\"Position\",\"Count\", \"Profile\",\"Width\",\"Lenght\",\"Weight\",\"Height\",\"Diameter\", \"SubtotalWeight\", \"MarkSteel\",\"Discription\",\"Machining\",\"MethodOfPaintingRAL\",\"PaintingArea\",\"GostName\",\"FlangeThickness\",\"PlateThickness\" FROM public.\"Detail\" WHERE \"ID\"='{IDDetails[i]}';", Connect))
                         {
                             using (var Reader = Command.ExecuteReader())
                             {
                                 while (Reader.Read())
                                 {
-                                    if (drawing.Details.FirstOrDefault(p => p.Position == Reader.GetString(0)) == null)
+                                    details.Add(new Detail
                                     {
-                                        flag = false;
-                                    }
+                                        ID = Reader.GetInt64(0),
+                                        Name = !Reader.IsDBNull(1) ? Reader.GetString(1) : "",
+                                        Position = !Reader.IsDBNull(2) ? Reader.GetString(2) : "",
+                                        Count = !Reader.IsDBNull(3) ? Reader.GetInt64(3) : -1,
+                                        Profile = Reader.GetString(4),
+                                        Width = !Reader.IsDBNull(5) ? Convert.ToDouble(Reader.GetString(5)) : -1,
+                                        Lenght = !Reader.IsDBNull(6) ? Convert.ToDouble(Reader.GetString(6)) : -1,
+                                        Weight = !Reader.IsDBNull(7) ? Convert.ToDouble(Reader.GetString(7)) : -1,
+                                        Height = !Reader.IsDBNull(8) ? Convert.ToDouble(Reader.GetString(8)) : -1,
+                                        Diameter = !Reader.IsDBNull(9) ? Reader.GetString(9) : "",
+                                        SubtotalWeight = Convert.ToDouble(Reader.GetString(10)),
+                                        MarkSteel = Reader.GetString(11),
+                                        Discription = !Reader.IsDBNull(12) ? Reader.GetString(12) : "",
+                                        Machining = !Reader.IsDBNull(13) ? Reader.GetString(13) : "",
+                                        MethodOfPaintingRAL = !Reader.IsDBNull(14) ? Reader.GetString(14) : "",
+                                        PaintingArea = !Reader.IsDBNull(15) ? Convert.ToDouble(Reader.GetString(15)) : -1,
+                                        GostName = !Reader.IsDBNull(16) ? Reader.GetString(16) : "",
+                                        FlangeThickness = !Reader.IsDBNull(17) ? Reader.GetString(17) : "",
+                                        PlateThickness = !Reader.IsDBNull(18) ? Reader.GetString(18) : ""
+                                    });
                                 }
                             }
                         }
-                        Connect.Close();
                     }
+                    Connect.Close();
                 }
+                return details;
             }
-            return !flag;
+            catch (Exception e)
+            {
+                throw new Exception(e.ToString());
+            }
         }
         public String GetDataMatrix(String Number, String List)
         {
@@ -754,6 +875,11 @@ namespace SZMK.TeklaInteraction.Shared.Services
                     DeleteRevision(IDDrawing);
                 }
 
+                if (CheckedNeedRemoveComment(IDDrawing))
+                {
+                    DeleteComment(IDDrawing);
+                }
+
                 using (var Connect = new NpgsqlConnection(db.ToString()))
                 {
                     Connect.Open();
@@ -824,7 +950,7 @@ namespace SZMK.TeklaInteraction.Shared.Services
                 }
                 return DateTime.Now;
             }
-            catch(Exception Ex)
+            catch (Exception Ex)
             {
                 throw new Exception(Ex.Message, Ex);
             }
@@ -1427,6 +1553,89 @@ namespace SZMK.TeklaInteraction.Shared.Services
 
                     using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Revision\"" +
                                                            $"WHERE \"ID\" = {GetIDRevisionDrawing(IDDrawing)}; ", Connect))
+                    {
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Connect.Close();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public Int64 GetIDCommentDrawing(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT \"ID_Comment\" FROM public.\"Orders\" WHERE \"ID\" = '{IDDrawing}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                return Reader.GetInt64(0);
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return -1;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+        public bool CheckedNeedRemoveComment(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"SELECT COUNT(\"ID\") FROM public.\"Orders\" WHERE \"ID_Comment\" = '{GetIDCommentDrawing(IDDrawing)}';", Connect))
+                    {
+                        using (var Reader = Command.ExecuteReader())
+                        {
+                            while (Reader.Read())
+                            {
+                                if (Reader.GetInt64(0) == 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
+                    Connect.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool DeleteComment(Int64 IDDrawing)
+        {
+            try
+            {
+                using (var Connect = new NpgsqlConnection(db.ToString()))
+                {
+                    Connect.Open();
+
+                    using (var Command = new NpgsqlCommand($"DELETE FROM public.\"Comment\"" +
+                                                           $"WHERE \"ID\" = {GetIDCommentDrawing(IDDrawing)}; ", Connect))
                     {
                         Command.ExecuteNonQuery();
                     }

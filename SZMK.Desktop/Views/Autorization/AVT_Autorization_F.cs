@@ -257,6 +257,7 @@ namespace SZMK.Desktop.Views.Autorization
                 SystemArgs.PathDetails = new List<PathDetails>();
                 SystemArgs.PathArhives = new List<PathArhive>();
                 SystemArgs.Revisions = new List<Revision>();
+                SystemArgs.Comments = new List<Comment>();
 
                 SystemArgs.SettingsUser = new Services.Setting.User();
                 SystemArgs.SettingsPosition = new Services.Setting.Position();
